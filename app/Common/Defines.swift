@@ -28,7 +28,7 @@ var SAFEAREA_INSET: UIEdgeInsets {
 
 // MARK: - UI 관련
 let LIGHT_COLOR = UIColor.white
-let DARK_COLOR = UIColor.systemGray4
+let DARK_COLOR = UIColor.darkGray
 
 // MARK: - Shortcut
 /// AppDelegate

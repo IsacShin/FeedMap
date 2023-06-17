@@ -27,7 +27,7 @@ class TabBar:UITabBar {
     }
     
     private func settingSubViews() {
-        self.barTintColor = .init(hex: "ffffff")
+        self.barTintColor = .darkGray
         self.backgroundImage = UIImage()
         
         self.setupStyle()
@@ -41,7 +41,7 @@ class TabBar:UITabBar {
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var newSize = super.sizeThatFits(size)
         
-        let height: CGFloat = 48
+        let height: CGFloat = 60
         let safetyBot = SAFEAREA_INSET.bottom
         newSize.height = height + safetyBot
         
@@ -55,6 +55,6 @@ extension TabBar {
     func clearShadow() {
         TabBar.appearance().shadowImage = UIImage()
         TabBar.appearance().backgroundImage = UIImage()
-        TabBar.appearance().backgroundColor = UIColor.white
+        TabBar.appearance().backgroundColor = UIColor.darkGray
     }
 }

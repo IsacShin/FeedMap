@@ -26,4 +26,15 @@ final class CommonNav {
         UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
     
+    static func moveAccessGuideVC() {
+        guard let vc = DIM.container.resolve(AccessGuideVC.self) else { return }
+        vc.modalPresentationStyle = .overFullScreen
+        UIApplication.topViewController()?.present(vc, animated: true)
+    }
+    
+    static func moveLoginVC() {
+        guard let vc = DIM.container.resolve(LoginVC.self) else { return }
+        vc.modalPresentationStyle = .overFullScreen
+        UIApplication.topViewController()?.present(vc, animated: true)
+    }
 }

@@ -19,7 +19,25 @@ final class DIManager {
     }
     
     private func registVC() {
-
+        self.container.register(AccessGuideVC.self) { _ in
+            return .init()
+        }
+        
+        self.container.register(MapVC.self) { _ in
+            return .init()
+        }
+        
+        self.container.register(FeedVC.self) { _ in
+            return .init()
+        }
+        
+        self.container.register(MyPageVC.self) { _ in
+            return .init()
+        }
+        
+        self.container.register(LoginVC.self) { _ in
+            return .init(vm: LoginVMImpl())
+        }
     
     }
 }

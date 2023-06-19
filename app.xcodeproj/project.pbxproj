@@ -51,6 +51,7 @@
 		4B7276972A3AFB800092E649 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7276962A3AFB800092E649 /* FirebaseMessaging */; };
 		4B7276992A3AFB800092E649 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7276982A3AFB800092E649 /* FirebasePerformance */; };
 		4B72769B2A3AFB800092E649 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 4B72769A2A3AFB800092E649 /* FirebaseRemoteConfig */; };
+		4B7276A02A4026120092E649 /* MapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B72769F2A4026120092E649 /* MapVM.swift */; };
 		4B783EFA2A3D60EE002468CF /* Splash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B783EF92A3D60EE002468CF /* Splash.storyboard */; };
 		4B783EFD2A3D610C002468CF /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFC2A3D610C002468CF /* SplashVC.swift */; };
 		4B783EFF2A3D6617002468CF /* SplashVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFE2A3D6617002468CF /* SplashVM.swift */; };
@@ -115,6 +116,7 @@
 		4B7276872A3AF9E00092E649 /* CompletionHandlerWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionHandlerWrapper.swift; sourceTree = "<group>"; };
 		4B7276882A3AF9E00092E649 /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
 		4B7276892A3AF9E00092E649 /* ApiUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUtils.swift; sourceTree = "<group>"; };
+		4B72769F2A4026120092E649 /* MapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVM.swift; sourceTree = "<group>"; };
 		4B783EF92A3D60EE002468CF /* Splash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Splash.storyboard; sourceTree = "<group>"; };
 		4B783EFC2A3D610C002468CF /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		4B783EFE2A3D6617002468CF /* SplashVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVM.swift; sourceTree = "<group>"; };
@@ -342,6 +344,14 @@
 			path = Tab;
 			sourceTree = "<group>";
 		};
+		4B72769E2A4026040092E649 /* VM */ = {
+			isa = PBXGroup;
+			children = (
+				4B72769F2A4026120092E649 /* MapVM.swift */,
+			);
+			path = VM;
+			sourceTree = "<group>";
+		};
 		4B783EF82A3D60A7002468CF /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,18 +382,11 @@
 		4B783F092A3D8179002468CF /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				4B783F0A2A3D8183002468CF /* VM */,
+				4B72769E2A4026040092E649 /* VM */,
 				4B783F0B2A3D8190002468CF /* Map.xib */,
 				4B783F0D2A3D81A5002468CF /* MapVC.swift */,
 			);
 			path = Map;
-			sourceTree = "<group>";
-		};
-		4B783F0A2A3D8183002468CF /* VM */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = VM;
 			sourceTree = "<group>";
 		};
 		4B783F0F2A3D81C3002468CF /* Feed */ = {
@@ -467,6 +470,7 @@
 				4B7276182A3AF2F10092E649 /* Frameworks */,
 				4B7276192A3AF2F10092E649 /* Resources */,
 				DA19778E4091D98923D1716E /* [CP] Embed Pods Frameworks */,
+				74262689CF85A87761502AAA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -547,6 +551,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		74262689CF85A87761502AAA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-app/Pods-app-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-app/Pods-app-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-app/Pods-app-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		765F435631D64BFEA814204E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -608,6 +629,7 @@
 				4B7276462A3AF7990092E649 /* CommonUtils.swift in Sources */,
 				4B783F0E2A3D81A5002468CF /* MapVC.swift in Sources */,
 				4B7276472A3AF7990092E649 /* CommonNav.swift in Sources */,
+				4B7276A02A4026120092E649 /* MapVM.swift in Sources */,
 				4B72768B2A3AF9E00092E649 /* ImageUtils.swift in Sources */,
 				4B7276482A3AF7990092E649 /* Defines.swift in Sources */,
 				4B7276712A3AF8310092E649 /* CommonPickerManaer.swift in Sources */,

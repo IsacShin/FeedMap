@@ -24,7 +24,7 @@ final class DIManager {
         }
         
         self.container.register(MapVC.self) { _ in
-            return .init()
+            return .init(vm: MapVMImpl())
         }
         
         self.container.register(FeedVC.self) { _ in

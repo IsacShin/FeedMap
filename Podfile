@@ -31,6 +31,11 @@ target 'app' do
 
   #AdMob관련
   pod 'Google-Mobile-Ads-SDK'
+  
+  #Google Maps
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
+  
 end
 
 post_install do |installer|

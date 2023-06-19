@@ -10,6 +10,8 @@ import AppTrackingTransparency
 import AdSupport
 import FirebaseCore
 import GoogleMobileAds
+import GoogleMaps
+import GooglePlaces
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,7 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                "2077ef9a63d2b398840261c8221a0c9b"
 //            ]
 //        GADMobileAds.sharedInstance().start(completionHandler: nil)
-
+        GMSServices.provideAPIKey(GMAP_KEY)
+        GMSPlacesClient.provideAPIKey(GMAP_KEY)
+        
         return true
     }
     

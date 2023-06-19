@@ -41,7 +41,7 @@ class TabBar:UITabBar {
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var newSize = super.sizeThatFits(size)
         
-        let height: CGFloat = 60
+        let height: CGFloat = 52
         let safetyBot = SAFEAREA_INSET.bottom
         newSize.height = height + safetyBot
         

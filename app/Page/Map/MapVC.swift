@@ -16,9 +16,11 @@ class MapVC: BaseVC {
     
     
     @IBOutlet weak var gMapV: UIView!
+    @IBOutlet weak var searchBTN: UIButton!
     
     var gMap: GMSMapView!
     weak var gMapViewDelegate: GMSMapViewDelegate?
+    var zoomLevel: Float = 15
     
     private var vm: MapVM!
     convenience init(vm: MapVM?) {
@@ -74,12 +76,13 @@ class MapVC: BaseVC {
             $0.clipsToBounds = true
             $0.isUserInteractionEnabled = true
             $0.isMyLocationEnabled = true
+            $0.settings.myLocationButton = true
+            $0.setMinZoom(5.0, maxZoom: 20.0)
             
             self.gMapViewDelegate = self
             $0.delegate = self.gMapViewDelegate
         }
         
-        self.gMap.setMinZoom(1.0, maxZoom: 10.0)
         self.gMapV.addSubview(self.gMap)
         self.gMap.snp.makeConstraints {
             $0.leading.trailing.top.bottom.equalTo(self.gMapV)
@@ -96,7 +99,17 @@ class MapVC: BaseVC {
     }
     
     private func bindUserEvents() {
-        
+        self.searchBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                let urlStr = "https://isacshin.github.io/daumSearch/"
+                CommonNav.moveBaseWebVC(requestUrl: urlStr)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindOutputs() {
@@ -141,13 +154,40 @@ class MapVC: BaseVC {
             .asDriver()
             .compactMap { $0 }
             .drive(onNext: {[weak self] currentLoca in
-                
+                guard let self = self else { return }
+                self.mapCameraMove(location: currentLoca)
             })
             .disposed(by: self.disposeBag)
     }
 
 }
 
+extension MapVC {
+    private func mapCameraMove(location: CLLocation) {
+        let camera = GMSCameraPosition.camera(
+            withLatitude: location.coordinate.latitude,
+            longitude: location.coordinate.longitude,
+            zoom: self.zoomLevel
+        )
+        self.gMap.camera = camera
+    }
+}
+
 extension MapVC: GMSMapViewDelegate {
+    // 마커 클릭 시
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        print("마커 클릭 ")
+        return true
+    }
+    
+    // 지도 클릭 시
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        print("지도 클릭 ")
+    }
+    
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        let zoomLevel = mapView.camera.zoom
+        self.zoomLevel = zoomLevel
+    }
     
 }

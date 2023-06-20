@@ -45,10 +45,51 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
     
     private var clManager: CLLocationManager?
     private var currentHandler: (() -> Void)?
-    
+    private let mapWorker = MapVMApiWorker()
+
     override init() {
         super.init()
         self.bindParsing()
+        self.settingNotiReceiver()
+    }
+    
+    func settingNotiReceiver() {
+        let notiCenter = NotificationCenter.default.rx
+        
+        notiCenter
+            .notification(Notification.Name("addrInfo"))
+            .subscribe(onNext: {[weak self] noti in
+                guard let self = self else { return }
+                guard let userInfo = noti.userInfo,
+                      let jibunAddress = userInfo["jibunAddress"] as? String,
+                      let roadAddress = userInfo["roadAddress"] as? String,
+                      let zonecode = userInfo["zonecode"] as? String else { return }
+                
+                var info = [
+                    "address" : jibunAddress
+                ]
+                
+                self.mapWorker.getAddrGeocode(info: info)
+                    .subscribe(onNext: { [weak self] rData in
+
+                        guard let self = self else{
+                            return
+                        }
+                        print(rData)
+
+                    },
+                               onError: { [weak self] rError in
+
+                        guard let self = self else{
+                            return
+                        }
+                        self.error.accept(rError)
+
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                
+            })
     }
     
     func initializeData(completion: @escaping () -> Void) {

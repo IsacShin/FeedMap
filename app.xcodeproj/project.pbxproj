@@ -71,6 +71,8 @@
 		4B783F242A3DE212002468CF /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783F232A3DE212002468CF /* LoginVM.swift */; };
 		4B783F282A3DEFF5002468CF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 4B783F272A3DEFF5002468CF /* GoogleSignIn */; };
 		4B783F2A2A3DEFF5002468CF /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4B783F292A3DEFF5002468CF /* GoogleSignInSwift */; };
+		4B9736382A41917400158ABE /* GeocodeRawData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736372A41917400158ABE /* GeocodeRawData.swift */; };
+		4B97363A2A41957800158ABE /* MapVMApiWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736392A41957800158ABE /* MapVMApiWorker.swift */; };
 		808671D03BDF51A9B1F8A5E6 /* Pods_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020AFAC868AC0957E95B9FB7 /* Pods_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -135,6 +137,8 @@
 		4B783F212A3DB958002468CF /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		4B783F232A3DE212002468CF /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		4B783F252A3DEB4C002468CF /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = app.entitlements; sourceTree = "<group>"; };
+		4B9736372A41917400158ABE /* GeocodeRawData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodeRawData.swift; sourceTree = "<group>"; };
+		4B9736392A41957800158ABE /* MapVMApiWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVMApiWorker.swift; sourceTree = "<group>"; };
 		B07931DB8D05722561773E9F /* Pods-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.debug.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -348,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				4B72769F2A4026120092E649 /* MapVM.swift */,
+				4B9736392A41957800158ABE /* MapVMApiWorker.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -382,6 +387,7 @@
 		4B783F092A3D8179002468CF /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				4B9736362A4190EF00158ABE /* DataModel */,
 				4B72769E2A4026040092E649 /* VM */,
 				4B783F0B2A3D8190002468CF /* Map.xib */,
 				4B783F0D2A3D81A5002468CF /* MapVC.swift */,
@@ -439,6 +445,14 @@
 				4B783F232A3DE212002468CF /* LoginVM.swift */,
 			);
 			path = VM;
+			sourceTree = "<group>";
+		};
+		4B9736362A4190EF00158ABE /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				4B9736372A41917400158ABE /* GeocodeRawData.swift */,
+			);
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		551AD8748206079EAC04389D /* Frameworks */ = {
@@ -624,10 +638,12 @@
 				4B783F142A3D81ED002468CF /* FeedVC.swift in Sources */,
 				4B72767A2A3AF8E20092E649 /* BaseWebVM.swift in Sources */,
 				4B7276652A3AF81E0092E649 /* UINavigationController+Ext.swift in Sources */,
+				4B97363A2A41957800158ABE /* MapVMApiWorker.swift in Sources */,
 				4B72767F2A3AF8FF0092E649 /* BaseNaviVC.swift in Sources */,
 				4B7276642A3AF81E0092E649 /* UIView+Ext.swift in Sources */,
 				4B7276462A3AF7990092E649 /* CommonUtils.swift in Sources */,
 				4B783F0E2A3D81A5002468CF /* MapVC.swift in Sources */,
+				4B9736382A41917400158ABE /* GeocodeRawData.swift in Sources */,
 				4B7276472A3AF7990092E649 /* CommonNav.swift in Sources */,
 				4B7276A02A4026120092E649 /* MapVM.swift in Sources */,
 				4B72768B2A3AF9E00092E649 /* ImageUtils.swift in Sources */,

@@ -9,8 +9,8 @@ import RxSwift
 import RxCocoa
 
 class BaseWebVM {
-    var urlStr:PublishRelay<String?>
-    var completion:(()->Void?)?
+    var urlStr: PublishRelay<String?>
+    var completion: (()->Void?)?
     
     init() {
         urlStr = PublishRelay<String?>()

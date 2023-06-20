@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapVC" customModule="app" customModuleProvider="target">
             <connections>
                 <outlet property="gMapV" destination="wEz-LZ-TaU" id="98A-my-a4a"/>
+                <outlet property="searchBTN" destination="KIq-Yf-UOK" id="LTA-Xk-tjC"/>
                 <outlet property="view" destination="iN0-l3-epB" id="4db-o5-UuW"/>
             </connections>
         </placeholder>
@@ -22,16 +23,54 @@
                     <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CHH-Af-RzV">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="59"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DuR-Zh-qpS">
+                    <rect key="frame" x="16" y="75" width="361" height="59.333333333333343"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchBar" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-R8-b7c">
+                            <rect key="frame" x="0.0" y="0.0" width="361" height="59.333333333333336"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KIq-Yf-UOK">
+                            <rect key="frame" x="0.0" y="0.0" width="361" height="59.333333333333336"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="VaN-R8-b7c" secondAttribute="trailing" id="FgK-oA-2S4"/>
+                        <constraint firstAttribute="bottom" secondItem="KIq-Yf-UOK" secondAttribute="bottom" id="GYf-f5-noQ"/>
+                        <constraint firstItem="KIq-Yf-UOK" firstAttribute="leading" secondItem="DuR-Zh-qpS" secondAttribute="leading" id="KDk-bc-KCD"/>
+                        <constraint firstItem="VaN-R8-b7c" firstAttribute="top" secondItem="DuR-Zh-qpS" secondAttribute="top" id="OhJ-SF-yP3"/>
+                        <constraint firstAttribute="bottom" secondItem="VaN-R8-b7c" secondAttribute="bottom" id="VIR-P2-VRW"/>
+                        <constraint firstItem="VaN-R8-b7c" firstAttribute="leading" secondItem="DuR-Zh-qpS" secondAttribute="leading" id="Wp0-jb-We1"/>
+                        <constraint firstAttribute="trailing" secondItem="KIq-Yf-UOK" secondAttribute="trailing" id="fa1-2w-ITW"/>
+                        <constraint firstAttribute="width" secondItem="DuR-Zh-qpS" secondAttribute="height" multiplier="353:58" id="i3S-Df-NEM"/>
+                        <constraint firstItem="KIq-Yf-UOK" firstAttribute="top" secondItem="DuR-Zh-qpS" secondAttribute="top" id="omb-o0-etz"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="DuR-Zh-qpS" firstAttribute="top" secondItem="CHH-Af-RzV" secondAttribute="bottom" constant="16" id="3dO-RK-nb7"/>
+                <constraint firstItem="DuR-Zh-qpS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="4rF-SD-iKv"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="wEz-LZ-TaU" secondAttribute="bottom" id="5ER-KK-B6S"/>
+                <constraint firstAttribute="trailing" secondItem="CHH-Af-RzV" secondAttribute="trailing" id="7Dy-A3-dcT"/>
+                <constraint firstItem="CHH-Af-RzV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9P2-AW-2sE"/>
+                <constraint firstItem="CHH-Af-RzV" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="GtF-GO-SkX"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="wEz-LZ-TaU" secondAttribute="trailing" id="P5s-8m-tZJ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="DuR-Zh-qpS" secondAttribute="trailing" constant="16" id="PIk-Ye-tip"/>
                 <constraint firstItem="wEz-LZ-TaU" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Pdz-Ko-crH"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="top" secondItem="CHH-Af-RzV" secondAttribute="bottom" id="RTl-bM-e7o"/>
                 <constraint firstItem="wEz-LZ-TaU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pEm-GE-2Yj"/>
             </constraints>
             <point key="canvasLocation" x="136.64122137404578" y="19.718309859154932"/>
         </view>
     </objects>
+    <resources>
+        <image name="searchBar" width="353" height="58"/>
+    </resources>
 </document>

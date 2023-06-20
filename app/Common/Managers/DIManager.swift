@@ -23,6 +23,10 @@ final class DIManager {
             return .init()
         }
         
+        self.container.register(BaseWebVC.self) { _ in
+            return .init(vm: BaseWebVM())
+        }
+        
         self.container.register(MapVC.self) { _ in
             return .init(vm: MapVMImpl())
         }

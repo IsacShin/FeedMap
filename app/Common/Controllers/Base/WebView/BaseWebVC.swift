@@ -168,7 +168,29 @@ class BaseWebVC: BaseVC {
 
 extension BaseWebVC: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print(message)
+        guard let body = message.body as? [String: Any] else {
+            return
+        }
+        
+        guard let jibunAddress = body["jibunAddress"] as? String,
+              let roadAddress = body["roadAddress"] as? String,
+              let zonecode = body["zonecode"] as? String else { return }
+        
+        print("\(jibunAddress)\n\(roadAddress)\n\(zonecode)")
+
+        self.navigationController?.popViewController(animated: true, completion: {
+            var userInfo = [String: Any]()
+            
+            userInfo["jibunAddress"] = jibunAddress
+            userInfo["roadAddress"] = roadAddress
+            userInfo["zonecode"] = zonecode
+            
+            NotificationCenter
+                .default
+                .post(name: Notification.Name("addrInfo"),
+                      object: nil,
+                      userInfo: userInfo)
+        })
     }
 }
 

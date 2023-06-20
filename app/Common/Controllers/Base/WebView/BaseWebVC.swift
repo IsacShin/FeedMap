@@ -32,7 +32,8 @@ class BaseWebVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideFooter()
+        self.naviBarHidden = false
         self.createWebView()
         self.bindUserEvents()
         
@@ -59,16 +60,16 @@ class BaseWebVC: BaseVC {
             }
             .disposed(by: self.disposeBag)
         
-        self.webView.scrollView
-            .rx
-            .willEndDragging
-            .subscribe { velocity, offSet in
-                if(velocity.y > 0) {
-                    self.hideFooter()
-                }else{
-                    self.showFooter()
-                }
-            }.disposed(by: self.disposeBag)
+//        self.webView.scrollView
+//            .rx
+//            .willEndDragging
+//            .subscribe { velocity, offSet in
+//                if(velocity.y > 0) {
+//                    self.hideFooter()
+//                }else{
+//                    self.showFooter()
+//                }
+//            }.disposed(by: self.disposeBag)
         
         self.leftBtn.rx
             .tap

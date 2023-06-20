@@ -15,8 +15,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ⒸISac All  Right  Reserved" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ciL-Bo-iz8">
-                                <rect key="frame" x="114.00000000000001" y="790" width="165.33333333333337" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CopyrightⒸ 2023. ISAC. All Right Reserved." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ciL-Bo-iz8">
+                                <rect key="frame" x="59.666666666666657" y="790" width="273.66666666666674" height="18"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -28,6 +28,12 @@
                                     <constraint firstAttribute="height" constant="130" id="OUX-UK-vAN"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="지도로 저장하는 나만의 피드 " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eWP-AE-U2R">
+                                <rect key="frame" x="99.666666666666686" y="393.66666666666669" width="194" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -38,10 +44,13 @@
                             <constraint firstItem="x4a-hp-AgW" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="WcZ-99-eMY"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="x4a-hp-AgW" secondAttribute="trailing" constant="30" id="bGr-qk-BFc"/>
                             <constraint firstItem="x4a-hp-AgW" firstAttribute="centerY" secondItem="vDu-zF-Fre" secondAttribute="centerY" constant="-130" id="g93-rv-ghe"/>
+                            <constraint firstItem="eWP-AE-U2R" firstAttribute="top" secondItem="x4a-hp-AgW" secondAttribute="bottom" constant="20" id="raU-Ze-hos"/>
+                            <constraint firstItem="eWP-AE-U2R" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="yIn-CQ-eSb"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="splashImg" destination="x4a-hp-AgW" id="10V-ov-hOf"/>
+                        <outlet property="splashLB" destination="eWP-AE-U2R" id="81B-ZG-iAW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

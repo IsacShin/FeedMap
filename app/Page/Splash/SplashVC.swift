@@ -13,6 +13,7 @@ import RxRelay
 class SplashVC: BaseVC {
     
     @IBOutlet weak var splashImg: UIImageView!
+    @IBOutlet weak var splashLB: UILabel!
     private let vm = SplashVMImpl()
     
     override func viewDidLoad() {
@@ -64,18 +65,21 @@ class SplashVC: BaseVC {
     }
     
     private func startAnim(state: LaunchState) {
+        self.splashLB.alpha = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             UIView.animate(withDuration: 1.0) {
-                self.splashImg.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                self.splashLB.alpha = 1.0
                 self.view.layoutIfNeeded()
             } completion: { f in
-                if state == .firstLaunch {
-                    CommonNav.moveAccessGuideVC()
-                } else {
-                    NaviManager.shared.resetNavi()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    if state == .firstLaunch {
+                        CommonNav.moveAccessGuideVC()
+                    } else {
+                        NaviManager.shared.resetNavi()
+                    }
                 }
             }
-
         }
     }
+    
 }

@@ -18,16 +18,16 @@ final class MapVMApiWorker {
         
         guard let address = info["addr"] as? String else { return .error(RxError.unknown) }
         
-        var param = [
+        let param = [
             "address" : address,
             "key" : GMAP_KEY
         ]
         
         return RxAlamofire.requestData(.get, reqURL, parameters: param, encoding: URLEncoding.default, headers: ApiUtils.makeHeader())
             .flatMapLatest { arg -> Observable<GeocodeRawData> in
-                
+                print(reqURL)
                 if arg.0.statusCode != 200 {
-                    return .error(RxError.unknown)
+                    return .error(RxError.timeout)
                 }
                 
                 var rawData: GeocodeRawData?
@@ -37,7 +37,7 @@ final class MapVMApiWorker {
                     return .error(uError)
                 }
                 guard let uData = rawData else{
-                    return .error(RxError.unknown)
+                    return .error(RxError.noElements)
                 }
                 return .just(uData)
                 

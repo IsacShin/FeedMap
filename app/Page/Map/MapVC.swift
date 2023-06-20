@@ -18,9 +18,15 @@ class MapVC: BaseVC {
     @IBOutlet weak var gMapV: UIView!
     @IBOutlet weak var searchBTN: UIButton!
     
+    @IBOutlet weak var currentSearchV: UIView!
+    @IBOutlet weak var currentSearchLB: UILabel!
+    @IBOutlet weak var currentSearchBTN: UIButton!
+    @IBOutlet weak var currentSearchICO: UIImageView!
+    
     var gMap: GMSMapView!
     weak var gMapViewDelegate: GMSMapViewDelegate?
     var zoomLevel: Float = 15
+    var cLocation: CLLocation?
     
     private var vm: MapVM!
     convenience init(vm: MapVM?) {
@@ -78,7 +84,7 @@ class MapVC: BaseVC {
             $0.isMyLocationEnabled = true
             $0.settings.myLocationButton = true
             $0.setMinZoom(5.0, maxZoom: 20.0)
-            
+            $0.mapType = .normal
             self.gMapViewDelegate = self
             $0.delegate = self.gMapViewDelegate
         }
@@ -91,7 +97,19 @@ class MapVC: BaseVC {
     }
     
     private func settingSubviews() {
+        self.currentSearchV.do {
+            $0.roundCorners(cornerRadius: 16, byRoundingCorners: .allCorners)
+        }
         
+        self.currentSearchLB.do {
+            $0.font = .regular(size: 14)
+            $0.setCharacterSpacing(kernValue: -0.98)
+        }
+        
+        self.currentSearchICO.do {
+            $0.image = UIImage(named: "cRefres")?.withRenderingMode(.alwaysTemplate)
+            $0.tintColor = .black
+        }
     }
     
     private func bindUI() {
@@ -110,6 +128,18 @@ class MapVC: BaseVC {
                 CommonNav.moveBaseWebVC(requestUrl: urlStr)
             })
             .disposed(by: self.disposeBag)
+        
+        self.currentSearchBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                print("\(self.cLocation)")
+            })
+            .disposed(by: self.disposeBag)
+        
     }
     
     private func bindOutputs() {
@@ -188,6 +218,17 @@ extension MapVC: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
         let zoomLevel = mapView.camera.zoom
         self.zoomLevel = zoomLevel
+    }
+    
+    // 지도 중앙 위치
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+        let clocation: CLLocation = CLLocation(
+            latitude: position.target.latitude,
+            longitude: position.target.longitude
+        )
+        
+        self.cLocation = clocation
+        
     }
     
 }

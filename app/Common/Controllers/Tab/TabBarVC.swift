@@ -26,8 +26,8 @@ final class TabBarVC: UITabBarController {
     }
     
     private func settingController() {
-        self.tabBar.unselectedItemTintColor = .white
-        UITabBar.appearance().tintColor = .lightGray
+        self.tabBar.unselectedItemTintColor = .lightGray
+        UITabBar.appearance().tintColor = .white
 
         guard let mapVC = container.resolve(MapVC.self),
               let feedVC = container.resolve(FeedVC.self),

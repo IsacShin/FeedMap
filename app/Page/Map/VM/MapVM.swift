@@ -75,7 +75,7 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
                         guard let self = self else{
                             return
                         }
-                        print(rData)
+                        print(rData.results?.first?.geometry?.location)
 
                     },
                                onError: { [weak self] rError in

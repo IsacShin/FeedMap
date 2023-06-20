@@ -8,7 +8,7 @@
 import Foundation
 
 struct GeocodeRawData: Codable {
-    var results: [AddrComponentRawData]?
+    var results: [AddrRawData]?
 }
 extension GeocodeRawData {
     init(data: Data) throws {
@@ -16,22 +16,8 @@ extension GeocodeRawData {
     }
 }
 
-struct AddrComponentRawData: Codable {
-    var addrComponents: [AddrRawData]?
-    
-    enum CodingKeys: String, CodingKey {
-        case addrComponents = "address_components"
-    }
-}
-
-extension AddrComponentRawData {
-    init(data: Data) throws {
-        self = try newJSONDecoder().decode(AddrComponentRawData.self, from: data)
-    }
-}
-
 struct AddrRawData: Codable {
-    var geometry: [GeometryRawData]?
+    var geometry: GeometryRawData?
 }
 
 extension AddrRawData {
@@ -41,7 +27,7 @@ extension AddrRawData {
 }
 
 struct GeometryRawData: Codable {
-    var location: [LocationRawData]?
+    var location: LocationRawData?
 }
 
 extension GeometryRawData {

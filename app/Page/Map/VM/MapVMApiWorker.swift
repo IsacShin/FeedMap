@@ -23,7 +23,7 @@ final class MapVMApiWorker {
             "key" : GMAP_KEY
         ]
         
-        return RxAlamofire.requestData(.get, reqURL, parameters: param, encoding: URLEncoding.default, headers: nil)
+        return RxAlamofire.requestData(.get, reqURL, parameters: param, encoding: URLEncoding.default, headers: ApiUtils.makeHeader())
             .flatMapLatest { arg -> Observable<GeocodeRawData> in
                 
                 if arg.0.statusCode != 200 {

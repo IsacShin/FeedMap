@@ -30,6 +30,9 @@ func newJSONEncoder() -> JSONEncoder {
 
 final class ApiUtils {
     class func makeUrl(_ additionalURL: String) -> URL? {
+        if additionalURL.contains("http") {
+            return URL(string: additionalURL)
+        }
         let url = DOMAIN + additionalURL
         return URL(string: url)
     }

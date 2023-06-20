@@ -66,7 +66,7 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
                       let zonecode = userInfo["zonecode"] as? String else { return }
                 
                 var info = [
-                    "address" : jibunAddress
+                    "addr" : jibunAddress
                 ]
                 
                 self.mapWorker.getAddrGeocode(info: info)

@@ -41,7 +41,7 @@ let DIM = DIManager.shared
 let LOADING = CommonLoading.shared
 
 // MARK: - HTTP통신
-let DOMAIN                  = "https://api.github.com/"
+let DOMAIN                  = "http://43.200.164.232:8080"
 let SEARCH_KEYWORD          = "https://dapi.kakao.com/v2/local/search/keyword.json"
 let KAKAO_SEARCH_KEY        = "c100792705b3b3d5dd8da673a9da10e5"
 

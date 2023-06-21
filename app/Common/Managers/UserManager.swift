@@ -39,6 +39,8 @@ final class UserManager: NSObject, FeedAppLogin {
     
     public var name: String?
     
+    public var id: String?
+    
     public var loginType: LoginType = .APPLE
     
     func google() {
@@ -55,7 +57,7 @@ final class UserManager: NSObject, FeedAppLogin {
             let refreshToken  = result.user.refreshToken
             let clientID      = result.user.userID
             self.loginType = .GOOGLE
-            self.loginSuccess(token: idToken, name: name)
+            self.loginSuccess(token: idToken, name: name, id: email)
         }
         
     }
@@ -83,18 +85,23 @@ final class UserManager: NSObject, FeedAppLogin {
         
         self.token = nil
         self.name = nil
+        self.id = nil
         UDF.removeObject(forKey: "idToken")
         UDF.removeObject(forKey: "userName")
+        UDF.removeObject(forKey: "memId")
         NaviManager.shared.resetNavi()
     }
     
-    public func loginSuccess(token: String?, name: String?) {
+    public func loginSuccess(token: String?, name: String?, id: String?) {
         guard let token = token,
-              let name = name else { return }
+              let name = name,
+              let id = id else { return }
         NaviManager.shared.resetNavi {
             self.token = token
             self.name = name
+            self.id = id
             UDF.setValue(self.token, forKey: "idToken")
+            UDF.setValue(self.id, forKey: "memId")
             UDF.setValue(self.name, forKey: "userName")
         }
     }
@@ -129,7 +136,7 @@ extension UserManager: ASAuthorizationControllerDelegate {
         print("authCode = \(uAuthText)\n")
         print("idToken = \(tokenStr)\n")
         self.loginType = .APPLE
-        self.loginSuccess(token: tokenStr, name: fName)
+        self.loginSuccess(token: tokenStr, name: fName, id: snsId)
         
     }
     

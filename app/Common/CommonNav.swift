@@ -37,4 +37,9 @@ final class CommonNav {
         vc.modalPresentationStyle = .overFullScreen
         UIApplication.topViewController()?.present(vc, animated: true)
     }
+    
+    static func moveFeedWriteVC() {
+        guard let vc = DIM.container.resolve(FeedWriteVC.self) else { return }
+        UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
 }

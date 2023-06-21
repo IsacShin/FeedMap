@@ -19,13 +19,19 @@ protocol MapVM {
 protocol MapVMInput {
     func initializeData(completion: @escaping () -> Void)
     func checkCurrentLocationAuth(_ completion: (() -> Void)?)
+    var cLocation: BehaviorRelay<CLLocation?> { get }
 }
 
 protocol MapVMOutput {
     var error: BehaviorRelay<Error?> { get }
     var currentLocation: BehaviorRelay<CLLocation?> { get }
     var isCheckCurrentLocationFail: BehaviorRelay<Bool?> { get }
-
+    var gResultData: BehaviorRelay<AddrRawData?> { get }
+    var feedListData: BehaviorRelay<[FeedRawData]?> { get }
+    var moveLocation: BehaviorRelay<CLLocation?> { get }
+    var centerAddr: BehaviorRelay<String?> { get }
+    
+    func getFeedList(completion: (() -> Void)?)
 }
 
 final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
@@ -42,7 +48,15 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
     var error = BehaviorRelay<Error?>(value: nil)
     var currentLocation = BehaviorRelay<CLLocation?>(value: nil)
     var isCheckCurrentLocationFail = BehaviorRelay<Bool?>(value: nil)
+    var cLocation = BehaviorRelay<CLLocation?>(value: nil)
+    var cAddress = BehaviorRelay<String?>(value: nil)
+    var gResultData = BehaviorRelay<AddrRawData?>(value: nil)
+    var feedListData = BehaviorRelay<[FeedRawData]?>(value: nil)
     
+    var gResultRawData = BehaviorRelay<GeocodeRawData?>(value: nil)
+    var feedListRawData = BehaviorRelay<FeedListRawData?>(value: nil)
+    var moveLocation = BehaviorRelay<CLLocation?>(value: nil)
+    var centerAddr = BehaviorRelay<String?>(value: nil)
     private var clManager: CLLocationManager?
     private var currentHandler: (() -> Void)?
     private let mapWorker = MapVMApiWorker()
@@ -65,31 +79,57 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
                       let roadAddress = userInfo["roadAddress"] as? String,
                       let zonecode = userInfo["zonecode"] as? String else { return }
                 
-                var info = [
-                    "addr" : jibunAddress
+                let param = [
+                    "address" : jibunAddress,
+                    "key" : GMAP_KEY
                 ]
                 
-                self.mapWorker.getAddrGeocode(info: info)
-                    .subscribe(onNext: { [weak self] rData in
-
-                        guard let self = self else{
-                            return
-                        }
-                        print(rData.results?.first?.geometry?.location)
-
-                    },
-                               onError: { [weak self] rError in
-
-                        guard let self = self else{
-                            return
-                        }
-                        self.error.accept(rError)
-
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                
+                self.getAddrGeocode(param: param)
             })
+    }
+    
+    func getAddrGeocode(param: [String: Any]) {
+        self.mapWorker.getAddrGeocode(info: param)
+            .subscribe(onNext: { [weak self] rData in
+
+                guard let self = self else{
+                    return
+                }
+                self.gResultRawData.accept(rData)
+            },
+                       onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                self.error.accept(rError)
+
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func getFeedList(completion: (() -> Void)?) {
+        guard let memId = UDF.string(forKey: "memId") else { return }
+        let param = [
+            "memid" : memId
+        ]
+        self.mapWorker.getFeedList(info: param)
+            .subscribe(onNext: { [weak self] rData in
+
+                guard let self = self else{
+                    return
+                }
+                self.feedListRawData.accept(rData)
+                
+                }, onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                self.error.accept(rError)
+
+            }, onDisposed: completion)
+            .disposed(by: self.disposeBag)
     }
     
     func initializeData(completion: @escaping () -> Void) {
@@ -98,6 +138,65 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
     
     private func bindParsing() {
         
+        let gResultList = self.gResultRawData
+            .compactMap{ $0 }
+        
+        gResultList
+            .compactMap {
+                $0.results?.first
+            }
+            .bind(to: self.gResultData)
+            .disposed(by: self.disposeBag)
+        
+        self.gResultData
+            .compactMap {
+                $0?.geometry?.location
+            }
+            .bind(onNext: {[weak self] data in
+                guard let self = self else { return }
+                guard let lat = data.lat,
+                      let lng = data.lng else { return }
+                        
+                let location = CLLocation(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lng))
+                
+                self.moveLocation.accept(location)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.gResultData
+            .compactMap {
+                $0?.formatted_address
+            }
+            .bind(onNext: {[weak self] data in
+                guard let self = self else { return }
+                
+                self.centerAddr.accept(data)
+            })
+            .disposed(by: self.disposeBag)
+        
+        let feedList = self.feedListRawData
+            .compactMap{ $0 }
+        
+        feedList
+            .compactMap {
+                $0.list
+            }
+            .bind(to: self.feedListData)
+            .disposed(by: self.disposeBag)
+        
+        self.cLocation
+            .compactMap { $0 }
+            .bind(onNext: {[weak self] location in
+                guard let self = self else { return }
+                var param = [
+                    "latlng" : "\(location.coordinate.latitude),\(location.coordinate.longitude)",
+                    "key" : GMAP_KEY
+                ]
+                
+                self.getAddrGeocode(param: param)
+
+            })
+            .disposed(by: self.disposeBag)
     }
     
     // 현재 위치 권한 검사

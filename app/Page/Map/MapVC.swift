@@ -136,7 +136,24 @@ class MapVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
-                print("\(self.cLocation)")
+                self.vm.output.getFeedList {
+                    let list = self.vm.output.feedListData.value
+                    let fList = list?.filter { list in
+                        guard let latitude = list.latitude,
+                              let longitude = list.longitude,
+                              let tlan = self.cLocation?.coordinate.latitude,
+                              let tlon = self.cLocation?.coordinate.longitude else { return false }
+
+                        return Double.equal(tlan, latitude) && Double.equal(tlon, longitude)
+                    }
+                    
+                    if fList?.count ?? 0 > 0 {
+                        CommonAlert.showAlertType(vc: self, message: "이 장소에 이미 등록한 피드가 있습니다.", nil)
+                    } else {
+                        self.vm.input.cLocation.accept(self.cLocation)
+
+                    }
+                }
             })
             .disposed(by: self.disposeBag)
         
@@ -186,6 +203,47 @@ class MapVC: BaseVC {
             .drive(onNext: {[weak self] currentLoca in
                 guard let self = self else { return }
                 self.mapCameraMove(location: currentLoca)
+            })
+            .disposed(by: self.disposeBag)
+        
+        output.moveLocation
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(onNext: {[weak self] loca in
+                guard let self = self else { return }
+                self.mapCameraMove(location: loca)
+
+                self.vm.output.getFeedList {
+                    let list = self.vm.output.feedListData.value
+                    let fList = list?.filter { list in
+                        guard let latitude = list.latitude,
+                              let longitude = list.longitude,
+                              let tlan = self.cLocation?.coordinate.latitude,
+                              let tlon = self.cLocation?.coordinate.longitude else { return false }
+
+                        return Double.equal(tlan, latitude) && Double.equal(tlon, longitude)
+                    }
+                    
+                    if fList?.count ?? 0 > 0 {
+                        CommonAlert.showAlertType(vc: self, message: "이 장소에 이미 등록한 피드가 있습니다.", nil)
+                    } else {
+                        CommonAlert.showConfirmType(vc: self, message: "이 장소에 등록된 피드가 없습니다.\n피드를 등록해주세요" ,cancelTitle: "확인", completeTitle: "취소", {
+                            CommonNav.moveFeedWriteVC()
+                        }, nil)
+                    }
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        output.centerAddr
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(onNext: {[weak self] addr in
+                print(addr)
             })
             .disposed(by: self.disposeBag)
     }

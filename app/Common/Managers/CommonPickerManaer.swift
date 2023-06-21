@@ -73,7 +73,7 @@ final class CommonPickerManager:NSObject {
         
         config.library.onlySquare = false
         config.library.mediaType = .photo
-        config.library.maxNumberOfItems = 4
+        config.library.maxNumberOfItems = maxCount
         config.library.minNumberOfItems = 1
         config.library.numberOfItemsInRow = 3
         config.library.skipSelectionsGallery = true

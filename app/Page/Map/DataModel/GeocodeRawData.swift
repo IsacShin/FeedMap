@@ -18,6 +18,7 @@ extension GeocodeRawData {
 
 struct AddrRawData: Codable {
     var geometry: GeometryRawData?
+    var formatted_address: String?
 }
 
 extension AddrRawData {

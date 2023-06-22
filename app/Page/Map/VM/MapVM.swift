@@ -31,7 +31,7 @@ protocol MapVMOutput {
     var moveLocation: BehaviorRelay<CLLocation?> { get }
     var centerAddr: BehaviorRelay<String?> { get }
     
-    func getFeedList(completion: (() -> Void)?)
+    func getFeedList(loca:CLLocation?, completion: (() -> Void)?)
 }
 
 final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
@@ -108,11 +108,18 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
             .disposed(by: self.disposeBag)
     }
     
-    func getFeedList(completion: (() -> Void)?) {
+    func getFeedList(loca:CLLocation?, completion: (() -> Void)?) {
         guard let memId = UDF.string(forKey: "memId") else { return }
-        let param = [
+        var param: [String:Any] = [
             "memid" : memId
         ]
+        
+        if let loca = loca {
+            let lat: Double = Double(loca.coordinate.latitude)
+            let lng: Double = Double(loca.coordinate.longitude)
+            param.updateValue(lat, forKey: "latitude")
+            param.updateValue(lng, forKey: "longitude")
+        }
         self.mapWorker.getFeedList(info: param)
             .subscribe(onNext: { [weak self] rData in
 

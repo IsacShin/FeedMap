@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="PiW-0f-kSO" customClass="ImgSelectColVCell" customModule="app" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="247" height="311"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="247" height="311"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkN-Zd-57U">
+                        <rect key="frame" x="4" y="4" width="239" height="303"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icoPlus-1" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-Wm-eNd">
+                                <rect key="frame" x="110" y="142" width="19" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="19" id="HL7-CF-MAK"/>
+                                    <constraint firstAttribute="width" constant="19" id="N3k-31-ccc"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bfQ-1i-9so">
+                                <rect key="frame" x="0.0" y="0.0" width="239" height="303"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sk2-Wm-eNd" firstAttribute="centerX" secondItem="rkN-Zd-57U" secondAttribute="centerX" id="3aS-Tt-kEM"/>
+                            <constraint firstAttribute="bottom" secondItem="bfQ-1i-9so" secondAttribute="bottom" id="OWd-GL-0Ku"/>
+                            <constraint firstItem="Sk2-Wm-eNd" firstAttribute="centerY" secondItem="rkN-Zd-57U" secondAttribute="centerY" id="ZfG-GU-VM2"/>
+                            <constraint firstItem="bfQ-1i-9so" firstAttribute="top" secondItem="rkN-Zd-57U" secondAttribute="top" id="jUK-kM-OEn"/>
+                            <constraint firstItem="bfQ-1i-9so" firstAttribute="leading" secondItem="rkN-Zd-57U" secondAttribute="leading" id="mfx-PE-YYi"/>
+                            <constraint firstAttribute="trailing" secondItem="bfQ-1i-9so" secondAttribute="trailing" id="wbD-O6-MxX"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f91-ph-Rpp">
+                        <rect key="frame" x="229" y="0.0" width="18" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="P2P-HI-wj4"/>
+                            <constraint firstAttribute="height" constant="18" id="n4v-VB-ZZ6"/>
+                        </constraints>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" image="btnClose01"/>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="rkN-Zd-57U" firstAttribute="leading" secondItem="PiW-0f-kSO" secondAttribute="leading" constant="4" id="3aZ-8s-69y"/>
+                <constraint firstAttribute="bottom" secondItem="rkN-Zd-57U" secondAttribute="bottom" constant="4" id="8ru-nl-WcD"/>
+                <constraint firstAttribute="trailing" secondItem="f91-ph-Rpp" secondAttribute="trailing" id="Cxv-od-tMh"/>
+                <constraint firstItem="f91-ph-Rpp" firstAttribute="top" secondItem="PiW-0f-kSO" secondAttribute="top" id="PRo-oe-6nb"/>
+                <constraint firstItem="rkN-Zd-57U" firstAttribute="top" secondItem="PiW-0f-kSO" secondAttribute="top" constant="4" id="iqQ-jF-Qjp"/>
+                <constraint firstAttribute="trailing" secondItem="rkN-Zd-57U" secondAttribute="trailing" constant="4" id="pU6-Ce-fZG"/>
+            </constraints>
+            <size key="customSize" width="247" height="311"/>
+            <connections>
+                <outlet property="closeBTN" destination="f91-ph-Rpp" id="4eS-JI-qTR"/>
+                <outlet property="contentV" destination="rkN-Zd-57U" id="f1v-bh-k50"/>
+                <outlet property="imgV" destination="bfQ-1i-9so" id="1am-S6-YTO"/>
+            </connections>
+            <point key="canvasLocation" x="280.43478260869568" y="240.06696428571428"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="btnClose01" width="18" height="18"/>
+        <image name="icoPlus-1" width="19" height="19"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

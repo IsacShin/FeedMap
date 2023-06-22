@@ -79,8 +79,10 @@
 		4B9736442A42BF3F00158ABE /* FeedWriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736432A42BF3F00158ABE /* FeedWriteVC.swift */; };
 		4B9736462A42BF8300158ABE /* FeedWriteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736452A42BF8300158ABE /* FeedWriteVM.swift */; };
 		4B9736482A42C83C00158ABE /* GrayBoxV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736472A42C83C00158ABE /* GrayBoxV.swift */; };
-		4B97364B2A42DD5D00158ABE /* FeedWriteSubV.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B97364A2A42DD5D00158ABE /* FeedWriteSubV.xib */; };
-		4B97364D2A42DDCF00158ABE /* FeedWriteSubV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B97364C2A42DDCF00158ABE /* FeedWriteSubV.swift */; };
+		4B9736502A440E2900158ABE /* ImgSelectColVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B97364F2A440E2900158ABE /* ImgSelectColVCell.xib */; };
+		4B9736522A440E3A00158ABE /* ImgSelectColVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736512A440E3A00158ABE /* ImgSelectColVCell.swift */; };
+		4B9736542A442DCA00158ABE /* FeedWriteVMApiWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736532A442DCA00158ABE /* FeedWriteVMApiWorker.swift */; };
+		4B9736572A442E2E00158ABE /* FileUploadRawData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9736562A442E2E00158ABE /* FileUploadRawData.swift */; };
 		808671D03BDF51A9B1F8A5E6 /* Pods_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020AFAC868AC0957E95B9FB7 /* Pods_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -153,8 +155,10 @@
 		4B9736432A42BF3F00158ABE /* FeedWriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedWriteVC.swift; sourceTree = "<group>"; };
 		4B9736452A42BF8300158ABE /* FeedWriteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedWriteVM.swift; sourceTree = "<group>"; };
 		4B9736472A42C83C00158ABE /* GrayBoxV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayBoxV.swift; sourceTree = "<group>"; };
-		4B97364A2A42DD5D00158ABE /* FeedWriteSubV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedWriteSubV.xib; sourceTree = "<group>"; };
-		4B97364C2A42DDCF00158ABE /* FeedWriteSubV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedWriteSubV.swift; sourceTree = "<group>"; };
+		4B97364F2A440E2900158ABE /* ImgSelectColVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImgSelectColVCell.xib; sourceTree = "<group>"; };
+		4B9736512A440E3A00158ABE /* ImgSelectColVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgSelectColVCell.swift; sourceTree = "<group>"; };
+		4B9736532A442DCA00158ABE /* FeedWriteVMApiWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedWriteVMApiWorker.swift; sourceTree = "<group>"; };
+		4B9736562A442E2E00158ABE /* FileUploadRawData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadRawData.swift; sourceTree = "<group>"; };
 		B07931DB8D05722561773E9F /* Pods-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.debug.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -478,7 +482,8 @@
 		4B97363F2A42BE8700158ABE /* Write */ = {
 			isa = PBXGroup;
 			children = (
-				4B9736492A42DCC000158ABE /* SubV */,
+				4B9736552A442E1300158ABE /* DataModel */,
+				4B97364E2A440E1300158ABE /* Cell */,
 				4B9736402A42BEC200158ABE /* VM */,
 				4B9736412A42BED100158ABE /* FeedWrite.xib */,
 				4B9736432A42BF3F00158ABE /* FeedWriteVC.swift */,
@@ -490,17 +495,26 @@
 			isa = PBXGroup;
 			children = (
 				4B9736452A42BF8300158ABE /* FeedWriteVM.swift */,
+				4B9736532A442DCA00158ABE /* FeedWriteVMApiWorker.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
 		};
-		4B9736492A42DCC000158ABE /* SubV */ = {
+		4B97364E2A440E1300158ABE /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				4B97364A2A42DD5D00158ABE /* FeedWriteSubV.xib */,
-				4B97364C2A42DDCF00158ABE /* FeedWriteSubV.swift */,
+				4B97364F2A440E2900158ABE /* ImgSelectColVCell.xib */,
+				4B9736512A440E3A00158ABE /* ImgSelectColVCell.swift */,
 			);
-			path = SubV;
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		4B9736552A442E1300158ABE /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				4B9736562A442E2E00158ABE /* FileUploadRawData.swift */,
+			);
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		551AD8748206079EAC04389D /* Frameworks */ = {
@@ -605,8 +619,8 @@
 				4B783F112A3D81D2002468CF /* Feed.xib in Resources */,
 				4B783F022A3D70A1002468CF /* AccessGuide.xib in Resources */,
 				4B7276392A3AF72E0092E649 /* Fonts in Resources */,
-				4B97364B2A42DD5D00158ABE /* FeedWriteSubV.xib in Resources */,
 				4B9736422A42BED100158ABE /* FeedWrite.xib in Resources */,
+				4B9736502A440E2900158ABE /* ImgSelectColVCell.xib in Resources */,
 				4B783F0C2A3D8190002468CF /* Map.xib in Resources */,
 				4B783EFA2A3D60EE002468CF /* Splash.storyboard in Resources */,
 			);
@@ -691,6 +705,7 @@
 				4B72767A2A3AF8E20092E649 /* BaseWebVM.swift in Sources */,
 				4B7276652A3AF81E0092E649 /* UINavigationController+Ext.swift in Sources */,
 				4B97363A2A41957800158ABE /* MapVMApiWorker.swift in Sources */,
+				4B9736572A442E2E00158ABE /* FileUploadRawData.swift in Sources */,
 				4B72767F2A3AF8FF0092E649 /* BaseNaviVC.swift in Sources */,
 				4B7276642A3AF81E0092E649 /* UIView+Ext.swift in Sources */,
 				4B7276462A3AF7990092E649 /* CommonUtils.swift in Sources */,
@@ -699,11 +714,11 @@
 				4B7276472A3AF7990092E649 /* CommonNav.swift in Sources */,
 				4B97363C2A42893E00158ABE /* FeedListRawData.swift in Sources */,
 				4B7276A02A4026120092E649 /* MapVM.swift in Sources */,
-				4B97364D2A42DDCF00158ABE /* FeedWriteSubV.swift in Sources */,
 				4B9736462A42BF8300158ABE /* FeedWriteVM.swift in Sources */,
 				4B72768B2A3AF9E00092E649 /* ImageUtils.swift in Sources */,
 				4B7276482A3AF7990092E649 /* Defines.swift in Sources */,
 				4B7276712A3AF8310092E649 /* CommonPickerManaer.swift in Sources */,
+				4B9736522A440E3A00158ABE /* ImgSelectColVCell.swift in Sources */,
 				4B7276492A3AF7990092E649 /* CommonAlert.swift in Sources */,
 				4B7276862A3AF9AA0092E649 /* TabBar.swift in Sources */,
 				4B7276792A3AF8E20092E649 /* BaseWebVC.swift in Sources */,
@@ -711,6 +726,7 @@
 				4B7276852A3AF9AA0092E649 /* TabBarVC.swift in Sources */,
 				4B783F042A3D70BA002468CF /* AccessGuideVC.swift in Sources */,
 				4B7276682A3AF81E0092E649 /* UIImage+Ext.swift in Sources */,
+				4B9736542A442DCA00158ABE /* FeedWriteVMApiWorker.swift in Sources */,
 				4B783F062A3D7611002468CF /* LibManager.swift in Sources */,
 				4B783F1C2A3DB78F002468CF /* LocationManager.swift in Sources */,
 				4B7276762A3AF8730092E649 /* SharedPool.swift in Sources */,

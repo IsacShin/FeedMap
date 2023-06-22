@@ -16,14 +16,20 @@ class FeedWriteVC: BaseVC {
     
     @IBOutlet weak var completeBTN: BlackBTN!
     
+    @IBOutlet weak var addrLB: UILabel!
+    @IBOutlet weak var addrContentLB: UILabel!
+    
+    
+    @IBOutlet weak var titleLB: UILabel!
+    @IBOutlet weak var titleTF: UITextField!
     @IBOutlet weak var descTitleLB: UILabel!
     @IBOutlet weak var descTV: UITextView!
-    @IBOutlet weak var uploadTitleLB: UILabel!
-    @IBOutlet weak var uploadBTN: UIButton!
     
     @IBOutlet weak var keyboardConstraint: NSLayoutConstraint!
-    @IBOutlet weak var fileListSTV: UIStackView!
-    @IBOutlet var fileListWrapper: UIView!
+    
+    @IBOutlet var imgColV: UICollectionView!
+    @IBOutlet weak var imgSelectLB: UILabel!
+    @IBOutlet weak var imgSelectSubLB: UILabel!
     
     let textViewPlaceHolder = "내용을 입력하세요"
     private var vm: FeedWriteVM!
@@ -60,11 +66,7 @@ class FeedWriteVC: BaseVC {
     
     private func initVState() {
         self.descTV.text = nil
-        
-        self.fileListSTV.arrangedSubviews.forEach {
-            $0.removeFromSuperview()
-        }
-        self.fileListWrapper.isHidden = true
+        self.titleTF.text = nil
     }
     
     private func settingSubviews() {
@@ -91,7 +93,7 @@ class FeedWriteVC: BaseVC {
             $0.layer.cornerRadius = 12
         }
         
-        [self.descTitleLB, self.uploadTitleLB]
+        [self.descTitleLB, self.imgSelectLB, self.imgSelectSubLB, self.titleLB, self.addrLB, self.addrContentLB]
             .compactMap {
                 $0
             }
@@ -110,22 +112,27 @@ class FeedWriteVC: BaseVC {
             $0.settingCloseToolBar()
         }
         
-        self.uploadBTN.do {
-            $0.clipsToBounds = true
-            $0.layer.cornerRadius = 16
-            $0.titleLabel?.font = .medium(size: 16)
-            $0.setTitleColor(.init(hex: "ffffff"), for: .normal)
-            $0.setTitleColor(.init(hex: "B8BDBB"), for: .disabled)
-            $0.setBackgroundImage(.init(color: .init(hex: "dcdcdc")), for: .normal)
-            $0.setBackgroundImage(.init(color: .init(hex: "EFF1EA")), for: .disabled)
+        self.titleTF.do {
+            $0.placeholder = "제목을 입력해주세요"
+            $0.delegate = self
+            $0.font = .regular(size: 14)
+            $0.textColor = .lightGray
+            $0.backgroundColor = .clear
+            $0.settingCloseToolBar()
         }
         
-        self.fileListSTV.do {
+        self.imgColV.do{
+            $0.showsHorizontalScrollIndicator = false
+            $0.showsVerticalScrollIndicator = false
+            
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .vertical
+            $0.collectionViewLayout = layout
             $0.backgroundColor = .clear
-        }
-        
-        self.fileListWrapper.do {
-            $0.backgroundColor = .clear
+            
+            $0.rx.setDelegate(self).disposed(by: self.disposeBag)
+            
+            $0.register(.init(nibName: "ImgSelectColVCell", bundle: nil), forCellWithReuseIdentifier: ImgSelectColVCell.description())
         }
     }
     
@@ -138,7 +145,7 @@ class FeedWriteVC: BaseVC {
             newHeight += safeBot
         }
         
-        self.setKeyboardNotiHandler(constraint: self.keyboardConstraint, constantValue: newHeight, disposeBag: self.disposeBag, superView: self.view)
+        self.setKeyboardNotiHandler(constraint: self.keyboardConstraint, constantValue: newHeight - 60, disposeBag: self.disposeBag, superView: self.view)
         
     }
     
@@ -152,35 +159,52 @@ class FeedWriteVC: BaseVC {
                     return
                 }
 //                self.tryRegist()
-                
+                self.vm.input.regist(info: [String : Any]()) {
+                    print("업로드 완료")
+                }
             })
             .disposed(by: self.disposeBag)
         
-        self.uploadBTN
+        self.imgColV
             .rx
-            .tap
+            .itemSelected
             .asDriver()
             .throttle(.seconds(1))
-            .drive(onNext: { [weak self] in
-                
-                guard let self = self else{
+            .drive(onNext: { [weak self] idx in
+                guard let self = self else {
                     return
                 }
+                self.imgColV.deselectItem(at: idx, animated: false)
                 
-                var cnt = 3
-                if let uCurrentCnt = self.vm.output.imgList.value?.count{
-                    cnt -= uCurrentCnt
+                guard let list = self.vm.output.imgDataList.value else {
+                    return
                 }
-                
-//                guard cnt > 0 else {
-//                    CommonVManager.showMsg(msg: "첨부 가능한 파일 수는 5개입니다.")
-//                    return
-//                }
-                CommonPickerManager.shared.showYpAlbum(maxCount: cnt) {[weak self] photoList in
-                    guard let self = self else{
-                        return
+                let cellData = list[idx.row]
+
+                if cellData.img == nil {
+
+                    let fList = list.filter {
+                        $0.img == nil
                     }
-                    self.vm.input.addImg(imgList: photoList)
+                    let cnt = fList.count
+                    
+                    CommonPickerManager.shared.showYpAlbum(maxCount: cnt) { [weak self] sModelList in
+                        guard let self = self else {
+                            return
+                        }
+                        
+                        let cList = sModelList.compactMap { origin -> ImgSelectColVCellDPModel? in
+                            guard let name = origin.fileName else {
+                                return nil
+                            }
+                            
+                            return .init(img: origin.img, fileName: name)
+                        }
+                        self.vm.input.addImage(imgList: cList)
+                    }
+
+                } else {
+                    self.vm.input.deleteImage(idx: idx.row)
                 }
             })
             .disposed(by: self.disposeBag)
@@ -190,51 +214,31 @@ class FeedWriteVC: BaseVC {
         let output = self.vm.output
         
         output
-            .imgList
-            .asDriver()
-            .map { list -> Bool in
-                
-                var resultValue = true
-                if let cnt = list?.count,
-                   cnt > 0 {
-                    resultValue = false
-                }
-                return resultValue
-            }
-            .drive(self.fileListWrapper.rx.isHidden)
-            .disposed(by: self.disposeBag)
-        
-        output
-            .imgList
+            .imgDataList
             .asDriver()
             .compactMap {
                 $0
             }
-            .drive(onNext: { [weak self] imgList in
-                guard let self = self else {
-                    return
-                }
+            .drive(self.imgColV.rx.items(cellIdentifier: ImgSelectColVCell.description(), cellType: ImgSelectColVCell.self)) { _, cellData, cell in
                 
-                self.fileListSTV.arrangedSubviews.forEach {
-                    $0.removeFromSuperview()
-                }
+                cell.mapCellData(pCellData: cellData)
                 
-                imgList.forEach {data in
-                    let subV = FeedWriteSubV()
-                    self.fileListSTV.addArrangedSubview(subV)
-                    subV.backgroundColor = .clear
-                    subV.mapVm(vm: self.vm)
-                    subV.mapData(data: data)
-                    subV.snp.makeConstraints {
-                        $0.height.equalTo(60)
-                    }
-                }
-            })
+            }
             .disposed(by: self.disposeBag)
+        
+        output
+            .addressStr
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(self.addrContentLB.rx.text)
+            .disposed(by: self.disposeBag)
+
     }
 }
 
-extension FeedWriteVC: UITextViewDelegate {
+extension FeedWriteVC: UITextViewDelegate, UITextFieldDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == textViewPlaceHolder {
             textView.text = nil
@@ -248,4 +252,43 @@ extension FeedWriteVC: UITextViewDelegate {
             textView.textColor = .lightGray
         }
     }
+}
+
+
+extension FeedWriteVC: UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        var resultValue = CGSize.zero
+        
+        let inset: CGFloat = 20
+        let space: CGFloat = 3
+        
+        let cellWidth = (SCREEN_WIDTH - (inset * 2) - (space * 3)) / 4
+        let cellHeight: CGFloat = self.imgColV.frame.height
+        
+        resultValue = .init(width: cellWidth, height: cellHeight)
+        
+        return resultValue
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        
+        return 0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        var resultValue = UIEdgeInsets.zero
+        
+        resultValue = .init(top: 0, left: 20, bottom: 0, right: 20)
+        
+        return resultValue
+        
+    }
+    
 }

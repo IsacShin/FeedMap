@@ -43,8 +43,8 @@ final class DIManager {
             return .init(vm: LoginVMImpl())
         }
         
-        self.container.register(FeedWriteVC.self) { _ in
-            return .init(vm: FeedWriteVMImpl())
+        self.container.register(FeedWriteVC.self) { (_, seed: FeedWriteSeedInfo) in
+            return .init(vm: FeedWriteVMImpl(seed: seed))
         }
     
     }

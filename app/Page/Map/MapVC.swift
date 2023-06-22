@@ -136,18 +136,10 @@ class MapVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
-                self.vm.output.getFeedList {
+                self.vm.output.getFeedList(loca: self.cLocation) {
                     let list = self.vm.output.feedListData.value
-                    let fList = list?.filter { list in
-                        guard let latitude = list.latitude,
-                              let longitude = list.longitude,
-                              let tlan = self.cLocation?.coordinate.latitude,
-                              let tlon = self.cLocation?.coordinate.longitude else { return false }
-
-                        return Double.equal(tlan, latitude) && Double.equal(tlon, longitude)
-                    }
-                    
-                    if fList?.count ?? 0 > 0 {
+                
+                    if list?.count ?? 0 > 0 {
                         CommonAlert.showAlertType(vc: self, message: "이 장소에 이미 등록한 피드가 있습니다.", nil)
                     } else {
                         self.vm.input.cLocation.accept(self.cLocation)
@@ -215,25 +207,19 @@ class MapVC: BaseVC {
                 guard let self = self else { return }
                 self.mapCameraMove(location: loca)
 
-                self.vm.output.getFeedList {
+                self.vm.output.getFeedList(loca: loca, completion: {
                     let list = self.vm.output.feedListData.value
-                    let fList = list?.filter { list in
-                        guard let latitude = list.latitude,
-                              let longitude = list.longitude,
-                              let tlan = self.cLocation?.coordinate.latitude,
-                              let tlon = self.cLocation?.coordinate.longitude else { return false }
-
-                        return Double.equal(tlan, latitude) && Double.equal(tlon, longitude)
-                    }
                     
-                    if fList?.count ?? 0 > 0 {
+                    if list?.count ?? 0 > 0 {
                         CommonAlert.showAlertType(vc: self, message: "이 장소에 이미 등록한 피드가 있습니다.", nil)
                     } else {
                         CommonAlert.showConfirmType(vc: self, message: "이 장소에 등록된 피드가 없습니다.\n피드를 등록해주세요" ,cancelTitle: "확인", completeTitle: "취소", {
-                            CommonNav.moveFeedWriteVC()
+                            var seed = FeedWriteSeedInfo()
+                            seed.address = output.centerAddr.value
+                            CommonNav.moveFeedWriteVC(seed: seed)
                         }, nil)
                     }
-                }
+                })
             })
             .disposed(by: self.disposeBag)
         

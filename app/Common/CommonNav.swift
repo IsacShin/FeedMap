@@ -38,8 +38,8 @@ final class CommonNav {
         UIApplication.topViewController()?.present(vc, animated: true)
     }
     
-    static func moveFeedWriteVC() {
-        guard let vc = DIM.container.resolve(FeedWriteVC.self) else { return }
+    static func moveFeedWriteVC(seed: FeedWriteSeedInfo) {
+        guard let vc = DIM.container.resolve(FeedWriteVC.self, argument: seed) else { return }
         UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 }

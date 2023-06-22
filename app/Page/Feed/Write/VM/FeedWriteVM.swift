@@ -16,20 +16,27 @@ protocol FeedWriteVM {
     var output: FeedWriteVMOutput { get }
 }
 
+struct FeedWriteSeedInfo {
+    var address: String?
+}
+
+
 protocol FeedWriteVMInput {
-    func addImg(imgList: [CommonPickerModel])
-    func deleteImg(idx: Int)
+    func addImage(imgList: [ImgSelectColVCellDPModel])
+    func deleteImage(idx: Int)
     
     func regist(info: [String: Any], completion: @escaping () -> Void)
 }
 
 protocol FeedWriteVMOutput {
     var error: BehaviorRelay<Error?> { get }
-    var imgList: BehaviorRelay<[CpWriteSubVDPModel]?> { get }
+    var imgDataList: BehaviorRelay<[ImgSelectColVCellDPModel]?> { get }
     var success: BehaviorRelay<Bool?> { get }
+    
+    var addressStr: BehaviorRelay<String?> { get }
 }
 
-final class FeedWriteVMImpl: NSObject, FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
+final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
     var input: FeedWriteVMInput {
         return self
     }
@@ -39,11 +46,24 @@ final class FeedWriteVMImpl: NSObject, FeedWriteVM, FeedWriteVMInput, FeedWriteV
     }
     
     private let disposeBag = DisposeBag()
-    
+    private let fWorker = FeedWriteVMApiWorker()
     // MARK: - output
     var error = BehaviorRelay<Error?>(value: nil)
-    var imgList = BehaviorRelay<[CpWriteSubVDPModel]?>.init(value: nil)
     var success = BehaviorRelay<Bool?>(value: nil)
+    var imgDataList = BehaviorRelay<[ImgSelectColVCellDPModel]?>(value: nil)
+    var addressStr = BehaviorRelay<String?>(value: nil)
+    
+    private var seed: FeedWriteSeedInfo!
+    init(seed: FeedWriteSeedInfo) {
+        self.seed = seed
+        self.makeImgList()
+        self.bindParsing()
+        
+    }
+    
+    func bindParsing() {
+        self.addressStr.accept(self.seed.address)
+    }
     
     // MARK: - input
     private func fileUploadWork() -> Observable<[String]>{
@@ -77,78 +97,95 @@ final class FeedWriteVMImpl: NSObject, FeedWriteVM, FeedWriteVMInput, FeedWriteV
         return resultOBS
     }
     
-    func regist(info: [String: Any], completion: @escaping () -> Void){
+    func addImage(imgList: [ImgSelectColVCellDPModel]){
+        
+        guard let prevList = self.imgDataList.value else {
+            return
+        }
+        
+        var resultList = prevList.filter {
+            $0.img != nil
+        }
+        resultList.append(contentsOf: imgList)
+        
+        let remainCount = 3 - resultList.count
+        
+        if remainCount > 0 {
+            
+            let emptyList = (0 ..< remainCount).map { _ -> ImgSelectColVCellDPModel in
+                return .init(img: nil, fileName: nil)
+            }
+            resultList.append(contentsOf: emptyList)
+        }
+        self.imgDataList.accept(resultList)
+    }
+    func deleteImage(idx: Int){
+        
+        guard var prevList = self.imgDataList.value else {
+            return
+        }
+        
+        guard idx < prevList.count else {
+            return
+        }
+        guard prevList[idx].img != nil else {
+            return
+        }
+        prevList.remove(at: idx)
+        
+        var resultList = prevList.filter {
+            $0.img != nil
+        }
+        let remainCount = 3 - resultList.count
+        
+        if remainCount > 0 {
+            
+            let emptyList = (0 ..< remainCount).map { _ -> ImgSelectColVCellDPModel in
+                return .init(img: nil, fileName: nil)
+            }
+            resultList.append(contentsOf: emptyList)
+        }
+        self.imgDataList.accept(resultList)
+    }
+    
+    private func preImgWork() -> Observable<[String]> {
+        
+        if let list = self.imgDataList.value,
+           list.count > 0{
+            
+            return self.fWorker.uploadFile(fileList: list)
+                .flatMap { rData -> Observable<[String]> in
+                    
+                    guard let fileUrls = rData.fileUrls else { return .just(.init()) }
+                    
+                    return .just(fileUrls)
+                    
+                }
+        } else {
+            
+            return .just(.init())
+            
+        }
         
     }
     
-    func addImg(imgList: [CommonPickerModel]) {
+    func regist(info: [String: Any], completion: @escaping () -> Void){
+        self.preImgWork()
+            .subscribe(onNext: {[weak self] rData in
+                print(rData)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    private func makeImgList(){
         
-        
-        let newList = imgList.compactMap { origin -> CpWriteSubVDPModel in
-            
-            var resultValue = CpWriteSubVDPModel()
-            resultValue.name = origin.fileName
-            resultValue.img = origin.img
-            
+        let list = (0 ..< 4).map { _ -> ImgSelectColVCellDPModel in
+            var resultValue = ImgSelectColVCellDPModel()
+            resultValue.img = nil
             return resultValue
         }
         
-        var resultList = [CpWriteSubVDPModel]()
-        if let uPrevList = self.imgList.value {
-            resultList = uPrevList
-        }
+        self.imgDataList.accept(list)
         
-        
-        let spareImgCnt = 3 - resultList.count
-        
-        if spareImgCnt > 0 {
-            if spareImgCnt < newList.count {
-                
-                var newCnt = 0
-                
-                let newListLimit = newList.filter { _ -> Bool in
-                    
-                    if spareImgCnt > 0 {
-                        return true
-                    }
-                    
-                    newCnt += 1
-                    return false
-                }
-                resultList.append(contentsOf: newListLimit)
-            } else {
-                resultList.append(contentsOf: newList)
-            }
-        }
-        
-        for ii in 0 ..< resultList.count {
-            
-            var temp = resultList[ii]
-            temp.index = ii
-            resultList[ii] = temp
-        }
-        
-        self.imgList.accept(resultList)
-    }
-    
-    func deleteImg(idx: Int) {
-        
-        guard var tempImgList = self.imgList.value else{
-            return
-        }
-        guard tempImgList.count > idx else{
-            return
-        }
-        tempImgList.remove(at: idx)
-        
-        // 순서 재정렬
-        let newModel = tempImgList.enumerated().map { (newIdx, model) -> CpWriteSubVDPModel in
-            
-            var tempModel = model
-            tempModel.index = newIdx
-            return tempModel
-        }
-        
-        self.imgList.accept(newModel)
     }
 }

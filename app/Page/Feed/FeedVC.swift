@@ -8,26 +8,51 @@
 import UIKit
 
 class FeedVC: BaseVC {
-
-    convenience init() {
+    
+    @IBOutlet weak var titleLB: UILabel!
+    @IBOutlet weak var morIMG: UIImageView!
+    @IBOutlet weak var moreBTN: UIButton!
+    
+    private var vm: FeedVM!
+    convenience init(vm: FeedVM?) {
         self.init(nibName: "Feed", bundle: nil)
+        guard let vm = vm else { return }
+        self.vm = vm
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.settingSubviews()
+        self.bindUI()
+        self.bindUserEvents()
+        self.bindOutputs()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func settingSubviews() {
+        self.view.backgroundColor = DARK_COLOR
+        
+        self.titleLB.do {
+            $0.font = .bold(size: 20)
+            $0.textColor = .white
+        }
+        
+        self.morIMG.do {
+            let img = UIImage(named: "more (1)")?.withRenderingMode(.alwaysTemplate)
+            $0.image = img
+            $0.tintColor = .white
+        }
     }
-    */
-
+    
+    private func bindUI() {
+        
+    }
+    
+    private func bindUserEvents() {
+        
+    }
+    
+    private func bindOutputs() {
+        
+    }
+    
 }

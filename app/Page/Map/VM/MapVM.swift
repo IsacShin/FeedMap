@@ -20,6 +20,8 @@ protocol MapVMInput {
     func initializeData(completion: @escaping () -> Void)
     func checkCurrentLocationAuth(_ completion: (() -> Void)?)
     var cLocation: BehaviorRelay<CLLocation?> { get }
+    var selectData: BehaviorRelay<FeedRawData?> { get }
+
 }
 
 protocol MapVMOutput {
@@ -28,10 +30,10 @@ protocol MapVMOutput {
     var isCheckCurrentLocationFail: BehaviorRelay<Bool?> { get }
     var gResultData: BehaviorRelay<AddrRawData?> { get }
     var feedListData: BehaviorRelay<[FeedRawData]?> { get }
+    var feedCheck: BehaviorRelay<Bool?> { get }
     var moveLocation: BehaviorRelay<CLLocation?> { get }
     var centerAddr: BehaviorRelay<String?> { get }
-    
-    func getFeedList(loca:CLLocation?, completion: (() -> Void)?)
+    func getFeedList(_ check:Bool?, loca:CLLocation?, completion: (() -> Void)?)
 }
 
 final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
@@ -52,11 +54,12 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
     var cAddress = BehaviorRelay<String?>(value: nil)
     var gResultData = BehaviorRelay<AddrRawData?>(value: nil)
     var feedListData = BehaviorRelay<[FeedRawData]?>(value: nil)
-    
+    var feedCheck = BehaviorRelay<Bool?>(value: nil)
     var gResultRawData = BehaviorRelay<GeocodeRawData?>(value: nil)
     var feedListRawData = BehaviorRelay<FeedListRawData?>(value: nil)
     var moveLocation = BehaviorRelay<CLLocation?>(value: nil)
     var centerAddr = BehaviorRelay<String?>(value: nil)
+    var selectData = BehaviorRelay<FeedRawData?>(value: nil)
     private var clManager: CLLocationManager?
     private var currentHandler: (() -> Void)?
     private let mapWorker = MapVMApiWorker()
@@ -108,15 +111,15 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
             .disposed(by: self.disposeBag)
     }
     
-    func getFeedList(loca:CLLocation?, completion: (() -> Void)?) {
+    func getFeedList(_ check:Bool? = false, loca:CLLocation?, completion: (() -> Void)?) {
         guard let memId = UDF.string(forKey: "memId") else { return }
         var param: [String:Any] = [
             "memid" : memId
         ]
         
         if let loca = loca {
-            let lat: Double = Double(loca.coordinate.latitude)
-            let lng: Double = Double(loca.coordinate.longitude)
+            let lat = String(format: "%.4f", Double(loca.coordinate.latitude))
+            let lng = String(format: "%.4f", Double(loca.coordinate.longitude))
             param.updateValue(lat, forKey: "latitude")
             param.updateValue(lng, forKey: "longitude")
         }
@@ -126,7 +129,15 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
                 guard let self = self else{
                     return
                 }
-                self.feedListRawData.accept(rData)
+                if check == true {
+                    if let cData = rData.list?.first {
+                        self.feedCheck.accept(false)
+                    } else {
+                        self.feedCheck.accept(true)
+                    }
+                } else {
+                    self.feedListRawData.accept(rData)
+                }
                 
                 }, onError: { [weak self] rError in
 

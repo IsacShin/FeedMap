@@ -30,12 +30,14 @@ target 'app' do
   pod 'Then'
 
   #AdMob관련
-  pod 'Google-Mobile-Ads-SDK'
+  pod 'Google-Mobile-Ads-SDK
   
   #Google Maps
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   
+  pod 'DropDown'
+
 end
 
 post_install do |installer|

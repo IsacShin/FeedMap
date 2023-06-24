@@ -32,7 +32,7 @@ final class DIManager {
         }
         
         self.container.register(FeedVC.self) { _ in
-            return .init()
+            return .init(vm: FeedVMImpl())
         }
         
         self.container.register(MyPageVC.self) { _ in

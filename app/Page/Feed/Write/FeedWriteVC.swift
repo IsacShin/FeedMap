@@ -9,6 +9,11 @@ import UIKit
 import RxSwift
 import RxRelay
 
+enum FeedPageType {
+    case insert
+    case update
+}
+
 class FeedWriteVC: BaseVC {
     
     @IBOutlet weak var scrV: UIScrollView!
@@ -30,6 +35,10 @@ class FeedWriteVC: BaseVC {
     @IBOutlet var imgColV: UICollectionView!
     @IBOutlet weak var imgSelectLB: UILabel!
     @IBOutlet weak var imgSelectSubLB: UILabel!
+    
+    @IBOutlet weak var deleteBTN: UIButton!
+    @IBOutlet weak var deleteLB: UILabel!
+    @IBOutlet weak var deleteV: UIView!
     
     let textViewPlaceHolder = "내용을 입력하세요"
     private var vm: FeedWriteVM!
@@ -79,7 +88,7 @@ class FeedWriteVC: BaseVC {
             $0.keyboardDismissMode = .onDrag
             $0.showsVerticalScrollIndicator = false
             $0.showsHorizontalScrollIndicator = false
-            $0.contentInset = .init(top: 0, left: 0, bottom: 100, right: 0)
+            $0.contentInset = .init(top: 0, left: 0, bottom: 130, right: 0)
         }
         
         self.contentV.do {
@@ -134,6 +143,11 @@ class FeedWriteVC: BaseVC {
             
             $0.register(.init(nibName: "ImgSelectColVCell", bundle: nil), forCellWithReuseIdentifier: ImgSelectColVCell.description())
         }
+        
+        self.deleteLB.do {
+            $0.font = .regular(size: 14)
+            $0.textColor = .red
+        }
     }
     
     private func bindUI() {
@@ -146,7 +160,8 @@ class FeedWriteVC: BaseVC {
         }
         
         self.setKeyboardNotiHandler(constraint: self.keyboardConstraint, constantValue: newHeight - 60, disposeBag: self.disposeBag, superView: self.view)
-        
+        self.settingScrVAutoScrollToTargetV(scrV: self.scrV, targetV: self.titleTF, dpBag: self.disposeBag, flexibleValue: -100)
+        self.settingScrVAutoScrollToTargetV(scrV: self.scrV, targetV: self.descTV, dpBag: self.disposeBag, flexibleValue: -100)
     }
     
     private func bindUserEvents() {
@@ -158,10 +173,7 @@ class FeedWriteVC: BaseVC {
                 guard let self = self else {
                     return
                 }
-//                self.tryRegist()
-                self.vm.input.regist(info: [String : Any]()) {
-                    print("업로드 완료")
-                }
+                self.tryRequest()
             })
             .disposed(by: self.disposeBag)
         
@@ -188,7 +200,7 @@ class FeedWriteVC: BaseVC {
                     }
                     let cnt = fList.count
                     
-                    CommonPickerManager.shared.showYpAlbum(maxCount: cnt) { [weak self] sModelList in
+                    CommonPickerManager.shared.showYpAlbum(maxCount: 3) { [weak self] sModelList in
                         guard let self = self else {
                             return
                         }
@@ -206,6 +218,23 @@ class FeedWriteVC: BaseVC {
                 } else {
                     self.vm.input.deleteImage(idx: idx.row)
                 }
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.deleteBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                
+                CommonAlert.showConfirmType(vc: self, message: "작성된 피드를 삭제하시겠습니까?" ,cancelTitle: "확인", completeTitle: "취소", {
+                    CommonLoading.shared.show()
+                    self.vm.input.delete {
+                        CommonLoading.shared.hide()
+                    }
+                }, nil)
             })
             .disposed(by: self.disposeBag)
     }
@@ -234,6 +263,146 @@ class FeedWriteVC: BaseVC {
             }
             .drive(self.addrContentLB.rx.text)
             .disposed(by: self.disposeBag)
+        
+        output
+            .success
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(onNext: {[weak self] result in
+                guard let self = self else { return }
+                if result == true {
+                    CommonAlert.showAlertType(vc: self, message: "등록되었습니다.") {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                } else {
+                    CommonAlert.showAlertType(vc: self, message: "문제가 발생하였습니다.\n다시 시도해주세요.", nil)
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        output
+            .deleteSuccess
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(onNext: {[weak self] result in
+                guard let self = self else { return }
+                if result == true {
+                    CommonAlert.showAlertType(vc: self, message: "삭제되었습니다.") {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                } else {
+                    CommonAlert.showAlertType(vc: self, message: "문제가 발생하였습니다.\n다시 시도해주세요.", nil)
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        output.feedListData
+            .asDriver()
+            .compactMap {
+                $0?.first
+            }
+            .drive(onNext: {[weak self] data in
+                guard let self = self else { return }
+                self.addrContentLB.text = data.addr
+                self.descTV.text = data.comment
+                self.titleTF.text = data.title
+                self.vm.output.feedIdx.accept(data.id)
+                
+            })
+            .disposed(by: self.disposeBag)
+        
+        output.pageType
+            .asDriver()
+            .compactMap {
+                $0
+            }
+            .drive(onNext: {[weak self] type in
+                if type == .insert {
+                    self?.deleteV.isHidden = true
+                } else {
+                    self?.deleteV.isHidden = false
+                }
+            })
+            .disposed(by: self.disposeBag)
+
+    }
+    
+    private func downloadImg(urlStr: String, completion: ((UIImage)->Void)?) {
+        guard let imageURL = URL(string: urlStr) else {
+            return
+        }
+
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: imageURL) { (data, response, error) in
+            if let error = error {
+                print("이미지 다운로드 오류: \(error.localizedDescription)")
+                return
+            }
+            
+            if let imageData = data, let image = UIImage(data: imageData) {
+                // 다운로드된 이미지를 UIImage로 변환 성공
+                // 변환된 UIImage를 사용하여 UI 업데이트 등을 수행할 수 있습니다.
+                completion?(image)
+            } else {
+                print("이미지 변환 오류")
+                return
+            }
+        }
+
+        dataTask.resume()
+    }
+    
+    private func tryRequest(){
+     
+        self.view.endEditing(true)
+        
+        guard var info = self.assembleData() else {
+            return
+        }
+        
+        CommonLoading.shared.show()
+        self.completeBTN.isUserInteractionEnabled = false
+        self.vm.input.regist(info: info) {
+            CommonLoading.shared.hide()
+            self.completeBTN.isUserInteractionEnabled = true
+        }
+        
+    }
+    
+    private func assembleData() -> [String: Any]? {
+        
+        var resultValue = [String: Any]()
+        
+        //title, addr, comment
+        guard let title = self.titleTF.text,
+              title != "" else {
+            CommonAlert.showAlertType(vc: self, message: "제목을 입력해주세요.", nil)
+            return nil
+        }
+        
+        guard let comment = self.descTV.text,
+              comment != "내용을 입력하세요",
+              comment != "" else {
+            CommonAlert.showAlertType(vc: self, message: "내용을 입력해주세요.", nil)
+            return nil
+        }
+        
+        guard let img = self.vm.output.imgDataList.value?.first?.img else {
+            CommonAlert.showAlertType(vc: self, message: "대표 이미지를 등록해주세요.", nil)
+            return nil
+        }
+
+        guard let addr  = self.addrContentLB.text else { return nil }
+        
+        resultValue.updateValue(title, forKey: "title")
+        resultValue.updateValue(addr, forKey: "addr")
+        resultValue.updateValue(comment, forKey: "comment")
+                
+        return resultValue
 
     }
 }

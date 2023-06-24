@@ -18,12 +18,13 @@ extension FeedListRawData {
 }
 
 struct FeedRawData: Codable {
+    var id : Int?
     var title: String?
     var addr: String?
-    var date: Date?
+    var date: String?
     var comment: String?
-    var latitude: Double?
-    var longitude: Double?
+    var latitude: String?
+    var longitude: String?
     var memid: String?
     var img1: String?
     var img2: String?

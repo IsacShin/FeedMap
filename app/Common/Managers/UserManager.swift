@@ -41,8 +41,10 @@ final class UserManager: NSObject, FeedAppLogin {
     
     public var id: String?
     
-    public var loginType: LoginType = .APPLE
+    public var profileIMGUrl: String?
     
+    public var loginType: LoginType = .APPLE
+
     func google() {
         guard let topVC = UIApplication.topViewController() else { return }
         GIDSignIn.sharedInstance.signIn(withPresenting: topVC) { result, error in
@@ -51,6 +53,10 @@ final class UserManager: NSObject, FeedAppLogin {
             
             let email = result.user.profile?.email
             let name = result.user.profile?.name
+            if let profileImageURL = result.user.profile?.imageURL(withDimension: 120) {
+                print("프로필 이미지 URL: \(profileImageURL.absoluteString)")
+                self.profileIMGUrl = profileImageURL.absoluteString
+            }
 
             let idToken       = result.user.idToken?.tokenString
             let accessToken   = result.user.accessToken
@@ -80,7 +86,7 @@ final class UserManager: NSObject, FeedAppLogin {
     func logout() {
         
         if self.loginType == .GOOGLE {
-        
+            GIDSignIn.sharedInstance.signOut()
         }
         
         self.token = nil
@@ -103,6 +109,10 @@ final class UserManager: NSObject, FeedAppLogin {
             UDF.setValue(self.token, forKey: "idToken")
             UDF.setValue(self.id, forKey: "memId")
             UDF.setValue(self.name, forKey: "userName")
+            
+            if let pImg = self.profileIMGUrl {
+                UDF.set(self.profileIMGUrl, forKey: "profileImg")
+            }
         }
     }
     

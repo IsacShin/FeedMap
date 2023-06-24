@@ -18,6 +18,8 @@ protocol FeedWriteVM {
 
 struct FeedWriteSeedInfo {
     var address: String?
+    var location: CLLocation?
+    var pageType: FeedPageType = .insert
 }
 
 
@@ -26,14 +28,20 @@ protocol FeedWriteVMInput {
     func deleteImage(idx: Int)
     
     func regist(info: [String: Any], completion: @escaping () -> Void)
+    func delete(completion: @escaping () -> Void)
 }
 
 protocol FeedWriteVMOutput {
     var error: BehaviorRelay<Error?> { get }
     var imgDataList: BehaviorRelay<[ImgSelectColVCellDPModel]?> { get }
     var success: BehaviorRelay<Bool?> { get }
-    
+    var deleteSuccess: BehaviorRelay<Bool?> { get }
+    var pageType: BehaviorRelay<FeedPageType> { get }
     var addressStr: BehaviorRelay<String?> { get }
+    var feedListData: BehaviorRelay<[FeedRawData]?> { get }
+    var feedIdx: BehaviorRelay<Int?> { get }
+    func getFeedList(loca:CLLocation?, completion: (() -> Void)?)
+
 }
 
 final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
@@ -52,51 +60,74 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
     var success = BehaviorRelay<Bool?>(value: nil)
     var imgDataList = BehaviorRelay<[ImgSelectColVCellDPModel]?>(value: nil)
     var addressStr = BehaviorRelay<String?>(value: nil)
-    
+    var pageType = BehaviorRelay<FeedPageType>(value: .insert)
+    var feedListData = BehaviorRelay<[FeedRawData]?>(value: nil)
+    var feedListRawData = BehaviorRelay<FeedListRawData?>(value: nil)
+    var feedIdx = BehaviorRelay<Int?>(value: nil)
+    var deleteSuccess = BehaviorRelay<Bool?>(value: nil)
+    private let mapWorker = MapVMApiWorker()
+
     private var seed: FeedWriteSeedInfo!
     init(seed: FeedWriteSeedInfo) {
         self.seed = seed
         self.makeImgList()
         self.bindParsing()
-        
+        if self.seed.pageType == .update {
+            CommonLoading.shared.show()
+            self.getFeedList(loca: seed.location) {
+                CommonLoading.shared.hide()
+            }
+        }
     }
     
     func bindParsing() {
         self.addressStr.accept(self.seed.address)
+        self.pageType.accept(self.seed.pageType)
+        
+        let feedList = self.feedListRawData
+            .compactMap{ $0 }
+        
+        feedList
+            .compactMap {
+                $0.list
+            }
+            .bind(to: self.feedListData)
+            .disposed(by: self.disposeBag)
+    }
+    
+    func getFeedList(loca:CLLocation?, completion: (() -> Void)?) {
+        guard let memId = UDF.string(forKey: "memId") else { return }
+        var param: [String:Any] = [
+            "memid" : memId
+        ]
+        
+        if let loca = loca {
+            let lat = String(format: "%.4f", Double(loca.coordinate.latitude))
+            let lng = String(format: "%.4f", Double(loca.coordinate.longitude))
+            param.updateValue(lat, forKey: "latitude")
+            param.updateValue(lng, forKey: "longitude")
+        }
+        self.mapWorker.getFeedList(info: param)
+            .subscribe(onNext: { [weak self] rData in
+
+                guard let self = self else{
+                    return
+                }
+                self.feedListRawData.accept(rData)
+
+                
+                }, onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                self.error.accept(rError)
+
+            }, onDisposed: completion)
+            .disposed(by: self.disposeBag)
     }
     
     // MARK: - input
-    private func fileUploadWork() -> Observable<[String]>{
-
-        var resultOBS = Observable.just([String]())
-
-//        if let imgList = self.imgList.value,
-//           imgList.count > 0 {
-//            // 이미지 파일 있을 때
-//            let dataList = imgList.compactMap { origin -> WDDUploadFile? in
-//
-//                guard let imgData = origin.img?.jpegData(compressionQuality: 0.8),
-//                      let name = origin.name else{
-//                    return nil
-//                }
-//                let resultValue = WDDUploadFile(data: imgData, fileName: name)
-//
-//                return resultValue
-//            }
-//
-//            resultOBS = GlobalFunctionManager.shared.uploadFile(type: .qna, dataList: dataList)
-//                .flatMap{ rList -> Observable<[String]> in
-//
-//                    let fileUrlList = rList.compactMap{ origin -> String? in
-//                        return origin.uploadedURL
-//                    }
-//                    return .just(fileUrlList)
-//                }
-//        }
-
-        return resultOBS
-    }
-    
     func addImage(imgList: [ImgSelectColVCellDPModel]){
         
         guard let prevList = self.imgDataList.value else {
@@ -169,17 +200,111 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
         
     }
     
-    func regist(info: [String: Any], completion: @escaping () -> Void){
+    func regist(info: [String: Any], completion: @escaping () -> Void) {
+        
+        var param = info
+        guard let loca = self.seed.location,
+              let memid = UDF.string(forKey: "memId") else { return }
+        let latitude = String(format: "%.4f", Double(loca.coordinate.latitude))
+        let longitude = String(format: "%.4f", Double(loca.coordinate.longitude))
+       
+        param.updateValue(latitude, forKey: "latitude")
+        param.updateValue(longitude, forKey: "longitude")
+        param.updateValue(memid, forKey: "memid")
+        
         self.preImgWork()
-            .subscribe(onNext: {[weak self] rData in
-                print(rData)
+            .subscribe(onNext: { rData in
+                for (i,item) in rData.enumerated() {
+                    param.updateValue(item, forKey: "img\(i+1)")
+                }
+                if self.pageType.value == .insert {
+                    self.fWorker.insertFeed(info: param)
+                        .subscribe(onNext: { [weak self] rData in
+
+                            guard let self = self else{
+                                return
+                            }
+                            if rData.resultCode == 200 {
+                                self.success.accept(true)
+                            } else {
+                                self.success.accept(false)
+                            }
+
+                            }, onError: { [weak self] rError in
+
+                            guard let self = self else{
+                                return
+                            }
+                            self.error.accept(rError)
+
+                        }, onDisposed: completion)
+                        .disposed(by: self.disposeBag)
+                } else {
+                    guard let id = self.feedIdx.value else { return }
+                    param.updateValue(id, forKey: "id")
+                    self.fWorker.updateFeed(info: param)
+                        .subscribe(onNext: { [weak self] rData in
+
+                            guard let self = self else{
+                                return
+                            }
+                            if rData.resultCode == 200 {
+                                self.success.accept(true)
+                            } else {
+                                self.success.accept(false)
+                            }
+
+                            }, onError: { [weak self] rError in
+
+                            guard let self = self else{
+                                return
+                            }
+                            self.error.accept(rError)
+
+                        }, onDisposed: completion)
+                        .disposed(by: self.disposeBag)
+                }
+                
+                
             })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func delete(completion: @escaping () -> Void) {
+        guard let id = self.feedIdx.value,
+              let memid = UDF.string(forKey: "memId") else { return }
+        
+        var param: [String:Any] = [
+            "memid" : memid,
+            "id" : id
+        ]
+        
+        self.fWorker.removeFeed(info: param)
+            .subscribe(onNext: { [weak self] rData in
+
+                guard let self = self else{
+                    return
+                }
+                if rData.resultCode == 200 {
+                    self.deleteSuccess.accept(true)
+                } else {
+                    self.deleteSuccess.accept(false)
+                }
+
+                }, onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                self.error.accept(rError)
+
+            }, onDisposed: completion)
             .disposed(by: self.disposeBag)
     }
     
     private func makeImgList(){
         
-        let list = (0 ..< 4).map { _ -> ImgSelectColVCellDPModel in
+        let list = (0 ..< 3).map { _ -> ImgSelectColVCellDPModel in
             var resultValue = ImgSelectColVCellDPModel()
             resultValue.img = nil
             return resultValue

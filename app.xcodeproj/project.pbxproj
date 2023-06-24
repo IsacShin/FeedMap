@@ -52,6 +52,9 @@
 		4B7276992A3AFB800092E649 /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = 4B7276982A3AFB800092E649 /* FirebasePerformance */; };
 		4B72769B2A3AFB800092E649 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 4B72769A2A3AFB800092E649 /* FirebaseRemoteConfig */; };
 		4B7276A02A4026120092E649 /* MapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B72769F2A4026120092E649 /* MapVM.swift */; };
+		4B74D4422A45AC0800CF3845 /* FeedUpdateRawData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4412A45AC0800CF3845 /* FeedUpdateRawData.swift */; };
+		4B74D4442A45F06A00CF3845 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4432A45F06A00CF3845 /* String+Ext.swift */; };
+		4B74D4472A46B6E200CF3845 /* FeedVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4462A46B6E200CF3845 /* FeedVM.swift */; };
 		4B783EFA2A3D60EE002468CF /* Splash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B783EF92A3D60EE002468CF /* Splash.storyboard */; };
 		4B783EFD2A3D610C002468CF /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFC2A3D610C002468CF /* SplashVC.swift */; };
 		4B783EFF2A3D6617002468CF /* SplashVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFE2A3D6617002468CF /* SplashVM.swift */; };
@@ -129,6 +132,9 @@
 		4B7276882A3AF9E00092E649 /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
 		4B7276892A3AF9E00092E649 /* ApiUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiUtils.swift; sourceTree = "<group>"; };
 		4B72769F2A4026120092E649 /* MapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVM.swift; sourceTree = "<group>"; };
+		4B74D4412A45AC0800CF3845 /* FeedUpdateRawData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateRawData.swift; sourceTree = "<group>"; };
+		4B74D4432A45F06A00CF3845 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		4B74D4462A46B6E200CF3845 /* FeedVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVM.swift; sourceTree = "<group>"; };
 		4B783EF92A3D60EE002468CF /* Splash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Splash.storyboard; sourceTree = "<group>"; };
 		4B783EFC2A3D610C002468CF /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		4B783EFE2A3D6617002468CF /* SplashVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVM.swift; sourceTree = "<group>"; };
@@ -305,6 +311,7 @@
 				4B72765B2A3AF81E0092E649 /* UIView+Ext.swift */,
 				4B7276592A3AF81E0092E649 /* UIViewController+Ext.swift */,
 				4B97363D2A42B91800158ABE /* Double+Ext.swift */,
+				4B74D4432A45F06A00CF3845 /* String+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -431,6 +438,7 @@
 		4B783F122A3D81E0002468CF /* VM */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D4462A46B6E200CF3845 /* FeedVM.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -513,6 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				4B9736562A442E2E00158ABE /* FileUploadRawData.swift */,
+				4B74D4412A45AC0800CF3845 /* FeedUpdateRawData.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -695,6 +704,7 @@
 				4B72768A2A3AF9E00092E649 /* CompletionHandlerWrapper.swift in Sources */,
 				4B7276702A3AF8310092E649 /* DIManager.swift in Sources */,
 				4B97363E2A42B91800158ABE /* Double+Ext.swift in Sources */,
+				4B74D4472A46B6E200CF3845 /* FeedVM.swift in Sources */,
 				4B783F222A3DB958002468CF /* LoginVC.swift in Sources */,
 				4B7276612A3AF81E0092E649 /* UIFont+Ext.swift in Sources */,
 				4B72766E2A3AF8310092E649 /* NaviManager.swift in Sources */,
@@ -714,7 +724,9 @@
 				4B7276472A3AF7990092E649 /* CommonNav.swift in Sources */,
 				4B97363C2A42893E00158ABE /* FeedListRawData.swift in Sources */,
 				4B7276A02A4026120092E649 /* MapVM.swift in Sources */,
+				4B74D4442A45F06A00CF3845 /* String+Ext.swift in Sources */,
 				4B9736462A42BF8300158ABE /* FeedWriteVM.swift in Sources */,
+				4B74D4422A45AC0800CF3845 /* FeedUpdateRawData.swift in Sources */,
 				4B72768B2A3AF9E00092E649 /* ImageUtils.swift in Sources */,
 				4B7276482A3AF7990092E649 /* Defines.swift in Sources */,
 				4B7276712A3AF8310092E649 /* CommonPickerManaer.swift in Sources */,

@@ -36,7 +36,7 @@ final class DIManager {
         }
         
         self.container.register(MyPageVC.self) { _ in
-            return .init()
+            return .init(vm: MyPageVMImpl())
         }
         
         self.container.register(LoginVC.self) { _ in
@@ -45,6 +45,10 @@ final class DIManager {
         
         self.container.register(FeedWriteVC.self) { (_, seed: FeedWriteSeedInfo) in
             return .init(vm: FeedWriteVMImpl(seed: seed))
+        }
+        
+        self.container.register(TermsVC.self) { _ in
+            return .init()
         }
     
     }

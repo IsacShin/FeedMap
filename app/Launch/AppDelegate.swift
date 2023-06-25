@@ -12,6 +12,7 @@ import FirebaseCore
 import GoogleMobileAds
 import GoogleMaps
 import GooglePlaces
+import GoogleMobileAds
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,16 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-//        FirebaseApp.configure()
+        FirebaseApp.configure()
 //        GADMobileAds.sharedInstance()
 //            .requestConfiguration
 //            .testDeviceIdentifiers = [
 //                "2077ef9a63d2b398840261c8221a0c9b"
 //            ]
-//        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         GMSServices.provideAPIKey(GMAP_KEY)
         GMSPlacesClient.provideAPIKey(GMAP_KEY)
-        
         return true
     }
     

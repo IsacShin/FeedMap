@@ -11,6 +11,7 @@ import RxCocoa
 import RxDataSources
 import RxAlamofire
 import GoogleMobileAds
+import RxRelay
 
 class BaseVC: UIViewController, UIGestureRecognizerDelegate {
 
@@ -30,7 +31,7 @@ class BaseVC: UIViewController, UIGestureRecognizerDelegate {
             return bottomLayoutGuide.length + FooterHeight
         }
     }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.settingEndKeyboard()

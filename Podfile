@@ -7,37 +7,38 @@ target 'app' do
 
   # Pods for app
   #Rx관련
-  pod 'RxSwift'
-  pod 'RxCocoa'
-  pod 'RxDataSources'
-  pod 'RxAlamofire'
-  
-  #UI관련
-  pod 'SnapKit'
-  pod 'Hex'
-  pod 'iProgressHUD'
-  pod 'Kingfisher'
-  pod 'Floaty'
-  pod 'ImageSlideshow'
-  pod 'Cosmos'
-  pod 'YPImagePicker'
-  pod 'FloatingPanel'
-  pod 'FSPagerView'
-  pod 'TextFieldEffects'
-  
-  #DI관련
-  pod 'Swinject'
-  pod 'Then'
+    pod 'RxSwift'
+    pod 'RxCocoa'
+    pod 'RxDataSources'
+    pod 'RxAlamofire'
+    
+    #UI관련
+    pod 'SnapKit'
+    pod 'Hex'
+    pod 'iProgressHUD'
+    pod 'Kingfisher'
+    pod 'Floaty'
+    pod 'ImageSlideshow'
+    pod 'Cosmos'
+    pod 'YPImagePicker'
+    pod 'FloatingPanel'
+    pod 'FSPagerView'
+    pod 'TextFieldEffects'
+    pod "ImageSlideshow/Kingfisher"
+    pod "ImageSlideshow/SDWebImage"
 
-  #AdMob관련
-  pod 'Google-Mobile-Ads-SDK
-  
-  #Google Maps
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
-  
-  pod 'DropDown'
+    #DI관련
+    pod 'Swinject'
+    pod 'Then'
 
+    #AdMob관련
+    pod 'Google-Mobile-Ads-SDK'
+    
+    #Google Maps
+    pod 'GoogleMaps'
+    pod 'GooglePlaces'
+    
+    pod 'DropDown'
 end
 
 post_install do |installer|

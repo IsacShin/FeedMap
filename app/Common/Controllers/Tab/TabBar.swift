@@ -27,7 +27,7 @@ class TabBar:UITabBar {
     }
     
     private func settingSubViews() {
-        self.barTintColor = .darkGray
+        self.barTintColor = DARK_COLOR
         self.backgroundImage = UIImage()
         
         self.setupStyle()

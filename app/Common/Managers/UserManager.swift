@@ -95,25 +95,31 @@ final class UserManager: NSObject, FeedAppLogin {
         UDF.removeObject(forKey: "idToken")
         UDF.removeObject(forKey: "userName")
         UDF.removeObject(forKey: "memId")
-        NaviManager.shared.resetNavi()
+        UDF.removeObject(forKey: "profileImg")
+        
+        DispatchQueue.main.async {
+            NaviManager.shared.resetNavi {
+                CommonNav.moveLoginVC()
+            }
+        }
+        
     }
     
     public func loginSuccess(token: String?, name: String?, id: String?) {
         guard let token = token,
               let name = name,
               let id = id else { return }
-        NaviManager.shared.resetNavi {
-            self.token = token
-            self.name = name
-            self.id = id
-            UDF.setValue(self.token, forKey: "idToken")
-            UDF.setValue(self.id, forKey: "memId")
-            UDF.setValue(self.name, forKey: "userName")
-            
-            if let pImg = self.profileIMGUrl {
-                UDF.set(self.profileIMGUrl, forKey: "profileImg")
-            }
+        self.token = token
+        self.name = name
+        self.id = id
+        UDF.setValue(self.token, forKey: "idToken")
+        UDF.setValue(self.id, forKey: "memId")
+        UDF.setValue(self.name, forKey: "userName")
+        
+        if let pImg = self.profileIMGUrl {
+            UDF.set(pImg, forKey: "profileImg")
         }
+        NaviManager.shared.resetNavi()
     }
     
 }
@@ -127,7 +133,7 @@ extension UserManager: ASAuthorizationControllerDelegate {
             return
         }
         
-        let snsId = uCredencial.user
+        let snsId = uCredencial.email ?? "애플계정"
         
         guard let identityToken = uCredencial.identityToken,
               let tokenStr = String(data: identityToken, encoding: .utf8) else{
@@ -141,12 +147,12 @@ extension UserManager: ASAuthorizationControllerDelegate {
         
         guard let name = uCredencial.fullName else { return }
         
-        let fName = "\(name.familyName)\(name.givenName)"
+        let userName = "\(String(describing: name.familyName ?? "사"))\(String(describing: name.givenName ?? "과"))"
         print("userId = \(snsId)\n")
         print("authCode = \(uAuthText)\n")
         print("idToken = \(tokenStr)\n")
         self.loginType = .APPLE
-        self.loginSuccess(token: tokenStr, name: fName, id: snsId)
+        self.loginSuccess(token: tokenStr, name: userName, id: snsId)
         
     }
     

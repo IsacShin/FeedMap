@@ -75,7 +75,17 @@ class SplashVC: BaseVC {
                     if state == .firstLaunch {
                         CommonNav.moveAccessGuideVC()
                     } else {
+                        guard let token = UDF.string(forKey: "idToken") else {
+                            DispatchQueue.main.async {
+                                NaviManager.shared.resetNavi {
+                                    CommonNav.moveLoginVC()
+                                }
+                            }
+                            return
+                        }
+                        
                         NaviManager.shared.resetNavi()
+                        
                     }
                 }
             }

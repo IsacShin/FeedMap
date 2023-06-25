@@ -19,18 +19,18 @@ class BaseNaviVC: UINavigationController {
         
         self.navigationBar.do{
         
-            let img = UIImage(named: "icoBack")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal).withAlignmentRectInsets(UIEdgeInsets.init(top: 0, left: -10, bottom: 0, right: 0))
+            let img = UIImage(named: "icoBack")?.withRenderingMode(.alwaysOriginal).withAlignmentRectInsets(UIEdgeInsets.init(top: 0, left: -10, bottom: 0, right: 0))
             
             $0.backIndicatorImage = img
             $0.backIndicatorTransitionMaskImage = img
             
             $0.setBackgroundImage(UIImage(), for: .default)
-            $0.barTintColor = nil
+            $0.barTintColor = DARK_COLOR
             $0.isTranslucent = false
             
             var textAttr = [NSAttributedString.Key: Any]()
             textAttr[.font] = UIFont.regular(size: 18)
-            textAttr[.foregroundColor] = UIColor.init(hex: "000000")
+            textAttr[.foregroundColor] = UIColor.init(hex: "ffffff")
             $0.titleTextAttributes = textAttr
         }
         
@@ -46,14 +46,14 @@ class BaseNaviVC: UINavigationController {
             
             appp.configureWithOpaqueBackground()
             
-            let img = UIImage(named: "icoBack")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal).withAlignmentRectInsets(UIEdgeInsets.init(top: 0, left: -10, bottom: 0, right: 0))
+            let img = UIImage(named: "icoBack")?.withRenderingMode(.alwaysOriginal).withAlignmentRectInsets(UIEdgeInsets.init(top: 0, left: -10, bottom: 0, right: 0))
             appp.setBackIndicatorImage(img, transitionMaskImage: img)
-            
+            appp.backgroundColor = DARK_COLOR
             
             
             var textAttr = [NSAttributedString.Key: Any]()
             textAttr[.font] = UIFont.regular(size: 20)
-            textAttr[.foregroundColor] = UIColor.init(hex: "222222")
+            textAttr[.foregroundColor] = UIColor.init(hex: "ffffff")
             appp.titleTextAttributes = textAttr
             
             UINavigationBar.appearance().standardAppearance = appp

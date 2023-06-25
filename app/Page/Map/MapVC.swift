@@ -80,15 +80,19 @@ class MapVC: BaseVC {
 //            return
 //        }
 //        self.isFirst = false
+        guard let token = UDF.string(forKey: "idToken") else {
+            return
+        }
+        
         self.selectTabV.isHidden = true
         self.gMap.clear()
+        
         CommonLoading.shared.show()
         self.vm.input.initializeData {
             self.vm.output.getFeedList(false, loca: nil) {
                 CommonLoading.shared.hide()
             }
         }
-        
     }
     
 //    private func setClusterManager() {
@@ -173,6 +177,8 @@ class MapVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
+                CommonAdManager.shared.loadFullAd(parentVC: self)
+                
                 let urlStr = "https://isacshin.github.io/daumSearch/"
                 CommonNav.moveBaseWebVC(requestUrl: urlStr)
             })
@@ -185,6 +191,7 @@ class MapVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
+                CommonAdManager.shared.loadFullAd(parentVC: self)
                 self.vm.output.getFeedList(true, loca: self.cLocation) {
                     let check = self.vm.output.feedCheck.value
 
@@ -255,6 +262,7 @@ class MapVC: BaseVC {
                             return
                         }
                         UIApplication.shared.open(uUrl)
+                        CommonLoading.shared.hide()
                     })
                 }
                 

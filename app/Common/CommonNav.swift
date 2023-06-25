@@ -42,4 +42,9 @@ final class CommonNav {
         guard let vc = DIM.container.resolve(FeedWriteVC.self, argument: seed) else { return }
         UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    static func moveTermsVC() {
+        guard let vc = DIM.container.resolve(TermsVC.self) else { return }
+        UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
 }

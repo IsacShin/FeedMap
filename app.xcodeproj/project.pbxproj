@@ -55,6 +55,12 @@
 		4B74D4422A45AC0800CF3845 /* FeedUpdateRawData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4412A45AC0800CF3845 /* FeedUpdateRawData.swift */; };
 		4B74D4442A45F06A00CF3845 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4432A45F06A00CF3845 /* String+Ext.swift */; };
 		4B74D4472A46B6E200CF3845 /* FeedVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4462A46B6E200CF3845 /* FeedVM.swift */; };
+		4B74D44A2A46C0AC00CF3845 /* FeedTableVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B74D4492A46C0AC00CF3845 /* FeedTableVCell.xib */; };
+		4B74D44C2A46C0BD00CF3845 /* FeedTableVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D44B2A46C0BD00CF3845 /* FeedTableVCell.swift */; };
+		4B74D44E2A46E15000CF3845 /* MyPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D44D2A46E15000CF3845 /* MyPageVM.swift */; };
+		4B74D4512A47D0FE00CF3845 /* Terms.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B74D4502A47D0FE00CF3845 /* Terms.xib */; };
+		4B74D4532A47D11400CF3845 /* TermsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B74D4522A47D11400CF3845 /* TermsVC.swift */; };
+		4B74D4552A4800DA00CF3845 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B74D4542A4800DA00CF3845 /* GoogleService-Info.plist */; };
 		4B783EFA2A3D60EE002468CF /* Splash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B783EF92A3D60EE002468CF /* Splash.storyboard */; };
 		4B783EFD2A3D610C002468CF /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFC2A3D610C002468CF /* SplashVC.swift */; };
 		4B783EFF2A3D6617002468CF /* SplashVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B783EFE2A3D6617002468CF /* SplashVM.swift */; };
@@ -135,6 +141,12 @@
 		4B74D4412A45AC0800CF3845 /* FeedUpdateRawData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUpdateRawData.swift; sourceTree = "<group>"; };
 		4B74D4432A45F06A00CF3845 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		4B74D4462A46B6E200CF3845 /* FeedVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedVM.swift; sourceTree = "<group>"; };
+		4B74D4492A46C0AC00CF3845 /* FeedTableVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedTableVCell.xib; sourceTree = "<group>"; };
+		4B74D44B2A46C0BD00CF3845 /* FeedTableVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableVCell.swift; sourceTree = "<group>"; };
+		4B74D44D2A46E15000CF3845 /* MyPageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVM.swift; sourceTree = "<group>"; };
+		4B74D4502A47D0FE00CF3845 /* Terms.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Terms.xib; sourceTree = "<group>"; };
+		4B74D4522A47D11400CF3845 /* TermsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsVC.swift; sourceTree = "<group>"; };
+		4B74D4542A4800DA00CF3845 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B783EF92A3D60EE002468CF /* Splash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Splash.storyboard; sourceTree = "<group>"; };
 		4B783EFC2A3D610C002468CF /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		4B783EFE2A3D6617002468CF /* SplashVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVM.swift; sourceTree = "<group>"; };
@@ -242,6 +254,7 @@
 		4B7276332A3AF6430092E649 /* Page */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D44F2A47D0EB00CF3845 /* Terms */,
 				4B783F1D2A3DB92E002468CF /* Login */,
 				4B783F152A3D820C002468CF /* MyPage */,
 				4B783F0F2A3D81C3002468CF /* Feed */,
@@ -272,6 +285,7 @@
 		4B7276362A3AF6B30092E649 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D4542A4800DA00CF3845 /* GoogleService-Info.plist */,
 				4B7276272A3AF2F20092E649 /* Assets.xcassets */,
 				4B72762C2A3AF2F20092E649 /* Info.plist */,
 			);
@@ -386,6 +400,24 @@
 			path = VM;
 			sourceTree = "<group>";
 		};
+		4B74D4482A46C08300CF3845 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				4B74D4492A46C0AC00CF3845 /* FeedTableVCell.xib */,
+				4B74D44B2A46C0BD00CF3845 /* FeedTableVCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		4B74D44F2A47D0EB00CF3845 /* Terms */ = {
+			isa = PBXGroup;
+			children = (
+				4B74D4502A47D0FE00CF3845 /* Terms.xib */,
+				4B74D4522A47D11400CF3845 /* TermsVC.swift */,
+			);
+			path = Terms;
+			sourceTree = "<group>";
+		};
 		4B783EF82A3D60A7002468CF /* Splash */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,6 +459,7 @@
 		4B783F0F2A3D81C3002468CF /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D4482A46C08300CF3845 /* Cell */,
 				4B97363F2A42BE8700158ABE /* Write */,
 				4B783F122A3D81E0002468CF /* VM */,
 				4B783F102A3D81D2002468CF /* Feed.xib */,
@@ -456,6 +489,7 @@
 		4B783F182A3D8225002468CF /* VM */ = {
 			isa = PBXGroup;
 			children = (
+				4B74D44D2A46E15000CF3845 /* MyPageVM.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -622,11 +656,14 @@
 				4B72762B2A3AF2F20092E649 /* LaunchScreen.storyboard in Resources */,
 				4B72767E2A3AF8FF0092E649 /* Base.xib in Resources */,
 				4B7276282A3AF2F20092E649 /* Assets.xcassets in Resources */,
+				4B74D44A2A46C0AC00CF3845 /* FeedTableVCell.xib in Resources */,
 				4B783F1F2A3DB943002468CF /* Login.xib in Resources */,
 				4B7276262A3AF2F10092E649 /* Main.storyboard in Resources */,
 				4B783F172A3D821D002468CF /* MyPage.xib in Resources */,
 				4B783F112A3D81D2002468CF /* Feed.xib in Resources */,
 				4B783F022A3D70A1002468CF /* AccessGuide.xib in Resources */,
+				4B74D4552A4800DA00CF3845 /* GoogleService-Info.plist in Resources */,
+				4B74D4512A47D0FE00CF3845 /* Terms.xib in Resources */,
 				4B7276392A3AF72E0092E649 /* Fonts in Resources */,
 				4B9736422A42BED100158ABE /* FeedWrite.xib in Resources */,
 				4B9736502A440E2900158ABE /* ImgSelectColVCell.xib in Resources */,
@@ -709,6 +746,7 @@
 				4B7276612A3AF81E0092E649 /* UIFont+Ext.swift in Sources */,
 				4B72766E2A3AF8310092E649 /* NaviManager.swift in Sources */,
 				4B7276622A3AF81E0092E649 /* UIViewController+Ext.swift in Sources */,
+				4B74D4532A47D11400CF3845 /* TermsVC.swift in Sources */,
 				4B783EFD2A3D610C002468CF /* SplashVC.swift in Sources */,
 				4B783F142A3D81ED002468CF /* FeedVC.swift in Sources */,
 				4B9736482A42C83C00158ABE /* GrayBoxV.swift in Sources */,
@@ -730,8 +768,10 @@
 				4B72768B2A3AF9E00092E649 /* ImageUtils.swift in Sources */,
 				4B7276482A3AF7990092E649 /* Defines.swift in Sources */,
 				4B7276712A3AF8310092E649 /* CommonPickerManaer.swift in Sources */,
+				4B74D44E2A46E15000CF3845 /* MyPageVM.swift in Sources */,
 				4B9736522A440E3A00158ABE /* ImgSelectColVCell.swift in Sources */,
 				4B7276492A3AF7990092E649 /* CommonAlert.swift in Sources */,
+				4B74D44C2A46C0BD00CF3845 /* FeedTableVCell.swift in Sources */,
 				4B7276862A3AF9AA0092E649 /* TabBar.swift in Sources */,
 				4B7276792A3AF8E20092E649 /* BaseWebVC.swift in Sources */,
 				4B783F082A3D771E002468CF /* UserManager.swift in Sources */,
@@ -909,6 +949,7 @@
 				DEVELOPMENT_TEAM = PQADV43RTW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = app/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FeedMAP;
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 업로드를 위해 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱 콘텐츠 이용을 위해 위치 정보 접근권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱 콘텐츠 이용을 위해 위치 정보 접근권한이 필요합니다.";
@@ -924,8 +965,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.isac.feedapp;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.isac.feedmap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -945,6 +986,7 @@
 				DEVELOPMENT_TEAM = PQADV43RTW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = app/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FeedMAP;
 				INFOPLIST_KEY_NSCameraUsageDescription = "사진 업로드를 위해 카메라 권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "앱 콘텐츠 이용을 위해 위치 정보 접근권한이 필요합니다.";
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "앱 콘텐츠 이용을 위해 위치 정보 접근권한이 필요합니다.";
@@ -960,8 +1002,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.isac.feedapp;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.isac.feedmap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

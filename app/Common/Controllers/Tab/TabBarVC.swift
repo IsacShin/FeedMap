@@ -44,7 +44,7 @@ final class TabBarVC: UITabBarController {
             let disImg = UIImage(systemName: "map")?.withTintColor(.white)
             $0.image = disImg
             $0.selectedImage = img
-            $0.title = nil
+            $0.title = "Map"
             $0.imageInsets = UIEdgeInsets(top: -3, left: 0, bottom: 0, right: 0)
 
             self.navi1.tabBarItem = $0
@@ -59,7 +59,7 @@ final class TabBarVC: UITabBarController {
             let disImg = UIImage(systemName: "list.bullet.below.rectangle")
             $0.image = disImg
             $0.selectedImage = img
-            $0.title = nil
+            $0.title = "Feed"
             $0.imageInsets = UIEdgeInsets(top: -3, left: 0, bottom: 0, right: 0)
 
             self.navi2.tabBarItem = $0
@@ -74,7 +74,7 @@ final class TabBarVC: UITabBarController {
             let disImg = UIImage(systemName: "person")
             $0.image = disImg
             $0.selectedImage = img
-            $0.title = nil
+            $0.title = "My"
             $0.imageInsets = UIEdgeInsets(top: -3, left: 0, bottom: 0, right: 0)
 
             self.navi3.tabBarItem = $0
@@ -84,7 +84,7 @@ final class TabBarVC: UITabBarController {
         self.children.compactMap {
             $0.tabBarItem
         }.forEach {
-            $0.title = nil
+//            $0.title = nil
             var offset:CGFloat = 5
             if traitCollection.horizontalSizeClass == .regular {
                 offset = 0

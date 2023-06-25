@@ -19,6 +19,8 @@
 	<string>ca-app-pub-6912457818283583~7959799078</string>
 	<key>GIDClientID</key>
 	<string>379666258386-26r3r9rkot6ud3sr1jatopja0g2d13pq.apps.googleusercontent.com</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

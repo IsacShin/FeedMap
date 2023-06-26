@@ -67,7 +67,7 @@ final class FeedVMImpl: FeedVM, FeedVMInput, FeedVMOutput {
     func getFeedList(memId:String?, completion: (() -> Void)?) {
         var param = [String:Any]()
         if let memId = memId {
-            param.updateValue("memid", forKey: memId)
+            param.updateValue(memId, forKey: "memid")
         }
         self.mapWorker.getFeedList(info: param)
             .subscribe(onNext: { [weak self] rData in

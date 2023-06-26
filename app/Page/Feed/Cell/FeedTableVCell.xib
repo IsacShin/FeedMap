@@ -2,7 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -212,6 +213,7 @@
                 <outlet property="addressLB" destination="2rb-Mf-3kT" id="hmQ-4j-82N"/>
                 <outlet property="commentLB" destination="xeO-um-BNv" id="qzZ-Ux-Ppj"/>
                 <outlet property="contentV" destination="CqW-i6-yCj" id="nEM-cy-c8d"/>
+                <outlet property="contentVHeightConst" destination="fYm-U1-rp2" id="Ler-VG-I85"/>
                 <outlet property="dateLB" destination="GYz-Ul-MTc" id="e2S-HZ-SYl"/>
                 <outlet property="idLB" destination="Oca-Kp-FnW" id="5IG-TI-8vC"/>
                 <outlet property="lineV" destination="Qtu-0Y-YU3" id="lCP-ak-UQW"/>

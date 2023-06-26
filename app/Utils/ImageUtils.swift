@@ -8,6 +8,7 @@
 import Foundation
 import PhotosUI
 import RxSwift
+import Kingfisher
 
 final class ImageUtils {
     @available(iOS 14, *)
@@ -63,5 +64,26 @@ final class ImageUtils {
             return dispos
         }
         
+    }
+    
+    public class func urlToImage(url: URL) -> Observable<UIImage?>{
+        
+        return .create { (emitter) -> Disposable in
+            
+            KingfisherManager.shared
+                .retrieveImage(with: url) { (r) in
+                    
+                    switch r{
+                    case .success(let rImg):
+                        emitter.onNext(rImg.image)
+                        emitter.onCompleted()
+                        
+                    case .failure(_):
+                        emitter.onNext(nil)
+                        emitter.onCompleted()
+                    }
+                }
+            return Disposables.create()
+        }
     }
 }

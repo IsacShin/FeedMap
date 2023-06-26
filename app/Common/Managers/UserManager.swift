@@ -92,6 +92,7 @@ final class UserManager: NSObject, FeedAppLogin {
         self.token = nil
         self.name = nil
         self.id = nil
+        self.profileIMGUrl = nil
         UDF.removeObject(forKey: "idToken")
         UDF.removeObject(forKey: "userName")
         UDF.removeObject(forKey: "memId")

@@ -215,6 +215,7 @@
                 <outlet property="contentV" destination="CqW-i6-yCj" id="nEM-cy-c8d"/>
                 <outlet property="contentVHeightConst" destination="fYm-U1-rp2" id="Ler-VG-I85"/>
                 <outlet property="dateLB" destination="GYz-Ul-MTc" id="e2S-HZ-SYl"/>
+                <outlet property="feedSTV" destination="2lc-Nr-oIo" id="oQ0-Y5-AmO"/>
                 <outlet property="idLB" destination="Oca-Kp-FnW" id="5IG-TI-8vC"/>
                 <outlet property="lineV" destination="Qtu-0Y-YU3" id="lCP-ak-UQW"/>
                 <outlet property="profileImgV" destination="obn-bi-l2c" id="Q94-OS-CjQ"/>

@@ -196,6 +196,7 @@ class FeedVC: BaseVC {
                
                 cell.selectionStyle = .none
                 cell.mapCellData(pCellData: cellData)
+                cell.tblV = self.tblV
                 
             }
             .disposed(by: self.disposeBag)

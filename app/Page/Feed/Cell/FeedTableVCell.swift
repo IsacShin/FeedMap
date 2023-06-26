@@ -30,14 +30,14 @@ final class FeedTableVCell: UITableViewCell {
     @IBOutlet weak var lineV: UIView!
     @IBOutlet weak var contentVHeightConst: NSLayoutConstraint!
     
-    private var img1 = BehaviorRelay<URL?>(value: nil)
-    private var img2 = BehaviorRelay<URL?>(value: nil)
-    private var img3 = BehaviorRelay<URL?>(value: nil)
+    @IBOutlet weak var feedSTV: UIStackView!
+    
+    private var imgUrl = BehaviorRelay<URL?>(value: nil)
+    
     private var imageInputs: [KingfisherSource] = []
     
     private var disposeBag = DisposeBag()
-    
-    
+    public var tblV: UITableView?
     override func awakeFromNib() {
         super.awakeFromNib()
         self.settingSubviews()
@@ -45,12 +45,12 @@ final class FeedTableVCell: UITableViewCell {
     }
     
     private func bindUI() {
-        let img1Url = self.img1
+        let imgUrl = self.imgUrl
             .compactMap {
                 $0
             }
             
-        let img1 = img1Url
+        let img = imgUrl
             .flatMap { url -> Observable<UIImage?> in
                 
                 return ImageUtils.urlToImage(url: url)
@@ -60,70 +60,26 @@ final class FeedTableVCell: UITableViewCell {
                 $0
             }
         
-        img1
-            .compactMap { rImg -> CGFloat? in
-
-                let imgVWidth: CGFloat = SCREEN_WIDTH * 0.75
-
-                var imgVHeight = imgVWidth / rImg.size.width * rImg.size.height
-                return imgVHeight
-            }
-            .asDriver(onErrorJustReturn: .zero)
-            .drive(self.contentVHeightConst.rx.constant)
-            .disposed(by: self.disposeBag)
-        
-        let img2Url = self.img2
-            .compactMap {
-                $0
-            }
-            
-        let img2 = img2Url
-            .flatMap { url -> Observable<UIImage?> in
-                
-                return ImageUtils.urlToImage(url: url)
-                
-            }
-            .compactMap {
-                $0
-            }
-        
-        img2
+        img
             .compactMap { rImg -> CGFloat? in
 
                 let imgVWidth: CGFloat = SCREEN_WIDTH * 0.8
 
                 var imgVHeight = imgVWidth / rImg.size.width * rImg.size.height
+                let maxSlideHeight: CGFloat = 550
+                if imgVHeight > maxSlideHeight {
+                    imgVHeight = maxSlideHeight
+                }
                 return imgVHeight
             }
             .asDriver(onErrorJustReturn: .zero)
-            .drive(self.contentVHeightConst.rx.constant)
-            .disposed(by: self.disposeBag)
-        
-        let img3Url = self.img3
-            .compactMap {
-                $0
-            }
-            
-        let img3 = img3Url
-            .flatMap { url -> Observable<UIImage?> in
-                
-                return ImageUtils.urlToImage(url: url)
-                
-            }
-            .compactMap {
-                $0
-            }
-        
-        img3
-            .compactMap { rImg -> CGFloat? in
-
-                let imgVWidth: CGFloat = SCREEN_WIDTH * 0.8
-
-                var imgVHeight = imgVWidth / rImg.size.width * rImg.size.height
-                return imgVHeight
-            }
-            .asDriver(onErrorJustReturn: .zero)
-            .drive(self.contentVHeightConst.rx.constant)
+            .drive(onNext: {[weak self] height in
+                guard let tbl = self?.tblV else { return }
+                tbl.beginUpdates()
+                self?.contentVHeightConst.constant = height
+                tbl.endUpdates()
+            })
+//            .drive(self.contentVHeightConst.rx.constant)
             .disposed(by: self.disposeBag)
         
     }
@@ -169,6 +125,7 @@ final class FeedTableVCell: UITableViewCell {
         self.slideV.do {
             $0.zoomEnabled = true
             $0.backgroundColor = .black
+            $0.delegate = self
         }
         
     }
@@ -210,28 +167,24 @@ final class FeedTableVCell: UITableViewCell {
         if let img1 = pCellData.img1,
            let kImg = KingfisherSource(urlString: img1) {
             guard let img1Url = URL(string: img1) else { return }
-            self.img1.accept(img1Url)
+            self.imgUrl.accept(img1Url)
             self.imageInputs.append(kImg)
         }
         
         if let img2 = pCellData.img2,
            let kImg = KingfisherSource(urlString: img2) {
-            guard let img2Url = URL(string: img2) else { return }
-            self.img2.accept(img2Url)
             self.imageInputs.append(kImg)
         }
         
         if let img3 = pCellData.img3,
            let kImg = KingfisherSource(urlString: img3) {
-            guard let img3Url = URL(string: img3) else { return }
-            self.img3.accept(img3Url)
             self.imageInputs.append(kImg)
         }
         
         if self.imageInputs.count > 0 {
             self.slideV.do {
                 $0.setImageInputs(self.imageInputs)
-                $0.contentScaleMode = .scaleAspectFit
+                $0.contentScaleMode = .scaleAspectFill
                 $0.pageIndicatorPosition = .init(horizontal: .center, vertical: .bottom)
             }
         }
@@ -252,6 +205,18 @@ final class FeedTableVCell: UITableViewCell {
             self.dateLB.text = date.wddSimpleDateForm()
         }
         
-                
     }
+}
+
+extension FeedTableVCell: ImageSlideshowDelegate {
+    
+    func imageSlideshow(_ imageSlideshow: ImageSlideshow, didChangeCurrentPageTo page: Int) {
+        guard let imgUrl = imageSlideshow.images[page] as? KingfisherSource else {
+            return
+        }
+        let url = imgUrl.url
+        self.imgUrl.accept(url)
+    }
+    
+   
 }

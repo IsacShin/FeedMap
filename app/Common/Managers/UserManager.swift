@@ -11,15 +11,18 @@ import RxCocoa
 import CoreLocation
 import AuthenticationServices
 import GoogleSignIn
+import FirebaseAuth
 
 enum LoginType {
     case GOOGLE
     case APPLE
+    case IDLOGIN
 }
 
 protocol FeedAppLogin {
     func google()
     func apple()
+    func idLogin(email:String?, password:String?)
     func logout()
 }
 
@@ -81,6 +84,54 @@ final class UserManager: NSObject, FeedAppLogin {
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.performRequests()
+    }
+    
+    func idLogin(email: String?, password: String?) {
+        guard let email = email, let password = password else { return }
+        guard let topVC = UIApplication.topViewController() else { return }
+        Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
+            if authResult != nil {
+                print("로그인 성공")
+                // 현재 사용자 가져오기
+                let currentUser = Auth.auth().currentUser
+                
+                // ID 토큰 가져오기
+                guard let idToken = currentUser?.refreshToken else {
+                    CommonAlert.showAlertType(vc: topVC, message: "다시 로그인 해주세요.") {
+                        UserDefaults.standard.removeObject(forKey: "idToken")
+                    }
+                    return
+                }
+                
+                currentUser?.getIDToken(completion: { idToken, err in
+                    if err != nil {
+                        CommonAlert.showAlertType(vc: topVC, message: err?.localizedDescription ?? "다시 로그인 해주세요.") {
+                            UserDefaults.standard.removeObject(forKey: "idToken")
+                        }
+                    } else {
+                        guard let idToken = idToken,
+                              let name = currentUser?.displayName,
+                              let pImgUrl = currentUser?.photoURL?.absoluteString else { return }
+                        self.profileIMGUrl = pImgUrl
+                        self.loginType = .IDLOGIN
+                        self.loginSuccess(token: idToken, name: name, id: email)
+                    }
+                })
+                
+                // ID 토큰 출력
+                print("ID 토큰: \(idToken)")
+                
+                UserDefaults.standard.set(idToken, forKey: "idToken")
+            } else {
+                print("로그인 실패")
+                print(error.debugDescription)
+                
+                if error != nil {
+                    CommonAlert.showAlertType(vc: topVC, message: error?.localizedDescription ?? "다시 로그인 해주세요.", nil)
+                }
+            }
+            
+        }
     }
     
     func logout() {

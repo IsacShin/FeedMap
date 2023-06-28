@@ -62,6 +62,7 @@ class SplashVC: BaseVC {
     
     private func settingsSubviews() {
         self.view.backgroundColor = .darkGray
+        self.splashLB.alpha = 0
     }
     
     private func startAnim(state: LaunchState) {

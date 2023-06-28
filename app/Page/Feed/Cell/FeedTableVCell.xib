@@ -3,7 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -49,11 +49,30 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="isac9305@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oca-Kp-FnW">
-                                                <rect key="frame" x="40" y="0.0" width="353" height="35"/>
+                                                <rect key="frame" x="40" y="0.0" width="164.66666666666666" height="35"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="Cth-PS-95d">
+                                                <rect key="frame" x="204.66666666666666" y="0.0" width="123.33333333333334" height="35"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ezb-Na-eNd">
+                                                <rect key="frame" x="328" y="0.0" width="45" height="35"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="신고하기">
+                                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BgX-sn-84O">
+                                                <rect key="frame" x="373" y="0.0" width="20" height="35"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="scR-tJ-wAx"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -215,6 +234,7 @@
                 <outlet property="contentV" destination="CqW-i6-yCj" id="nEM-cy-c8d"/>
                 <outlet property="contentVHeightConst" destination="fYm-U1-rp2" id="Ler-VG-I85"/>
                 <outlet property="dateLB" destination="GYz-Ul-MTc" id="e2S-HZ-SYl"/>
+                <outlet property="declareBTN" destination="ezb-Na-eNd" id="luY-99-mxC"/>
                 <outlet property="feedSTV" destination="2lc-Nr-oIo" id="oQ0-Y5-AmO"/>
                 <outlet property="idLB" destination="Oca-Kp-FnW" id="5IG-TI-8vC"/>
                 <outlet property="lineV" destination="Qtu-0Y-YU3" id="lCP-ak-UQW"/>

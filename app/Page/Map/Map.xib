@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -115,6 +116,14 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4RA-Ji-J5A">
                     <rect key="frame" x="0.0" y="307.5" width="375" height="359.5"/>
                     <subviews>
+                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vsz-Eb-jpP">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="359.5"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="WZO-NS-yMR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="359.5"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <blurEffect style="dark"/>
+                        </visualEffectView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="z5G-IN-8pD">
                             <rect key="frame" x="20" y="20" width="335" height="319.5"/>
                             <subviews>
@@ -208,10 +217,14 @@
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
+                        <constraint firstItem="Vsz-Eb-jpP" firstAttribute="leading" secondItem="4RA-Ji-J5A" secondAttribute="leading" id="19z-MW-15P"/>
+                        <constraint firstAttribute="bottom" secondItem="Vsz-Eb-jpP" secondAttribute="bottom" id="2Sq-Ph-zvD"/>
                         <constraint firstItem="z5G-IN-8pD" firstAttribute="leading" secondItem="4RA-Ji-J5A" secondAttribute="leading" constant="20" id="Gqu-wn-AnG"/>
                         <constraint firstItem="z5G-IN-8pD" firstAttribute="top" secondItem="4RA-Ji-J5A" secondAttribute="top" constant="20" id="MXU-JI-6lj"/>
                         <constraint firstAttribute="trailing" secondItem="z5G-IN-8pD" secondAttribute="trailing" constant="20" id="VeX-N2-Hzd"/>
                         <constraint firstAttribute="bottom" secondItem="z5G-IN-8pD" secondAttribute="bottom" constant="20" id="bX0-uN-b2w"/>
+                        <constraint firstAttribute="trailing" secondItem="Vsz-Eb-jpP" secondAttribute="trailing" id="fmf-tm-6pA"/>
+                        <constraint firstItem="Vsz-Eb-jpP" firstAttribute="top" secondItem="4RA-Ji-J5A" secondAttribute="top" id="laN-eM-IzY"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r7n-sb-xYF" userLabel="safeB">

@@ -30,6 +30,9 @@ final class FeedTableVCell: UITableViewCell {
     @IBOutlet weak var lineV: UIView!
     @IBOutlet weak var contentVHeightConst: NSLayoutConstraint!
     
+    @IBOutlet weak var declareBTN: UIButton!
+    
+    
     @IBOutlet weak var feedSTV: UIStackView!
     
     private var imgUrl = BehaviorRelay<URL?>(value: nil)
@@ -42,6 +45,29 @@ final class FeedTableVCell: UITableViewCell {
         super.awakeFromNib()
         self.settingSubviews()
         self.bindUI()
+        self.bindUserEvents()
+    }
+    
+    private func bindUserEvents() {
+        self.declareBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                let actionSheet = UIAlertController(title: "신고 사유를 선택해주세요.", message: "신고 사유에 맞지 않는 사유일 경우,\n해당 신고는 처리되지 않습니다.\n신고 누적 횟수가 3회 이상일 경우 유저는 피드작성을 하실 수 없습니다.", preferredStyle: .actionSheet)
+                self.declareBottomSheet(actionSheet: actionSheet) {
+                    guard let topVC = UIApplication.topViewController() else { return }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.") {
+                            actionSheet.dismiss(animated: true)
+                        }
+                    })
+                    
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindUI() {
@@ -138,6 +164,7 @@ final class FeedTableVCell: UITableViewCell {
         self.idLB.text = nil
         self.profileImgV.image = nil
         self.imageInputs.removeAll()
+        self.declareBTN.isHidden = false
     }
     
     public func mapCellData(pCellData: FeedRawData){
@@ -148,6 +175,7 @@ final class FeedTableVCell: UITableViewCell {
             self.idLB.text = id
             if let myId = UDF.string(forKey: "memId") {
                 if id == myId {
+                    self.declareBTN.isHidden = true
                     if let pUrl = UDF.string(forKey: "profileImg") {
                         guard let url = URL(string: pUrl) else { return }
                         self.profileImgV.kf.setImage(with: url)
@@ -157,6 +185,7 @@ final class FeedTableVCell: UITableViewCell {
                         self.profileImgV.tintColor = .black
                     }
                 } else {
+                    self.declareBTN.isHidden = false
                     let img = UIImage(systemName: "person.circle.fill")?.withRenderingMode(.alwaysTemplate)
                     self.profileImgV.image = img
                     self.profileImgV.tintColor = .black
@@ -205,6 +234,74 @@ final class FeedTableVCell: UITableViewCell {
             self.dateLB.text = date.wddSimpleDateForm()
         }
         
+    }
+    
+    private func declareBottomSheet(actionSheet: UIAlertController, handler: (()->Void)?) {
+        
+        
+        let option0 = UIAlertAction(title: "부적절한 콘텐츠", style: .default) { (_) in
+            handler?()
+        }
+        
+        let option1 = UIAlertAction(title: "상업적 광고", style: .default) { (_) in
+            handler?()
+        }
+        
+        let option2 = UIAlertAction(title: "음란물", style: .default) { (_) in
+            handler?()
+        }
+        
+        let option3 = UIAlertAction(title: "폭력성", style: .default) { (_) in
+            handler?()
+        }
+        
+        let option4 = UIAlertAction(title: "기타", style: .default) { (_) in
+            self.showAlertWithTextField {
+                guard let topVC = UIApplication.topViewController() else { return }
+                CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.") {
+                    actionSheet.dismiss(animated: true)
+
+                }
+            }
+            
+        }
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { (_) in
+            actionSheet.dismiss(animated: true)
+        }
+        
+        actionSheet.addAction(option0)
+        actionSheet.addAction(option1)
+        actionSheet.addAction(option2)
+        actionSheet.addAction(option3)
+        actionSheet.addAction(option4)
+        actionSheet.addAction(cancel)
+        
+        UIApplication.topViewController()?.present(actionSheet, animated: true)
+    }
+    
+    private func showAlertWithTextField(completion: (()->Void)?) {
+        let alertController = UIAlertController(title: "", message: nil, preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "신고 내용을 입력해주세요"
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let saveAction = UIAlertAction(title: "전송", style: .default) { (_) in
+            guard let textField = alertController.textFields?.first else { return }
+            if let enteredText = textField.text {
+                if enteredText != "" {
+                    completion?()
+                }
+            }
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        UIApplication.topViewController()?.present(alertController, animated: true)
     }
 }
 

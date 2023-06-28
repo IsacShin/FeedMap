@@ -55,4 +55,5 @@ let APP_ID                  = Bundle.main.bundleIdentifier ?? "com.isac.myreview
 let DEVICE_VERSION          = "\(DEVICE.systemVersion)"
 let APP_NAME                = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
 
-let GMAP_KEY                  = "AIzaSyAFYYYgXJeT6SCOji_uSpTSP2ckkxOLLns"
+let GMAP_KEY                = "AIzaSyAFYYYgXJeT6SCOji_uSpTSP2ckkxOLLns"
+let STORE_URL               = "itms-apps://itunes.apple.com/app/id6450642025"

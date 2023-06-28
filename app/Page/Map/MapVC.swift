@@ -144,7 +144,7 @@ class MapVC: BaseVC {
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 16
             $0.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-            $0.backgroundColor = DARK_COLOR
+            $0.backgroundColor = .clear
             $0.isHidden = true
         }
         

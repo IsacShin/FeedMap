@@ -31,6 +31,8 @@ class MyPageVC: BaseVC {
     @IBOutlet weak var setting1BTN: UIButton!
     @IBOutlet weak var setting2BTN: UIButton!
     
+    @IBOutlet weak var feedbackBTN: UIButton!
+    
     private var vm: MyPageVM!
     convenience init(vm: MyPageVM?) {
         self.init(nibName: "MyPage", bundle: nil)
@@ -168,7 +170,26 @@ class MyPageVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
-                CommonAlert.showAlertType(vc: self, message: "현재 버전은 \(APP_VER)버전 입니다." , nil)
+                self.fetchAppStoreVersion { (appStoreVersion) in
+                    if let version = appStoreVersion {
+                        switch APP_VER.compare(version) {
+                            case .orderedAscending:
+                            CommonAlert.showAlertType(vc: self, message: "새 버전이 업데이트 되었습니다.", {
+                                self.openUrl(STORE_URL)
+                            })
+                                return
+                            case .orderedSame:
+                            CommonAlert.showAlertType(vc: self, message: "현재 버전은 \(APP_VER) 입니다." , nil)
+                                break
+                            case .orderedDescending:
+                            CommonAlert.showAlertType(vc: self, message: "현재 버전은 \(APP_VER) 입니다." , nil)
+                                break
+                        }
+                        
+                    } else {
+                        CommonAlert.showAlertType(vc: self, message: "현재 버전은 \(APP_VER) 입니다." , nil)
+                    }
+                }
             })
             .disposed(by: self.disposeBag)
         
@@ -182,10 +203,48 @@ class MyPageVC: BaseVC {
                 CommonNav.moveTermsVC()
             })
             .disposed(by: self.disposeBag)
+        
+        self.feedbackBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                CommonAlert.showAlertType(vc: self, title: "아래 이메일로 문의해주세요.", message: "isac9305@gmail.com", nil)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindOutputs() {
         
     }
+    
+    private func fetchAppStoreVersion(completion: @escaping (String?) -> Void) {
+        guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
         
+        let url = URL(string: "http://itunes.apple.com/lookup?bundleId=\(bundleIdentifier)")!
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data,
+                  let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                  let results = json["results"] as? [[String: Any]],
+                  let appStoreVersion = results.first?["version"] as? String else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(appStoreVersion)
+            }
+        }
+        
+        task.resume()
+    }
 }

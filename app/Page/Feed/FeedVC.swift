@@ -196,6 +196,7 @@ class FeedVC: BaseVC {
                
                 cell.selectionStyle = .none
                 cell.mapCellData(pCellData: cellData)
+                cell.mapVM(vm: self.vm)
                 cell.tblV = self.tblV
                 
             }

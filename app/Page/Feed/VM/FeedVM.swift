@@ -10,6 +10,8 @@ import RxCocoa
 import RxSwift
 import RxRelay
 import CoreLocation
+import RxAlamofire
+import Alamofire
 
 protocol FeedVM {
     var input: FeedVMInput { get }
@@ -17,7 +19,7 @@ protocol FeedVM {
 }
 
 protocol FeedVMInput {
-    
+    func insertReport(info: [String: Any], completion: @escaping () -> Void)
 }
 
 protocol FeedVMOutput {
@@ -78,6 +80,36 @@ final class FeedVMImpl: FeedVM, FeedVMInput, FeedVMOutput {
                 self.feedListRawData.accept(rData)
 
                 
+                }, onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                self.error.accept(rError)
+
+            }, onDisposed: completion)
+            .disposed(by: self.disposeBag)
+    }
+    
+    func insertReport(info: [String: Any], completion: @escaping () -> Void) {
+        
+        self.mapWorker.insertReport(info: info)
+            .subscribe(onNext: { [weak self] rData in
+
+                guard let self = self else {
+                    return
+                }
+                
+                guard let topVC = UIApplication.topViewController() else { return }
+                if rData.resultCode == 200 {
+                    
+                    CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.", nil)
+                } else if rData.resultCode == 300 {
+                    CommonAlert.showAlertType(vc: topVC, message: "이미 신고한 피드 입니다.", nil)
+                } else {
+                    CommonAlert.showAlertType(vc: topVC, message: "오류가 발생했습니다.\n다시 시도해주세요.", nil)
+                }
+
                 }, onError: { [weak self] rError in
 
                 guard let self = self else{

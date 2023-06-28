@@ -41,6 +41,7 @@ final class FeedTableVCell: UITableViewCell {
     
     private var disposeBag = DisposeBag()
     public var tblV: UITableView?
+    private var vm: FeedVM!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.settingSubviews()
@@ -57,13 +58,17 @@ final class FeedTableVCell: UITableViewCell {
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
                 let actionSheet = UIAlertController(title: "신고 사유를 선택해주세요.", message: "신고 사유에 맞지 않는 사유일 경우,\n해당 신고는 처리되지 않습니다.\n신고 누적 횟수가 3회 이상일 경우 유저는 피드작성을 하실 수 없습니다.", preferredStyle: .actionSheet)
-                self.declareBottomSheet(actionSheet: actionSheet) {
-                    guard let topVC = UIApplication.topViewController() else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                        CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.") {
-                            actionSheet.dismiss(animated: true)
-                        }
-                    })
+                self.declareBottomSheet(actionSheet: actionSheet) { reason in
+                    guard let memid = UDF.string(forKey: "memId") else { return }
+                    var param = [String:Any]()
+                    param.updateValue(self.tag, forKey: "feedid")
+                    param.updateValue(memid, forKey: "reporter")
+                    param.updateValue(reason, forKey: "reason")
+                    CommonLoading.shared.show()
+                    self.vm.input.insertReport(info: param) {
+                        actionSheet.dismiss(animated: true)
+                        CommonLoading.shared.hide()
+                    }
                     
                 }
             })
@@ -236,32 +241,28 @@ final class FeedTableVCell: UITableViewCell {
         
     }
     
-    private func declareBottomSheet(actionSheet: UIAlertController, handler: (()->Void)?) {
+    private func declareBottomSheet(actionSheet: UIAlertController, handler: ((String)->Void)?) {
         
         
         let option0 = UIAlertAction(title: "부적절한 콘텐츠", style: .default) { (_) in
-            handler?()
+            handler?("부적절한 콘텐츠")
         }
         
         let option1 = UIAlertAction(title: "상업적 광고", style: .default) { (_) in
-            handler?()
+            handler?("상업적 광고")
         }
         
         let option2 = UIAlertAction(title: "음란물", style: .default) { (_) in
-            handler?()
+            handler?("음란물")
         }
         
         let option3 = UIAlertAction(title: "폭력성", style: .default) { (_) in
-            handler?()
+            handler?("폭력성")
         }
         
         let option4 = UIAlertAction(title: "기타", style: .default) { (_) in
-            self.showAlertWithTextField {
-                guard let topVC = UIApplication.topViewController() else { return }
-                CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.") {
-                    actionSheet.dismiss(animated: true)
-
-                }
+            self.showAlertWithTextField { reason in
+                handler?(reason)
             }
             
         }
@@ -280,7 +281,7 @@ final class FeedTableVCell: UITableViewCell {
         UIApplication.topViewController()?.present(actionSheet, animated: true)
     }
     
-    private func showAlertWithTextField(completion: (()->Void)?) {
+    private func showAlertWithTextField(completion: ((String)->Void)?) {
         let alertController = UIAlertController(title: "", message: nil, preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
@@ -293,7 +294,7 @@ final class FeedTableVCell: UITableViewCell {
             guard let textField = alertController.textFields?.first else { return }
             if let enteredText = textField.text {
                 if enteredText != "" {
-                    completion?()
+                    completion?(enteredText)
                 }
             }
         }
@@ -302,6 +303,10 @@ final class FeedTableVCell: UITableViewCell {
         alertController.addAction(saveAction)
         
         UIApplication.topViewController()?.present(alertController, animated: true)
+    }
+    
+    public func mapVM(vm: FeedVM) {
+        self.vm = vm
     }
 }
 

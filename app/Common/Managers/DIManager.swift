@@ -50,6 +50,10 @@ final class DIManager {
         self.container.register(TermsVC.self) { _ in
             return .init()
         }
+        
+        self.container.register(JoinVC.self) { _ in
+            return .init(vm: JoinVMImpl())
+        }
     
     }
 }

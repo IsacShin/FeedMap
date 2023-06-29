@@ -16,7 +16,16 @@ class LoginVC: BaseVC {
     
     @IBOutlet weak var gooleBTN: UIButton!
     @IBOutlet weak var appleBTN: UIButton!
-
+    
+    @IBOutlet weak var loginLB: UILabel!
+    @IBOutlet weak var loginBTN: UIButton!
+    
+    @IBOutlet weak var joinLB: UILabel!
+    @IBOutlet weak var joinBTN: UIButton!
+    
+    @IBOutlet weak var findLB: UILabel!
+    @IBOutlet weak var findBTN: UIButton!
+    
     private var vm: LoginVM!
     convenience init(vm: LoginVM?) {
         self.init(nibName: "Login", bundle: nil)
@@ -51,6 +60,19 @@ class LoginVC: BaseVC {
         }
         
         self.view.backgroundColor = DARK_COLOR
+        
+        [self.loginLB, self.joinLB]
+            .compactMap {
+                $0
+            }
+            .forEach {
+                $0.font = .regular(size: 17)
+            }
+        
+        self.findLB.do {
+            $0.font = .regular(size: 14)
+            $0.textColor = .white
+        }
     }
     
     private func bindUI() {
@@ -77,6 +99,39 @@ class LoginVC: BaseVC {
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
                 UserManager.shared.apple()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.loginBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.joinBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                CommonNav.moveJoinVC()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.findBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                
             })
             .disposed(by: self.disposeBag)
     }

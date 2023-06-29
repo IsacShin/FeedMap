@@ -34,8 +34,9 @@ final class CommonNav {
     
     static func moveLoginVC() {
         guard let vc = DIM.container.resolve(LoginVC.self) else { return }
-        vc.modalPresentationStyle = .overFullScreen
-        UIApplication.topViewController()?.present(vc, animated: true)
+        let naviVC = BaseNaviVC(rootViewController: vc)
+        naviVC.modalPresentationStyle = .overFullScreen
+        UIApplication.topViewController()?.present(naviVC, animated: true)
     }
     
     static func moveFeedWriteVC(seed: FeedWriteSeedInfo) {
@@ -45,6 +46,11 @@ final class CommonNav {
     
     static func moveTermsVC() {
         guard let vc = DIM.container.resolve(TermsVC.self) else { return }
+        UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    static func moveJoinVC() {
+        guard let vc = DIM.container.resolve(JoinVC.self) else { return }
         UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
     }
 }

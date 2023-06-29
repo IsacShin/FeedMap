@@ -24,6 +24,8 @@ class FeedVC: BaseVC {
     
     @IBOutlet weak var adsV: UIView!
     
+    let refresher = UIRefreshControl()
+    
     private var dropDown = DropDown()
     private var vm: FeedVM!
     convenience init(vm: FeedVM?) {
@@ -81,6 +83,7 @@ class FeedVC: BaseVC {
             $0.showsHorizontalScrollIndicator = false
             
             $0.separatorStyle = .none
+            $0.refreshControl = self.refresher
             
             $0.register(.init(nibName: "FeedTableVCell", bundle: nil),
                         forCellReuseIdentifier: FeedTableVCell.description())
@@ -93,10 +96,24 @@ class FeedVC: BaseVC {
         self.emptyV.do {
             $0.backgroundColor = DARK_COLOR
         }
+        
+        self.refresher.do {
+            $0.tintColor = .white
+        }
     }
     
     private func bindUI() {
-        
+        self.refresher
+            .rx
+            .controlEvent(.valueChanged)
+            .subscribe(onNext: {[weak self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    self?.vm.output.getFeedList(memId: nil) {
+                        self?.refresher.endRefreshing()
+                    }
+                })
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindUserEvents() {

@@ -39,6 +39,11 @@ final class CommonNav {
         UIApplication.topViewController()?.present(naviVC, animated: true)
     }
     
+    static func moveIdLoginVC() {
+        guard let vc = DIM.container.resolve(IdLoginVC.self) else { return }
+        UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     static func moveFeedWriteVC(seed: FeedWriteSeedInfo) {
         guard let vc = DIM.container.resolve(FeedWriteVC.self, argument: seed) else { return }
         UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)

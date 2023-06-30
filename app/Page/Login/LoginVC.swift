@@ -109,7 +109,7 @@ class LoginVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
-                
+                CommonNav.moveIdLoginVC()
             })
             .disposed(by: self.disposeBag)
         

@@ -22,8 +22,9 @@ enum LoginType {
 protocol FeedAppLogin {
     func google()
     func apple()
-    func idLogin(email:String?, password:String?)
+    func idLogin(id:String?, password:String?, completion: @escaping () -> Void)
     func logout()
+    func removeId(id:String?, completion: @escaping () -> Void)
 }
 
 final class UserManager: NSObject, FeedAppLogin {
@@ -47,6 +48,8 @@ final class UserManager: NSObject, FeedAppLogin {
     public var profileIMGUrl: String?
     
     public var loginType: LoginType = .APPLE
+    
+    private var uWorker = UserApiWorker()
 
     func google() {
         guard let topVC = UIApplication.topViewController() else { return }
@@ -86,52 +89,37 @@ final class UserManager: NSObject, FeedAppLogin {
         authorizationController.performRequests()
     }
     
-    func idLogin(email: String?, password: String?) {
-        guard let email = email, let password = password else { return }
+    func idLogin(id: String?, password: String?, completion: @escaping () -> Void) {
+        guard let id = id, let password = password else { return }
         guard let topVC = UIApplication.topViewController() else { return }
-        Auth.auth().signIn(withEmail: email, password: password) {authResult, error in
-            if authResult != nil {
-                print("로그인 성공")
-                // 현재 사용자 가져오기
-                let currentUser = Auth.auth().currentUser
-                
-                // ID 토큰 가져오기
-                guard let idToken = currentUser?.refreshToken else {
-                    CommonAlert.showAlertType(vc: topVC, message: "다시 로그인 해주세요.") {
-                        UserDefaults.standard.removeObject(forKey: "idToken")
-                    }
+        
+        var param = [String: Any]()
+        param.updateValue(id, forKey: "memid")
+        param.updateValue(password, forKey: "password")
+        
+        self.uWorker.getMemberId(info: param)
+            .subscribe(onNext: { [weak self] mData in
+                guard let self = self else{
                     return
                 }
                 
-                currentUser?.getIDToken(completion: { idToken, err in
-                    if err != nil {
-                        CommonAlert.showAlertType(vc: topVC, message: err?.localizedDescription ?? "다시 로그인 해주세요.") {
-                            UserDefaults.standard.removeObject(forKey: "idToken")
-                        }
-                    } else {
-                        guard let idToken = idToken,
-                              let name = currentUser?.displayName,
-                              let pImgUrl = currentUser?.photoURL?.absoluteString else { return }
-                        self.profileIMGUrl = pImgUrl
-                        self.loginType = .IDLOGIN
-                        self.loginSuccess(token: idToken, name: name, id: email)
-                    }
-                })
-                
-                // ID 토큰 출력
-                print("ID 토큰: \(idToken)")
-                
-                UserDefaults.standard.set(idToken, forKey: "idToken")
-            } else {
-                print("로그인 실패")
-                print(error.debugDescription)
-                
-                if error != nil {
-                    CommonAlert.showAlertType(vc: topVC, message: error?.localizedDescription ?? "다시 로그인 해주세요.", nil)
+                guard let member = mData.list?.first else {
+                    CommonAlert.showAlertType(vc: topVC, message: "아이디 또는 비밀번호를 확인해주세요.", nil)
+                    return
                 }
-            }
+                
+                guard let id = member.memid,
+                      let name = member.name else { return }
+                if let profileIMGUrl = member.profileUrl {
+                    self.profileIMGUrl = profileIMGUrl
+                }
+                                      
+                self.loginSuccess(token: "IdUserToken", name: name, id: id)
+                
+                
+            }, onDisposed: completion)
+            .disposed(by: self.disposeBag)
             
-        }
     }
     
     func logout() {
@@ -155,6 +143,36 @@ final class UserManager: NSObject, FeedAppLogin {
             }
         }
         
+    }
+    
+    public func removeId(id: String?, completion: @escaping () -> Void) {
+        guard let id = id else { return }
+        guard let topVC = UIApplication.topViewController() else { return }
+        var param = [String: Any]()
+        param.updateValue(id, forKey: "memid")
+        self.uWorker.removeMember(info: param)
+            .subscribe(onNext: { [weak self] rData in
+                guard let self = self else{
+                    return
+                }
+                if rData.resultCode == 200 {
+                    CommonAlert.showAlertType(vc: topVC, message: "탈퇴되었습니다.", {
+                        self.logout()
+                    })
+                } else {
+                    CommonAlert.showAlertType(vc: topVC, message: "다시 시도해주세요.", nil)
+                }
+
+                }, onError: { [weak self] rError in
+
+                guard let self = self else{
+                    return
+                }
+                
+                    CommonAlert.showAlertType(vc: topVC, message: rError.localizedDescription, nil)
+                
+            }, onDisposed: completion)
+            .disposed(by: self.disposeBag)
     }
     
     public func loginSuccess(token: String?, name: String?, id: String?) {

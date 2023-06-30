@@ -54,6 +54,10 @@ final class DIManager {
         self.container.register(JoinVC.self) { _ in
             return .init(vm: JoinVMImpl())
         }
+        
+        self.container.register(IdLoginVC.self) { _ in
+            return .init(vm: IdLoginVMImpl())
+        }
     
     }
 }

@@ -24,6 +24,9 @@ class MyPageVC: BaseVC {
     @IBOutlet var versionBTN: UIButton!
     @IBOutlet var logoutBTN: UIButton!
     
+    @IBOutlet weak var deleteBTN: UIButton!
+    
+    
     @IBOutlet weak var settingListV: UIView!
     @IBOutlet var settingLBList: [UILabel]!
     @IBOutlet var settingLBImg: [UIImageView]!
@@ -32,6 +35,8 @@ class MyPageVC: BaseVC {
     @IBOutlet weak var setting2BTN: UIButton!
     
     @IBOutlet weak var feedbackBTN: UIButton!
+    
+    
     
     private var vm: MyPageVM!
     convenience init(vm: MyPageVM?) {
@@ -80,6 +85,7 @@ class MyPageVC: BaseVC {
         }
         
         self.profileImgV.do {
+            $0.contentMode = .scaleAspectFill
             if let pUrl = UDF.string(forKey: "profileImg") {
                 guard let url = URL(string: pUrl) else { return }
                 $0.kf.setImage(with: url)
@@ -116,13 +122,17 @@ class MyPageVC: BaseVC {
             $0.setTitle("Ver.\(APP_VER)", for: .normal)
         }
         
-        [self.termBTN, self.versionBTN, self.logoutBTN]
+        [self.termBTN, self.versionBTN, self.deleteBTN]
             .compactMap {
                 $0
             }
             .forEach {
                 $0.titleLabel?.font = .regular(size: 14)
-                $0.setTitleColor(.init(hex: "dcdcdc"), for: .normal)
+                if $0 == self.deleteBTN {
+                    $0.setTitleColor(UIColor.red, for: .normal)
+                } else {
+                    $0.setTitleColor(.init(hex: "dcdcdc"), for: .normal)
+                }
             }
         
         self.settingListV.do {
@@ -212,6 +222,23 @@ class MyPageVC: BaseVC {
             .drive(onNext: {[weak self] in
                 guard let self = self else { return }
                 CommonAlert.showAlertType(vc: self, title: "아래 이메일로 문의해주세요.", message: "isac9305@gmail.com", nil)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.deleteBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                guard let id = UDF.string(forKey: "memId") else { return }
+                CommonAlert.showConfirmType(vc: self, message: "회원을 탈퇴하시겠습니까?\n탈퇴하실 경우 작성한 피드까지 전부 삭제됩니다." ,cancelTitle: "확인", completeTitle: "취소", {
+                    CommonLoading.shared.show()
+                    UserManager.shared.removeId(id: id) {
+                        CommonLoading.shared.hide()
+                    }
+                }, nil)
             })
             .disposed(by: self.disposeBag)
     }

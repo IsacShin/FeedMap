@@ -12,9 +12,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyPageVC" customModule="app" customModuleProvider="target">
             <connections>
                 <outlet property="contentV" destination="Pkf-Ss-C0i" id="PJx-lY-3Gl"/>
+                <outlet property="deleteBTN" destination="wkx-FM-iOG" id="Hw4-Yg-UuC"/>
                 <outlet property="feedbackBTN" destination="0Ub-nL-zNP" id="5bb-qb-Odo"/>
                 <outlet property="idLB" destination="U3h-wo-wZE" id="WY3-Ps-uHe"/>
-                <outlet property="logoutBTN" destination="wkx-FM-iOG" id="iQ8-Xc-Wnq"/>
+                <outlet property="logoutBTN" destination="7jD-qy-GLD" id="gmA-kg-YDF"/>
                 <outlet property="nameLB" destination="VYr-bI-RCQ" id="w5u-8N-l32"/>
                 <outlet property="profileImgV" destination="rW3-kH-1RC" id="wDK-dh-pVp"/>
                 <outlet property="profileImgWrapV" destination="1qd-J2-ve5" id="ZMg-aO-l3e"/>
@@ -30,6 +31,9 @@
                 <outletCollection property="settingLBImg" destination="Tnb-LO-ETW" collectionClass="NSMutableArray" id="kOV-OO-lPI"/>
                 <outletCollection property="settingLBImg" destination="rXp-nZ-zMS" collectionClass="NSMutableArray" id="KTA-Wh-t22"/>
                 <outletCollection property="settingLBList" destination="NYK-OG-P0T" collectionClass="NSMutableArray" id="Kdb-jK-jM1"/>
+                <outletCollection property="settingLBImg" destination="F8C-8h-UfA" collectionClass="NSMutableArray" id="xXJ-TN-5qA"/>
+                <outletCollection property="settingLBList" destination="KPF-G4-g7U" collectionClass="NSMutableArray" id="2VV-Vd-4xe"/>
+                <outletCollection property="settingLBImg" destination="Vjd-2A-ZRD" collectionClass="NSMutableArray" id="oDL-tQ-XBT"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -139,7 +143,7 @@
                                                 <constraint firstAttribute="height" constant="20" id="wGt-9r-2TH"/>
                                             </constraints>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" title="로그아웃">
+                                            <state key="normal" title="회원탈퇴">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </state>
                                         </button>
@@ -168,11 +172,11 @@
             <point key="canvasLocation" x="-28" y="-1"/>
         </view>
         <view contentMode="scaleToFill" id="Pkf-Ss-C0i">
-            <rect key="frame" x="0.0" y="0.0" width="390" height="581"/>
+            <rect key="frame" x="0.0" y="0.0" width="390" height="763"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rel-y7-kZs">
-                    <rect key="frame" x="20" y="0.0" width="350" height="581"/>
+                    <rect key="frame" x="20" y="0.0" width="350" height="763"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FIf-JN-ccF" userLabel="h20">
                             <rect key="frame" x="0.0" y="0.0" width="350" height="10"/>
@@ -245,10 +249,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="crN-ga-HWG">
-                            <rect key="frame" x="0.0" y="180.66666666666663" width="350" height="158"/>
+                            <rect key="frame" x="0.0" y="180.66666666666663" width="350" height="203"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mJb-GW-fI4">
-                                    <rect key="frame" x="20" y="0.0" width="310" height="158"/>
+                                    <rect key="frame" x="20" y="0.0" width="310" height="203"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yz-jI-9rd" userLabel="10">
                                             <rect key="frame" x="0.0" y="0.0" width="310" height="10"/>
@@ -373,8 +377,49 @@
                                                 <constraint firstItem="ppK-ij-yCo" firstAttribute="leading" secondItem="AF2-9v-AmB" secondAttribute="leading" id="sv1-cV-eWv"/>
                                             </constraints>
                                         </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xlD-Le-cks">
+                                            <rect key="frame" x="0.0" y="144.00000000000003" width="310" height="1"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="1" id="itP-TJ-rBY"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jxw-cV-D4K">
+                                            <rect key="frame" x="0.0" y="145.00000000000003" width="310" height="44"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="로그아웃" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KPF-G4-g7U">
+                                                    <rect key="frame" x="0.0" y="11.999999999999998" width="59" height="20.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnRightArrow01" translatesAutoresizingMaskIntoConstraints="NO" id="Vjd-2A-ZRD">
+                                                    <rect key="frame" x="303.66666666666669" y="16.333333333333314" width="6.3333333333333144" height="11.333333333333336"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="11.5" id="4Yh-oD-gdb"/>
+                                                        <constraint firstAttribute="width" constant="6.5" id="N7g-aF-2TO"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jD-qy-GLD">
+                                                    <rect key="frame" x="0.0" y="0.0" width="310" height="44"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="KPF-G4-g7U" firstAttribute="centerY" secondItem="Jxw-cV-D4K" secondAttribute="centerY" id="0dg-B5-c6o"/>
+                                                <constraint firstAttribute="height" constant="44" id="1ty-Ep-rMW"/>
+                                                <constraint firstItem="7jD-qy-GLD" firstAttribute="leading" secondItem="Jxw-cV-D4K" secondAttribute="leading" id="FL8-C5-W6J"/>
+                                                <constraint firstAttribute="trailing" secondItem="Vjd-2A-ZRD" secondAttribute="trailing" id="Hse-8Y-lQ7"/>
+                                                <constraint firstItem="KPF-G4-g7U" firstAttribute="leading" secondItem="Jxw-cV-D4K" secondAttribute="leading" id="QVF-ZO-FWT"/>
+                                                <constraint firstItem="Vjd-2A-ZRD" firstAttribute="centerY" secondItem="Jxw-cV-D4K" secondAttribute="centerY" id="REr-7Y-ksX"/>
+                                                <constraint firstAttribute="trailing" secondItem="7jD-qy-GLD" secondAttribute="trailing" id="XRj-y7-aGn"/>
+                                                <constraint firstAttribute="bottom" secondItem="7jD-qy-GLD" secondAttribute="bottom" id="ldo-cg-hon"/>
+                                                <constraint firstItem="7jD-qy-GLD" firstAttribute="top" secondItem="Jxw-cV-D4K" secondAttribute="top" id="tdN-y3-Pot"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="che-IY-cQU" userLabel="clear14">
-                                            <rect key="frame" x="0.0" y="144.00000000000003" width="310" height="14"/>
+                                            <rect key="frame" x="0.0" y="189.00000000000003" width="310" height="14"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="L0u-Lr-qTF"/>
@@ -392,7 +437,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8BU-6W-1Z2">
-                            <rect key="frame" x="0.0" y="338.66666666666669" width="350" height="242.33333333333331"/>
+                            <rect key="frame" x="0.0" y="383.66666666666674" width="350" height="379.33333333333326"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
@@ -407,7 +452,7 @@
                 <constraint firstAttribute="bottom" secondItem="rel-y7-kZs" secondAttribute="bottom" id="hG7-9v-zi9"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="851.90839694656484" y="-109.50704225352113"/>
+            <point key="canvasLocation" x="851.90839694656484" y="-45.422535211267608"/>
         </view>
     </objects>
     <resources>

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B17EF322A4E80FE00EC277F /* UserApiWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B17EF312A4E80FE00EC277F /* UserApiWorker.swift */; };
+		4B17EF342A4E826F00EC277F /* UserListRawData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B17EF332A4E826F00EC277F /* UserListRawData.swift */; };
+		4B17EF3A2A4E907700EC277F /* IdLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B17EF392A4E907700EC277F /* IdLogin.xib */; };
+		4B17EF3C2A4E908500EC277F /* IdLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B17EF3B2A4E908500EC277F /* IdLoginVC.swift */; };
+		4B17EF3E2A4E909000EC277F /* IdLoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B17EF3D2A4E909000EC277F /* IdLoginVM.swift */; };
 		4B7276262A3AF2F10092E649 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B7276242A3AF2F10092E649 /* Main.storyboard */; };
 		4B7276282A3AF2F20092E649 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B7276272A3AF2F20092E649 /* Assets.xcassets */; };
 		4B72762B2A3AF2F20092E649 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B7276292A3AF2F20092E649 /* LaunchScreen.storyboard */; };
@@ -101,6 +106,11 @@
 /* Begin PBXFileReference section */
 		020AFAC868AC0957E95B9FB7 /* Pods_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		32694F773F3BF70C64F8AA03 /* Pods-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app.release.xcconfig"; path = "Target Support Files/Pods-app/Pods-app.release.xcconfig"; sourceTree = "<group>"; };
+		4B17EF312A4E80FE00EC277F /* UserApiWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserApiWorker.swift; sourceTree = "<group>"; };
+		4B17EF332A4E826F00EC277F /* UserListRawData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRawData.swift; sourceTree = "<group>"; };
+		4B17EF392A4E907700EC277F /* IdLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IdLogin.xib; sourceTree = "<group>"; };
+		4B17EF3B2A4E908500EC277F /* IdLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdLoginVC.swift; sourceTree = "<group>"; };
+		4B17EF3D2A4E909000EC277F /* IdLoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdLoginVM.swift; sourceTree = "<group>"; };
 		4B72761B2A3AF2F10092E649 /* app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B7276252A3AF2F10092E649 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4B7276272A3AF2F20092E649 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -207,6 +217,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B17EF352A4E828800EC277F /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				4B17EF332A4E826F00EC277F /* UserListRawData.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		4B17EF362A4E829400EC277F /* User */ = {
+			isa = PBXGroup;
+			children = (
+				4B17EF312A4E80FE00EC277F /* UserApiWorker.swift */,
+				4B17EF352A4E828800EC277F /* DataModel */,
+				4B783F072A3D771E002468CF /* UserManager.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		4B17EF372A4E905800EC277F /* IdLogin */ = {
+			isa = PBXGroup;
+			children = (
+				4B17EF382A4E906800EC277F /* VM */,
+				4B17EF392A4E907700EC277F /* IdLogin.xib */,
+				4B17EF3B2A4E908500EC277F /* IdLoginVC.swift */,
+			);
+			path = IdLogin;
+			sourceTree = "<group>";
+		};
+		4B17EF382A4E906800EC277F /* VM */ = {
+			isa = PBXGroup;
+			children = (
+				4B17EF3D2A4E909000EC277F /* IdLoginVM.swift */,
+			);
+			path = VM;
+			sourceTree = "<group>";
+		};
 		4B7276122A3AF2F10092E649 = {
 			isa = PBXGroup;
 			children = (
@@ -340,12 +386,12 @@
 		4B7276692A3AF8250092E649 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				4B17EF362A4E829400EC277F /* User */,
 				4B72766B2A3AF8310092E649 /* CommonAdManager.swift */,
 				4B72766D2A3AF8310092E649 /* CommonPickerManaer.swift */,
 				4B72766C2A3AF8310092E649 /* DIManager.swift */,
 				4B72766A2A3AF8310092E649 /* NaviManager.swift */,
 				4B783F052A3D7611002468CF /* LibManager.swift */,
-				4B783F072A3D771E002468CF /* UserManager.swift */,
 				4B783F1B2A3DB78F002468CF /* LocationManager.swift */,
 			);
 			path = Managers;
@@ -504,6 +550,7 @@
 		4B783F1D2A3DB92E002468CF /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4B17EF372A4E905800EC277F /* IdLogin */,
 				4B783F202A3DB948002468CF /* VM */,
 				4B783F1E2A3DB943002468CF /* Login.xib */,
 				4B783F212A3DB958002468CF /* LoginVC.swift */,
@@ -688,6 +735,7 @@
 				4B783F112A3D81D2002468CF /* Feed.xib in Resources */,
 				4B783F022A3D70A1002468CF /* AccessGuide.xib in Resources */,
 				4B74D4552A4800DA00CF3845 /* GoogleService-Info.plist in Resources */,
+				4B17EF3A2A4E907700EC277F /* IdLogin.xib in Resources */,
 				4B74D4512A47D0FE00CF3845 /* Terms.xib in Resources */,
 				4B97365A2A4D0B1E00158ABE /* Join.xib in Resources */,
 				4B7276392A3AF72E0092E649 /* Fonts in Resources */,
@@ -796,9 +844,11 @@
 				4B7276482A3AF7990092E649 /* Defines.swift in Sources */,
 				4B7276712A3AF8310092E649 /* CommonPickerManaer.swift in Sources */,
 				4B74D44E2A46E15000CF3845 /* MyPageVM.swift in Sources */,
+				4B17EF322A4E80FE00EC277F /* UserApiWorker.swift in Sources */,
 				4B9736522A440E3A00158ABE /* ImgSelectColVCell.swift in Sources */,
 				4B7276492A3AF7990092E649 /* CommonAlert.swift in Sources */,
 				4B74D44C2A46C0BD00CF3845 /* FeedTableVCell.swift in Sources */,
+				4B17EF342A4E826F00EC277F /* UserListRawData.swift in Sources */,
 				4B7276862A3AF9AA0092E649 /* TabBar.swift in Sources */,
 				4B7276792A3AF8E20092E649 /* BaseWebVC.swift in Sources */,
 				4B783F082A3D771E002468CF /* UserManager.swift in Sources */,
@@ -819,7 +869,9 @@
 				4B7276802A3AF8FF0092E649 /* BaseVC.swift in Sources */,
 				4B7276552A3AF8070092E649 /* BlackBTN.swift in Sources */,
 				4B72766F2A3AF8310092E649 /* CommonAdManager.swift in Sources */,
+				4B17EF3E2A4E909000EC277F /* IdLoginVM.swift in Sources */,
 				4B72764F2A3AF7990092E649 /* CommonKeyboardHandler.swift in Sources */,
+				4B17EF3C2A4E908500EC277F /* IdLoginVC.swift in Sources */,
 				4B7276662A3AF81E0092E649 /* UITextField+Ext.swift in Sources */,
 				4B72764D2A3AF7990092E649 /* CommonLoading.swift in Sources */,
 				4B783EFF2A3D6617002468CF /* SplashVM.swift in Sources */,

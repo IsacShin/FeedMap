@@ -111,21 +111,21 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dAT-FG-16I" customClass="ImageSlideshow" customModule="ImageSlideshow">
-                                <rect key="frame" x="0.0" y="67" width="393" height="250"/>
+                                <rect key="frame" x="0.0" y="67" width="393" height="280"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="fYm-U1-rp2"/>
+                                    <constraint firstAttribute="height" constant="280" id="fYm-U1-rp2"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mEK-W9-guP" userLabel="h15">
-                                <rect key="frame" x="0.0" y="317" width="393" height="15"/>
+                                <rect key="frame" x="0.0" y="347" width="393" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="DpZ-lV-4jN"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pei-0T-1w1">
-                                <rect key="frame" x="0.0" y="332" width="393" height="65.333333333333314"/>
+                                <rect key="frame" x="0.0" y="362" width="393" height="65.333333333333314"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="aVT-f1-bej">
                                         <rect key="frame" x="20" y="0.0" width="353" height="65.333333333333329"/>
@@ -181,14 +181,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLf-Tm-Ya3" userLabel="h15">
-                                <rect key="frame" x="0.0" y="397.33333333333331" width="393" height="15"/>
+                                <rect key="frame" x="0.0" y="427.33333333333331" width="393" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="9zR-de-jCo"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qtu-0Y-YU3">
-                                <rect key="frame" x="0.0" y="412.33333333333331" width="393" height="1"/>
+                                <rect key="frame" x="0.0" y="442.33333333333331" width="393" height="1"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ql-HD-EFu">
                                         <rect key="frame" x="20" y="0.0" width="353" height="1"/>
@@ -205,14 +205,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eu5-3O-pKu" userLabel="h15">
-                                <rect key="frame" x="0.0" y="413.33333333333331" width="393" height="15"/>
+                                <rect key="frame" x="0.0" y="443.33333333333331" width="393" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="vbU-EV-qD6"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BbM-5l-P23">
-                                <rect key="frame" x="0.0" y="428.33333333333331" width="393" height="71.666666666666686"/>
+                                <rect key="frame" x="0.0" y="458.33333333333331" width="393" height="41.666666666666686"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>

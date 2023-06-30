@@ -161,6 +161,8 @@ class FeedVC: BaseVC {
 //        }
 //        self.isFirst = false
        
+        let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
+        self.tblV.setContentOffset(topOffset, animated: true)
         CommonLoading.shared.show()
         self.vm.output.getFeedList(memId: nil) {
             CommonLoading.shared.hide()
@@ -210,7 +212,6 @@ class FeedVC: BaseVC {
                 guard let self = self else {
                     return
                 }
-               
                 cell.selectionStyle = .none
                 cell.mapCellData(pCellData: cellData)
                 cell.mapVM(vm: self.vm)

@@ -38,7 +38,6 @@ final class FeedTableVCell: UITableViewCell {
     private var imgUrl = BehaviorRelay<URL?>(value: nil)
     
     private var imageInputs: [KingfisherSource] = []
-    
     private var disposeBag = DisposeBag()
     public var tblV: UITableView?
     private var vm: FeedVM!
@@ -106,6 +105,7 @@ final class FeedTableVCell: UITableViewCell {
             .asDriver(onErrorJustReturn: .zero)
             .drive(onNext: {[weak self] height in
                 guard let tbl = self?.tblV else { return }
+                
                 tbl.beginUpdates()
                 self?.contentVHeightConst.constant = height
                 tbl.endUpdates()

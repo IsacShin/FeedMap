@@ -12,6 +12,32 @@ import Alamofire
 
 final class UserApiWorker {
     
+    func getMember(info: [String: Any]) -> Observable<UserListRawData> {
+        guard let reqURL = ApiUtils.makeUrl("/getMember.do") else {
+            return .error(RxError.unknown)
+        }
+        
+        return RxAlamofire.requestData(.get, reqURL, parameters: info, encoding: URLEncoding.default, headers: ApiUtils.makeHeader())
+            .flatMapLatest { arg -> Observable<UserListRawData> in
+                print(reqURL)
+                if arg.0.statusCode != 200 {
+                    return .error(RxError.timeout)
+                }
+
+                var rawData: UserListRawData?
+                do{
+                    rawData = try .init(data: arg.1)
+                } catch let uError {
+                    return .error(uError)
+                }
+                guard let uData = rawData else{
+                    return .error(RxError.noElements)
+                }
+                return .just(uData)
+                
+            }
+    }
+    
     func getMemberId(info: [String: Any]) -> Observable<UserListRawData> {
         guard let reqURL = ApiUtils.makeUrl("/getMemberId.do") else {
             return .error(RxError.unknown)

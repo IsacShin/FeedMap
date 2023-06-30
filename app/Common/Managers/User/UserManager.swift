@@ -97,7 +97,7 @@ final class UserManager: NSObject, FeedAppLogin {
         param.updateValue(id, forKey: "memid")
         param.updateValue(password, forKey: "password")
         
-        self.uWorker.getMemberId(info: param)
+        self.uWorker.getMember(info: param)
             .subscribe(onNext: { [weak self] mData in
                 guard let self = self else{
                     return

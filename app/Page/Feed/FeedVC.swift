@@ -11,6 +11,7 @@ import RxCocoa
 import RxRelay
 import Kingfisher
 import DropDown
+import ImageSlideshow
 
 class FeedVC: BaseVC {
     
@@ -23,6 +24,8 @@ class FeedVC: BaseVC {
     @IBOutlet var emptyV: UIView!
     
     @IBOutlet weak var adsV: UIView!
+    @IBOutlet weak var topBTN: UIView!
+    @IBOutlet weak var topUBTN: UIButton!
     
     let refresher = UIRefreshControl()
     
@@ -82,6 +85,7 @@ class FeedVC: BaseVC {
             $0.showsVerticalScrollIndicator = false
             $0.showsHorizontalScrollIndicator = false
             
+            $0.scrollsToTop = false
             $0.separatorStyle = .none
             $0.refreshControl = self.refresher
             
@@ -99,6 +103,13 @@ class FeedVC: BaseVC {
         
         self.refresher.do {
             $0.tintColor = .white
+        }
+        
+        self.topBTN.do {
+            $0.layer.cornerRadius = $0.frame.width / 2
+            $0.clipsToBounds = true
+            $0.alpha = 0.8
+            $0.isHidden = true
         }
     }
     
@@ -146,6 +157,19 @@ class FeedVC: BaseVC {
                 }
             }
         }
+        
+        self.topUBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
+                self.tblV.setContentOffset(topOffset, animated: false)
+                self.tblV.reloadData()
+            })
+            .disposed(by: self.disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,7 +186,8 @@ class FeedVC: BaseVC {
 //        self.isFirst = false
        
         let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
-        self.tblV.setContentOffset(topOffset, animated: true)
+        self.tblV.setContentOffset(topOffset, animated: false)
+        self.tblV.reloadData()
         CommonLoading.shared.show()
         self.vm.output.getFeedList(memId: nil) {
             CommonLoading.shared.hide()
@@ -212,6 +237,7 @@ class FeedVC: BaseVC {
                 guard let self = self else {
                     return
                 }
+                cell.tag = index
                 cell.selectionStyle = .none
                 cell.mapCellData(pCellData: cellData)
                 cell.mapVM(vm: self.vm)
@@ -226,10 +252,23 @@ class FeedVC: BaseVC {
 extension FeedVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? FeedTableVCell else { return }
+        guard let imgUrl = cell.slideV.images[0] as? KingfisherSource else {
+            return
+        }
+        let url = imgUrl.url
+        cell.imgUrl.accept(url)
         if indexPath.row == (self.vm.output.feedListData.value?.count ?? 0) - 1 {
             cell.lineV.isHidden = true
         } else {
             cell.lineV.isHidden = false
+        }
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if(velocity.y > 0) {
+            self.topBTN.isHidden = true
+        }else{
+            self.topBTN.isHidden = false
         }
     }
 }

@@ -104,7 +104,7 @@ class MyPageVC: BaseVC {
                 return
             }
             
-            $0.text = id
+            $0.text = "[ \(id) ]"
         }
         
         self.nameLB.do {

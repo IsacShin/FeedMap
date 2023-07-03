@@ -2,7 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,6 +17,8 @@
                 <outlet property="moreBTN" destination="Uwi-Z3-cBf" id="Z2L-yk-Hh0"/>
                 <outlet property="tblV" destination="SzG-3x-AUS" id="XtA-KJ-tGq"/>
                 <outlet property="titleLB" destination="8q2-9z-qRt" id="73j-sF-oV7"/>
+                <outlet property="topBTN" destination="SM9-Qt-7y4" id="vJg-1R-Fg2"/>
+                <outlet property="topUBTN" destination="gkc-FB-6FG" id="Iv7-qB-Qw8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="lBr-V3-rYI"/>
             </connections>
         </placeholder>
@@ -74,6 +77,31 @@
                     <rect key="frame" x="0.0" y="113" width="393" height="653"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SM9-Qt-7y4">
+                    <rect key="frame" x="338" y="711" width="35" height="35"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnArrowSt1" translatesAutoresizingMaskIntoConstraints="NO" id="xN4-Ko-Qyv">
+                            <rect key="frame" x="10" y="10" width="15" height="15"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkc-FB-6FG">
+                            <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="gkc-FB-6FG" secondAttribute="bottom" id="3eJ-tG-xIq"/>
+                        <constraint firstItem="gkc-FB-6FG" firstAttribute="top" secondItem="SM9-Qt-7y4" secondAttribute="top" id="4ne-Uy-LYV"/>
+                        <constraint firstAttribute="trailing" secondItem="xN4-Ko-Qyv" secondAttribute="trailing" constant="10" id="7wS-CN-7Qi"/>
+                        <constraint firstItem="xN4-Ko-Qyv" firstAttribute="top" secondItem="SM9-Qt-7y4" secondAttribute="top" constant="10" id="8ji-Z6-uII"/>
+                        <constraint firstAttribute="bottom" secondItem="xN4-Ko-Qyv" secondAttribute="bottom" constant="10" id="GuD-a9-O13"/>
+                        <constraint firstAttribute="trailing" secondItem="gkc-FB-6FG" secondAttribute="trailing" id="Ycl-1g-AJW"/>
+                        <constraint firstItem="gkc-FB-6FG" firstAttribute="leading" secondItem="SM9-Qt-7y4" secondAttribute="leading" id="bjn-jX-swv"/>
+                        <constraint firstAttribute="height" constant="35" id="fA8-pq-MpO"/>
+                        <constraint firstItem="xN4-Ko-Qyv" firstAttribute="leading" secondItem="SM9-Qt-7y4" secondAttribute="leading" constant="10" id="kfz-51-MuP"/>
+                        <constraint firstAttribute="width" constant="35" id="nQF-ko-RYS"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kWU-t3-eVF">
                     <rect key="frame" x="0.0" y="766" width="393" height="52"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -88,6 +116,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="SzG-3x-AUS" secondAttribute="trailing" id="0iu-TM-zjh"/>
                 <constraint firstItem="kWU-t3-eVF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="157-7C-MPN"/>
                 <constraint firstItem="SzG-3x-AUS" firstAttribute="top" secondItem="Xel-aI-O1g" secondAttribute="bottom" id="ICf-Lh-aT1"/>
+                <constraint firstItem="kWU-t3-eVF" firstAttribute="top" secondItem="SM9-Qt-7y4" secondAttribute="bottom" constant="20" id="JK5-vE-JSb"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kWU-t3-eVF" secondAttribute="trailing" id="LHq-6O-VSG"/>
                 <constraint firstItem="Xel-aI-O1g" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="OEW-VN-yGi"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Xel-aI-O1g" secondAttribute="trailing" id="WbU-Ko-Ljv"/>
@@ -95,6 +124,7 @@
                 <constraint firstItem="kWU-t3-eVF" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="Xrp-cg-hW6"/>
                 <constraint firstItem="SzG-3x-AUS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ZlZ-oc-kTz"/>
                 <constraint firstItem="Xel-aI-O1g" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="qhk-Dm-41o"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="SM9-Qt-7y4" secondAttribute="trailing" constant="20" id="wEs-Fh-DUd"/>
             </constraints>
             <point key="canvasLocation" x="32.824427480916029" y="19.718309859154932"/>
         </view>
@@ -120,6 +150,7 @@
         </view>
     </objects>
     <resources>
+        <image name="btnArrowSt1" width="11.666666984558105" height="6.6666665077209473"/>
         <image name="more (1)" width="256" height="256"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

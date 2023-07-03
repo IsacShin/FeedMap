@@ -32,10 +32,9 @@ final class FeedTableVCell: UITableViewCell {
     
     @IBOutlet weak var declareBTN: UIButton!
     
-    
     @IBOutlet weak var feedSTV: UIStackView!
     
-    private var imgUrl = BehaviorRelay<URL?>(value: nil)
+    var imgUrl = BehaviorRelay<URL?>(value: nil)
     
     private var imageInputs: [KingfisherSource] = []
     private var disposeBag = DisposeBag()
@@ -105,12 +104,13 @@ final class FeedTableVCell: UITableViewCell {
             .asDriver(onErrorJustReturn: .zero)
             .drive(onNext: {[weak self] height in
                 guard let tbl = self?.tblV else { return }
+                DispatchQueue.main.async {
+                    self?.contentVHeightConst.constant = height
+                    tbl.beginUpdates()
+                    tbl.endUpdates()
+                }
                 
-                tbl.beginUpdates()
-                self?.contentVHeightConst.constant = height
-                tbl.endUpdates()
             })
-//            .drive(self.contentVHeightConst.rx.constant)
             .disposed(by: self.disposeBag)
         
     }
@@ -282,7 +282,7 @@ final class FeedTableVCell: UITableViewCell {
     }
     
     private func showAlertWithTextField(completion: ((String)->Void)?) {
-        let alertController = UIAlertController(title: "", message: nil, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "신고 접수", message: nil, preferredStyle: .alert)
         
         alertController.addTextField { (textField) in
             textField.placeholder = "신고 내용을 입력해주세요"
@@ -311,7 +311,6 @@ final class FeedTableVCell: UITableViewCell {
 }
 
 extension FeedTableVCell: ImageSlideshowDelegate {
-    
     func imageSlideshow(_ imageSlideshow: ImageSlideshow, didChangeCurrentPageTo page: Int) {
         guard let imgUrl = imageSlideshow.images[page] as? KingfisherSource else {
             return

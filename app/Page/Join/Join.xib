@@ -3,7 +3,7 @@
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -81,7 +81,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8Vh-k1-bHX">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="585.33333333333337"/>
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="623.66666666666663"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x17-P8-12s" userLabel="h30">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="40"/>
@@ -140,15 +140,35 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18M-1w-Qys" userLabel="h12">
+                            <rect key="frame" x="0.0" y="199.33333333333334" width="393" height="12"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="12" id="bT0-Gy-KPW"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="※ 부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fY0-pP-y06">
+                            <rect key="frame" x="0.0" y="211.33333333333334" width="393" height="14.333333333333343"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rIq-PY-Hzh" userLabel="h12">
+                            <rect key="frame" x="0.0" y="225.66666666666666" width="393" height="12"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="12" id="izO-sJ-YB7"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DuC-XU-ywQ" userLabel="h250">
-                            <rect key="frame" x="0.0" y="199.33333333333334" width="393" height="80.000000000000028"/>
+                            <rect key="frame" x="0.0" y="237.66666666666663" width="393" height="80"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="80" id="Ynq-iq-T8U"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fWR-RH-4JD">
-                            <rect key="frame" x="0.0" y="279.33333333333331" width="393" height="60"/>
+                            <rect key="frame" x="0.0" y="317.66666666666669" width="393" height="60"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="10Q-22-h7G" customClass="HoshiTextField" customModule="TextFieldEffects">
                                     <rect key="frame" x="20" y="0.0" width="353" height="60"/>
@@ -176,14 +196,14 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZmW-Z5-9Cb" userLabel="h12">
-                            <rect key="frame" x="0.0" y="339.33333333333331" width="393" height="12"/>
+                            <rect key="frame" x="0.0" y="377.66666666666669" width="393" height="12"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="12" id="DBl-V2-oMp"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ASp-6c-eLF">
-                            <rect key="frame" x="0.0" y="351.33333333333331" width="393" height="60"/>
+                            <rect key="frame" x="0.0" y="389.66666666666669" width="393" height="60"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="28E-sI-t0r" customClass="HoshiTextField" customModule="TextFieldEffects">
                                     <rect key="frame" x="20" y="0.0" width="353" height="60"/>
@@ -211,14 +231,14 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6eW-by-IzV" userLabel="h12">
-                            <rect key="frame" x="0.0" y="411.33333333333331" width="393" height="12"/>
+                            <rect key="frame" x="0.0" y="449.66666666666669" width="393" height="12"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="12" id="Sk0-8X-y7J"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dXV-Ig-BZ4">
-                            <rect key="frame" x="0.0" y="423.33333333333331" width="393" height="60"/>
+                            <rect key="frame" x="0.0" y="461.66666666666669" width="393" height="60.000000000000057"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CqP-AC-7P7" customClass="HoshiTextField" customModule="TextFieldEffects">
                                     <rect key="frame" x="20" y="0.0" width="353" height="60"/>
@@ -226,7 +246,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gMn-9w-6Yb">
-                                    <rect key="frame" x="20" y="59" width="353" height="1"/>
+                                    <rect key="frame" x="20" y="58.999999999999943" width="353" height="1"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Uem-jz-Wfq"/>
@@ -246,14 +266,14 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z49-et-fd7" userLabel="h12">
-                            <rect key="frame" x="0.0" y="483.33333333333331" width="393" height="12"/>
+                            <rect key="frame" x="0.0" y="521.66666666666663" width="393" height="12"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="12" id="XUC-4o-sR9"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRv-Ke-v5L">
-                            <rect key="frame" x="0.0" y="495.33333333333326" width="393" height="60"/>
+                            <rect key="frame" x="0.0" y="533.66666666666663" width="393" height="60"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lpd-cE-qDK" customClass="HoshiTextField" customModule="TextFieldEffects">
                                     <rect key="frame" x="20" y="0.0" width="353" height="60"/>
@@ -261,7 +281,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OS9-bi-h7T">
-                                    <rect key="frame" x="20" y="59.000000000000057" width="353" height="1"/>
+                                    <rect key="frame" x="20" y="59" width="353" height="1"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="sDd-N1-8Wu"/>
@@ -281,7 +301,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fVX-3r-Wym" userLabel="h30">
-                            <rect key="frame" x="0.0" y="555.33333333333337" width="393" height="30"/>
+                            <rect key="frame" x="0.0" y="593.66666666666663" width="393" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="rtX-Jg-m5b"/>

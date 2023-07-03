@@ -198,7 +198,6 @@ class FeedWriteVC: BaseVC {
                     let fList = list.filter {
                         $0.img == nil
                     }
-                    let cnt = fList.count
                     
                     CommonPickerManager.shared.showYpAlbum(maxCount: 3) { [weak self] sModelList in
                         guard let self = self else {
@@ -209,8 +208,20 @@ class FeedWriteVC: BaseVC {
                             guard let name = origin.fileName else {
                                 return nil
                             }
-                            
-                            return .init(img: origin.img, fileName: name)
+                            var rImg = origin.img
+                            let imgVWidth: CGFloat = SCREEN_WIDTH * 0.8
+                            if let maxHeight = sModelList.filter({ $0.img != nil }).map({ $0.img.size.height }).max() {
+                                var imgVHeight = imgVWidth / rImg.size.width * maxHeight
+                                let maxSlideHeight: CGFloat = 550
+                                if imgVHeight > maxSlideHeight {
+                                    imgVHeight = maxSlideHeight
+                                }
+
+                                if let resizeImg = self.resizeImage(image: rImg, newSize: CGSize(width: imgVWidth, height: imgVHeight)) {
+                                    rImg = resizeImg
+                                }
+                            }
+                            return .init(img: rImg, fileName: name)
                         }
                         self.vm.input.addImage(imgList: cList)
                     }

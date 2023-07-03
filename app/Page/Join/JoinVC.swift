@@ -267,9 +267,9 @@ class JoinVC: BaseVC {
                       let name = self.nameTF.text,
                       let pwd = self.pwdTF.text else { return }
                 let param: [String: Any] = [
-                    "memid" : self.removeSpecial(text: id) as Any,
-                    "name" : name.replacingOccurrences(of: "[^가-힣]+", with: "", options: .regularExpression) as Any,
-                    "password" : self.removeSpecial(text: pwd) as Any
+                    "memid" : id as Any,
+                    "name" : name.replacingOccurrences(of: "[^a-zA-Z0-9가-힣\\s]", with: "", options: .regularExpression) as Any,
+                    "password" : pwd as Any
                 ]
                 CommonLoading.shared.show()
                 self.vm.input.regist(info: param, completion: {

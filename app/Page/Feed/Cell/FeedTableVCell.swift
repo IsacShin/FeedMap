@@ -310,14 +310,4 @@ final class FeedTableVCell: UITableViewCell {
     }
 }
 
-extension FeedTableVCell: ImageSlideshowDelegate {
-    func imageSlideshow(_ imageSlideshow: ImageSlideshow, didChangeCurrentPageTo page: Int) {
-        guard let imgUrl = imageSlideshow.images[page] as? KingfisherSource else {
-            return
-        }
-        let url = imgUrl.url
-        self.imgUrl.accept(url)
-    }
-    
-   
-}
+extension FeedTableVCell: ImageSlideshowDelegate {}

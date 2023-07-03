@@ -163,12 +163,8 @@ final class UserManager: NSObject, FeedAppLogin {
                     CommonAlert.showAlertType(vc: topVC, message: "다시 시도해주세요.", nil)
                 }
 
-                }, onError: { [weak self] rError in
+                }, onError: { rError in
 
-                guard let self = self else{
-                    return
-                }
-                
                     CommonAlert.showAlertType(vc: topVC, message: rError.localizedDescription, nil)
                 
             }, onDisposed: completion)

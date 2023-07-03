@@ -73,6 +73,14 @@ class BaseVC: UIViewController, UIGestureRecognizerDelegate {
             handler?()
         }
     }
+    
+    func resizeImage(image: UIImage, newSize: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 
 
 }

@@ -35,9 +35,9 @@ class MapVC: BaseVC {
     
     @IBOutlet weak var selectImgVBTN: UIButton!
     
+    @IBOutlet weak var selectIMGWrapV: UIView!
     var gMap: GMSMapView!
     weak var gMapViewDelegate: GMSMapViewDelegate?
-//    var clusterManager: GMUClusterManager!
     var zoomLevel: Float = 15
     var cLocation: CLLocation?
     
@@ -94,14 +94,6 @@ class MapVC: BaseVC {
             }
         }
     }
-    
-//    private func setClusterManager() {
-//        let iconGenerator = MapClusterIconGenerator() // ⭐️
-//        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
-//        let renderer = GMUDefaultClusterRenderer(mapView: self.gMap, clusterIconGenerator: iconGenerator)
-//        clusterManager = GMUClusterManager(map: self.gMap, algorithm: algorithm, renderer: renderer)
-//        clusterManager.setMapDelegate(self)
-//    }
     
     private func makeMapV() {
         self.gMap = GMSMapView()
@@ -161,6 +153,11 @@ class MapVC: BaseVC {
         
         self.selectTabTitleLB.do {
             $0.font = .bold(size: 17)
+        }
+        
+        self.selectIMGWrapV.do {
+            $0.layer.cornerRadius = 16
+            $0.clipsToBounds = true
         }
         
     }

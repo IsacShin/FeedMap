@@ -185,9 +185,9 @@ class FeedVC: BaseVC {
 //        }
 //        self.isFirst = false
        
-        let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
-        self.tblV.setContentOffset(topOffset, animated: false)
-        self.tblV.reloadData()
+//        let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
+//        self.tblV.setContentOffset(topOffset, animated: false)
+//        self.tblV.reloadData()
         CommonLoading.shared.show()
         self.vm.output.getFeedList(memId: nil) {
             CommonLoading.shared.hide()

@@ -114,7 +114,8 @@ final class MapVMImpl: NSObject, MapVM, MapVMInput, MapVMOutput {
     func getFeedList(_ check:Bool? = false, loca:CLLocation?, completion: (() -> Void)?) {
         guard let memId = UDF.string(forKey: "memId") else { return }
         var param: [String:Any] = [
-            "memid" : memId
+            "memid" : memId,
+            "type" : "my"
         ]
         
         if let loca = loca {

@@ -27,7 +27,6 @@ final class FeedTableVCell: UITableViewCell {
     
     @IBOutlet weak var contentV: UIView!
     
-    @IBOutlet weak var lineV: UIView!
     @IBOutlet weak var contentVHeightConst: NSLayoutConstraint!
     
     @IBOutlet weak var declareBTN: UIButton!
@@ -175,6 +174,10 @@ final class FeedTableVCell: UITableViewCell {
     public func mapCellData(pCellData: FeedRawData){
         
         self.resetData()
+        
+        if let feedId = pCellData.id {
+            self.tag = feedId
+        }
         
         if let id = pCellData.memid {
             self.idLB.text = id

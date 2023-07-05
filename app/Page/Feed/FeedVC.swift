@@ -119,7 +119,8 @@ class FeedVC: BaseVC {
             .controlEvent(.valueChanged)
             .subscribe(onNext: {[weak self] in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    self?.vm.output.getFeedList(memId: nil) {
+                    guard let memid = UDF.string(forKey: "memId") else { return }
+                    self?.vm.output.getFeedList(memId: memid, type: "all") {
                         self?.refresher.endRefreshing()
                     }
                 })
@@ -145,13 +146,14 @@ class FeedVC: BaseVC {
                 self?.dropDown.clearSelection()
                 if index == 0 {
                     CommonLoading.shared.show()
-                    self?.vm.output.getFeedList(memId: nil) {
+                    guard let memid = UDF.string(forKey: "memId") else { return }
+                    self?.vm.output.getFeedList(memId: memid, type: "all") {
                         CommonLoading.shared.hide()
                     }
                 } else {
                     guard let memid = UDF.string(forKey: "memId") else { return }
                     CommonLoading.shared.show()
-                    self?.vm.output.getFeedList(memId: memid) {
+                    self?.vm.output.getFeedList(memId: memid, type: "my") {
                         CommonLoading.shared.hide()
                     }
                 }
@@ -180,16 +182,9 @@ class FeedVC: BaseVC {
     private var isFirst = true
     private func initializeData(){
         
-//        guard self.isFirst == true else {
-//            return
-//        }
-//        self.isFirst = false
-       
-//        let topOffset = CGPoint(x: 0, y: -self.tblV.contentInset.top)
-//        self.tblV.setContentOffset(topOffset, animated: false)
-//        self.tblV.reloadData()
         CommonLoading.shared.show()
-        self.vm.output.getFeedList(memId: nil) {
+        guard let memid = UDF.string(forKey: "memId") else { return }
+        self.vm.output.getFeedList(memId: memid, type: "all") {
             CommonLoading.shared.hide()
         }
         
@@ -237,7 +232,6 @@ class FeedVC: BaseVC {
                 guard let self = self else {
                     return
                 }
-                cell.tag = index
                 cell.selectionStyle = .none
                 cell.mapCellData(pCellData: cellData)
                 cell.mapVM(vm: self.vm)
@@ -257,11 +251,6 @@ extension FeedVC: UITableViewDelegate {
         }
         let url = imgUrl.url
         cell.imgUrl.accept(url)
-        if indexPath.row == (self.vm.output.feedListData.value?.count ?? 0) - 1 {
-            cell.lineV.isHidden = true
-        } else {
-            cell.lineV.isHidden = false
-        }
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

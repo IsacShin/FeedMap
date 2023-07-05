@@ -26,7 +26,7 @@ protocol FeedVMOutput {
     var error: BehaviorRelay<Error?> { get }
 
     var feedListData: BehaviorRelay<[FeedRawData]?> { get }
-    func getFeedList(memId:String?, completion: (() -> Void)?)
+    func getFeedList(memId:String?, type:String, completion: (() -> Void)?)
 
 }
 
@@ -66,11 +66,12 @@ final class FeedVMImpl: FeedVM, FeedVMInput, FeedVMOutput {
         
     }
     
-    func getFeedList(memId:String?, completion: (() -> Void)?) {
+    func getFeedList(memId:String?, type:String = "all", completion: (() -> Void)?) {
         var param = [String:Any]()
         if let memId = memId {
             param.updateValue(memId, forKey: "memid")
         }
+        param.updateValue(type, forKey: "type")
         self.mapWorker.getFeedList(info: param)
             .subscribe(onNext: { [weak self] rData in
 
@@ -103,7 +104,13 @@ final class FeedVMImpl: FeedVM, FeedVMInput, FeedVMOutput {
                 guard let topVC = UIApplication.topViewController() else { return }
                 if rData.resultCode == 200 {
                     
-                    CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.", nil)
+                    CommonAlert.showAlertType(vc: topVC, message: "신고 내용이 접수되었습니다.\n검토까지는 최대 24시간 소요됩니다.", {
+                        guard let memid = UDF.string(forKey: "memId") else { return }
+                        CommonLoading.shared.show()
+                        self.getFeedList(memId: memid) {
+                            CommonLoading.shared.hide()
+                        }
+                    })
                 } else if rData.resultCode == 300 {
                     CommonAlert.showAlertType(vc: topVC, message: "이미 신고한 피드 입니다.", nil)
                 } else {

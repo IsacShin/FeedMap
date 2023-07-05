@@ -98,7 +98,8 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
     func getFeedList(loca:CLLocation?, completion: (() -> Void)?) {
         guard let memId = UDF.string(forKey: "memId") else { return }
         var param: [String:Any] = [
-            "memid" : memId
+            "memid" : memId,
+            "type" : "all"
         ]
         
         if let loca = loca {

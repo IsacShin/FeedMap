@@ -13,6 +13,10 @@ class TermsVC: BaseVC {
     @IBOutlet weak var privarcyTermsBTN: UIButton!
     @IBOutlet weak var locationTermsBTN: UIButton!
     
+    @IBOutlet weak var serviceTermsBTN: UIButton!
+    
+    
+    
     @IBOutlet weak var pImgV: UIImageView!
     
     @IBOutlet weak var lImgV: UIImageView!
@@ -63,6 +67,17 @@ class TermsVC: BaseVC {
             .throttle(.seconds(1))
             .drive(onNext: {[weak self] in
                 let url = DOMAIN + "/locationTerms.do"
+                CommonNav.moveBaseWebVC(requestUrl: url)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.serviceTermsBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                let url = DOMAIN + "/serviceTerms.do"
                 CommonNav.moveBaseWebVC(requestUrl: url)
             })
             .disposed(by: self.disposeBag)

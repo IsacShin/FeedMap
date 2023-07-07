@@ -32,10 +32,19 @@ class JoinVC: BaseVC {
     
     @IBOutlet weak var completeBTN: BlackBTN!
     
+    @IBOutlet var term1CheckBTN: UIButton!
+    @IBOutlet var term1MoreBTN: UIButton!
+    @IBOutlet var term1CheckTRBTN: UIButton!
+    
+    @IBOutlet weak var term1CheckLB: UILabel!
+    
+    
     private var check1 = BehaviorRelay<Bool>(value: false)
     private var check2 = BehaviorRelay<Bool>(value: false)
     private var check3 = BehaviorRelay<Bool>(value: false)
     private var check4 = BehaviorRelay<Bool>(value: false)
+    
+    private var term1Check = BehaviorRelay<Bool>(value: false)
     
     private var vm: JoinVM!
     convenience init(vm: JoinVM?) {
@@ -139,6 +148,17 @@ class JoinVC: BaseVC {
         
         self.profileIMG.do {
             $0.contentMode = .scaleAspectFill
+        }
+        
+        self.term1CheckBTN.do {
+            $0.setImage(.init(named: "chkOn"), for: .selected)
+            $0.setImage(.init(named: "chkOff"), for: .normal)
+            $0.isUserInteractionEnabled = false
+        }
+        
+        self.term1CheckLB.do {
+            $0.font = .regular(size: 14)
+            $0.textColor = .white
         }
     }
     
@@ -277,6 +297,33 @@ class JoinVC: BaseVC {
                 })
             })
             .disposed(by: self.disposeBag)
+        
+        self.term1CheckTRBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .compactMap { [weak self]_ -> Bool? in
+                
+                guard let self = self else {
+                    return nil
+                }
+                return !self.term1Check.value
+            }
+            .drive(self.term1Check)
+            .disposed(by: self.disposeBag)
+        
+        self.term1MoreBTN
+            .rx
+            .tap
+            .asDriver()
+            .throttle(.seconds(1))
+            .drive(onNext: {[weak self] in
+                guard let self = self else { return }
+                let url = DOMAIN + "/serviceTerms.do"
+                CommonNav.moveBaseWebVC(requestUrl: url)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     private func bindUI() {
@@ -297,6 +344,11 @@ class JoinVC: BaseVC {
     
     private func bindOutputs() {
         let output = self.vm.output
+        
+        self.term1Check
+            .asDriver()
+            .drive(self.term1CheckBTN.rx.isSelected)
+            .disposed(by: self.disposeBag)
         
         output
             .imgDataList
@@ -333,9 +385,9 @@ class JoinVC: BaseVC {
             .disposed(by: self.disposeBag)
         
         Observable
-            .combineLatest(self.check1, self.check2, self.check3, self.check4)
+            .combineLatest(self.check1, self.check2, self.check3, self.check4, self.term1Check)
             .map { arg -> Bool in
-                return arg.0 && arg.1 && arg.2 && arg.3
+                return arg.0 && arg.1 && arg.2 && arg.3 && arg.4
             }
             .bind(to: self.completeBTN.rx.isEnabled)
             .disposed(by: self.disposeBag)

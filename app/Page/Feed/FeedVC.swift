@@ -244,14 +244,6 @@ class FeedVC: BaseVC {
 }
 
 extension FeedVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? FeedTableVCell else { return }
-        guard let imgUrl = cell.slideV.images[0] as? KingfisherSource else {
-            return
-        }
-        let url = imgUrl.url
-        cell.imgUrl.accept(url)
-    }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if(velocity.y > 0) {

@@ -41,6 +41,7 @@ class FeedWriteVC: BaseVC {
     @IBOutlet weak var deleteV: UIView!
     
     let textViewPlaceHolder = "내용을 입력하세요"
+    let textFieldPlaceHolder = "제목을 입력하세요"
     private var vm: FeedWriteVM!
     convenience init(vm: FeedWriteVM?) {
         self.init(nibName: "FeedWrite", bundle: nil)
@@ -122,10 +123,11 @@ class FeedWriteVC: BaseVC {
         }
         
         self.titleTF.do {
-            $0.placeholder = "제목을 입력해주세요"
+            $0.placeholder = textFieldPlaceHolder
+            $0.attributedPlaceholder = NSAttributedString(string: textFieldPlaceHolder, attributes: [NSAttributedString.Key.foregroundColor : UIColor.lightGray])
             $0.delegate = self
             $0.font = .regular(size: 14)
-            $0.textColor = .lightGray
+            $0.textColor = DARK_COLOR
             $0.backgroundColor = .clear
             $0.settingCloseToolBar()
         }
@@ -195,10 +197,6 @@ class FeedWriteVC: BaseVC {
 
                 if cellData.img == nil {
 
-                    let fList = list.filter {
-                        $0.img == nil
-                    }
-                    
                     CommonPickerManager.shared.showYpAlbum(maxCount: 3) { [weak self] sModelList in
                         guard let self = self else {
                             return
@@ -210,7 +208,7 @@ class FeedWriteVC: BaseVC {
                             }
                             var rImg = origin.img
                             let imgVWidth: CGFloat = SCREEN_WIDTH * 0.8
-                            if let maxHeight = sModelList.filter({ $0.img != nil }).map({ $0.img.size.height }).max() {
+                            if let maxHeight = sModelList.map({ $0.img.size.height }).max() {
                                 var imgVHeight = imgVWidth / rImg.size.width * maxHeight
                                 let maxSlideHeight: CGFloat = 550
                                 if imgVHeight > maxSlideHeight {
@@ -285,7 +283,9 @@ class FeedWriteVC: BaseVC {
                 guard let self = self else { return }
                 if result == true {
                     CommonAlert.showAlertType(vc: self, message: "등록되었습니다.") {
-                        self.navigationController?.popViewController(animated: true)
+                        self.navigationController?.popViewController(animated: true, completion: {
+                            self.vm.output.reloadMap()
+                        })
                     }
                 } else {
                     CommonAlert.showAlertType(vc: self, message: "문제가 발생하였습니다.\n다시 시도해주세요.", nil)
@@ -303,7 +303,9 @@ class FeedWriteVC: BaseVC {
                 guard let self = self else { return }
                 if result == true {
                     CommonAlert.showAlertType(vc: self, message: "삭제되었습니다.") {
-                        self.navigationController?.popViewController(animated: true)
+                        self.navigationController?.popViewController(animated: true, completion: {
+                            self.vm.output.reloadMap()
+                        })
                     }
                 } else {
                     CommonAlert.showAlertType(vc: self, message: "문제가 발생하였습니다.\n다시 시도해주세요.", nil)
@@ -320,7 +322,9 @@ class FeedWriteVC: BaseVC {
                 guard let self = self else { return }
                 self.addrContentLB.text = data.addr
                 self.descTV.text = data.comment
+                self.descTV.textColor = DARK_COLOR
                 self.titleTF.text = data.title
+                self.titleTF.textColor = DARK_COLOR
                 self.vm.output.feedIdx.accept(data.id)
                 
             })
@@ -371,7 +375,7 @@ class FeedWriteVC: BaseVC {
      
         self.view.endEditing(true)
         
-        guard var info = self.assembleData() else {
+        guard let info = self.assembleData() else {
             return
         }
         
@@ -402,7 +406,7 @@ class FeedWriteVC: BaseVC {
             return nil
         }
         
-        guard let img = self.vm.output.imgDataList.value?.first?.img else {
+        guard let _ = self.vm.output.imgDataList.value?.first?.img else {
             CommonAlert.showAlertType(vc: self, message: "대표 이미지를 등록해주세요.", nil)
             return nil
         }
@@ -419,6 +423,7 @@ class FeedWriteVC: BaseVC {
 }
 
 extension FeedWriteVC: UITextViewDelegate, UITextFieldDelegate {
+
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == textViewPlaceHolder {
             textView.text = nil

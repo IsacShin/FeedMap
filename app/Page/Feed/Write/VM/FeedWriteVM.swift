@@ -20,6 +20,7 @@ struct FeedWriteSeedInfo {
     var address: String?
     var location: CLLocation?
     var pageType: FeedPageType = .insert
+    var handler: (() -> Void)?
 }
 
 
@@ -41,7 +42,7 @@ protocol FeedWriteVMOutput {
     var feedListData: BehaviorRelay<[FeedRawData]?> { get }
     var feedIdx: BehaviorRelay<Int?> { get }
     func getFeedList(loca:CLLocation?, completion: (() -> Void)?)
-
+    func reloadMap()
 }
 
 final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
@@ -93,6 +94,12 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
             }
             .bind(to: self.feedListData)
             .disposed(by: self.disposeBag)
+    }
+    
+    func reloadMap() {
+        if let handler = self.seed.handler {
+            handler()
+        }
     }
     
     func getFeedList(loca:CLLocation?, completion: (() -> Void)?) {
@@ -151,6 +158,7 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
         }
         self.imgDataList.accept(resultList)
     }
+    
     func deleteImage(idx: Int){
         
         guard var prevList = self.imgDataList.value else {
@@ -183,7 +191,7 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
     private func preImgWork() -> Observable<[String]> {
         
         if let list = self.imgDataList.value,
-           list.count > 0{
+           list.count > 0 {
             
             return self.fWorker.uploadFile(fileList: list)
                 .flatMap { rData -> Observable<[String]> in
@@ -275,7 +283,7 @@ final class FeedWriteVMImpl: FeedWriteVM, FeedWriteVMInput, FeedWriteVMOutput {
         guard let id = self.feedIdx.value,
               let memid = UDF.string(forKey: "memId") else { return }
         
-        var param: [String:Any] = [
+        let param: [String:Any] = [
             "memid" : memid,
             "id" : id
         ]

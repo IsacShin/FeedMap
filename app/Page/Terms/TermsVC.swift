@@ -12,14 +12,11 @@ class TermsVC: BaseVC {
     
     @IBOutlet weak var privarcyTermsBTN: UIButton!
     @IBOutlet weak var locationTermsBTN: UIButton!
-    
     @IBOutlet weak var serviceTermsBTN: UIButton!
-    
-    
-    
     @IBOutlet weak var pImgV: UIImageView!
-    
     @IBOutlet weak var lImgV: UIImageView!
+    @IBOutlet weak var sImgV: UIImageView!
+    
     convenience init() {
         self.init(nibName: "Terms", bundle: nil)
     }
@@ -35,17 +32,14 @@ class TermsVC: BaseVC {
         self.naviBarHidden = false
         self.view.backgroundColor = DARK_COLOR
         
-        self.pImgV.do {
-            let img = UIImage(named: "btnRightArrow01")?.withRenderingMode(.alwaysTemplate)
-            $0.image = img
-            $0.tintColor = .white
-        }
-        
-        self.lImgV.do {
-            let img = UIImage(named: "btnRightArrow01")?.withRenderingMode(.alwaysTemplate)
-            $0.image = img
-            $0.tintColor = .white
-        }
+        [self.lImgV, self.pImgV, self.sImgV]
+            .compactMap { $0 }
+            .forEach {
+                let img = UIImage(named: "btnRightArrow01")?.withRenderingMode(.alwaysTemplate)
+                $0.image = img
+                $0.tintColor = .white
+            }
+
     }
     
     private func bindUserEvents() {

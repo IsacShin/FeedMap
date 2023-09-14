@@ -33,8 +33,6 @@ final class FeedTableVCell: UITableViewCell {
     
     @IBOutlet weak var feedSTV: UIStackView!
     
-    var imgUrl = BehaviorRelay<URL?>(value: nil)
-    
     private var imageInputs: [KingfisherSource] = []
     private var disposeBag = DisposeBag()
     public var tblV: UITableView?
@@ -42,7 +40,6 @@ final class FeedTableVCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.settingSubviews()
-        self.bindUI()
         self.bindUserEvents()
     }
     
@@ -72,47 +69,7 @@ final class FeedTableVCell: UITableViewCell {
             .disposed(by: self.disposeBag)
     }
     
-    private func bindUI() {
-        let imgUrl = self.imgUrl
-            .compactMap {
-                $0
-            }
-            
-        let img = imgUrl
-            .flatMap { url -> Observable<UIImage?> in
-                
-                return ImageUtils.urlToImage(url: url)
-                
-            }
-            .compactMap {
-                $0
-            }
-        
-        img
-            .compactMap { rImg -> CGFloat? in
-
-                let imgVWidth: CGFloat = SCREEN_WIDTH * 0.8
-
-                var imgVHeight = imgVWidth / rImg.size.width * rImg.size.height
-                let maxSlideHeight: CGFloat = 550
-                if imgVHeight > maxSlideHeight {
-                    imgVHeight = maxSlideHeight
-                }
-                return imgVHeight
-            }
-            .asDriver(onErrorJustReturn: .zero)
-            .drive(onNext: {[weak self] height in
-                guard let tbl = self?.tblV else { return }
-                DispatchQueue.main.async {
-                    self?.contentVHeightConst.constant = height
-                    tbl.beginUpdates()
-                    tbl.endUpdates()
-                }
-                
-            })
-            .disposed(by: self.disposeBag)
-        
-    }
+    
     
     private func settingSubviews(){
         self.backgroundColor = DARK_COLOR
@@ -169,6 +126,7 @@ final class FeedTableVCell: UITableViewCell {
         self.profileImgV.image = nil
         self.imageInputs.removeAll()
         self.declareBTN.isHidden = false
+        self.slideV.setImageInputs([])
     }
     
     public func mapCellData(pCellData: FeedRawData){
@@ -184,7 +142,8 @@ final class FeedTableVCell: UITableViewCell {
             if let myId = UDF.string(forKey: "memId") {
                 if id == myId {
                     self.declareBTN.isHidden = true
-                    if let pUrl = UDF.string(forKey: "profileImg") {
+                    if let pUrl = UDF.string(forKey: "profileImg"),
+                        pUrl != "" {
                         guard let url = URL(string: pUrl) else { return }
                         self.profileImgV.kf.setImage(with: url)
                     } else {
@@ -203,8 +162,6 @@ final class FeedTableVCell: UITableViewCell {
         
         if let img1 = pCellData.img1,
            let kImg = KingfisherSource(urlString: img1) {
-            guard let img1Url = URL(string: img1) else { return }
-            self.imgUrl.accept(img1Url)
             self.imageInputs.append(kImg)
         }
         
@@ -221,7 +178,7 @@ final class FeedTableVCell: UITableViewCell {
         if self.imageInputs.count > 0 {
             self.slideV.do {
                 $0.setImageInputs(self.imageInputs)
-                $0.contentScaleMode = .scaleAspectFill
+                $0.contentScaleMode = .scaleAspectFit
                 $0.pageIndicatorPosition = .init(horizontal: .center, vertical: .bottom)
             }
         }

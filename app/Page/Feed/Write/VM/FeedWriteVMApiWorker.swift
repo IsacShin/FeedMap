@@ -27,7 +27,7 @@ final class FeedWriteVMApiWorker {
             AF.upload(multipartFormData: { mfd in
                 for (index,fileData) in fileList.enumerated() {
                     
-                    guard let img = fileData.img?.jpegData(compressionQuality: 1.0) else { return }
+                    guard let img = fileData.img?.jpegData(compressionQuality: 0.1) else { return }
                     
                     mfd.append(img,
                                withName: "file\(index)",

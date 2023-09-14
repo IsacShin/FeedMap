@@ -65,7 +65,6 @@ class MapVC: BaseVC {
         self.bindUserEvents()
         self.bindOutputs()
         self.makeMapV()
-//        self.setClusterManager()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,11 +75,12 @@ class MapVC: BaseVC {
     private var isFirst = true
     private func initializeData(){
         
-//        guard self.isFirst == true else {
-//            return
-//        }
-//        self.isFirst = false
-        guard let token = UDF.string(forKey: "idToken") else {
+        guard self.isFirst == true else {
+            return
+        }
+        self.isFirst = false
+        
+        guard let _ = UDF.string(forKey: "idToken") else {
             return
         }
         
@@ -212,6 +212,17 @@ class MapVC: BaseVC {
                 let data = self.vm.input.selectData.value
                 var seed = FeedWriteSeedInfo()
                 seed.address = data?.addr
+                seed.handler = {
+                    self.selectTabV.isHidden = true
+                    self.gMap.clear()
+                    
+                    CommonLoading.shared.show()
+                    self.vm.input.initializeData {
+                        self.vm.output.getFeedList(false, loca: nil) {
+                            CommonLoading.shared.hide()
+                        }
+                    }
+                }
                 guard let lat = data?.latitude,
                       let lng = data?.longitude,
                       let dLat = Double(lat),
@@ -292,6 +303,17 @@ class MapVC: BaseVC {
                             var seed = FeedWriteSeedInfo()
                             seed.address = output.centerAddr.value
                             seed.location = loca
+                            seed.handler = {
+                                self.selectTabV.isHidden = true
+                                self.gMap.clear()
+                                
+                                CommonLoading.shared.show()
+                                self.vm.input.initializeData {
+                                    self.vm.output.getFeedList(false, loca: nil) {
+                                        CommonLoading.shared.hide()
+                                    }
+                                }
+                            }
                             CommonNav.moveFeedWriteVC(seed: seed)
                         }, nil)
                     }
@@ -322,9 +344,7 @@ class MapVC: BaseVC {
                           let dLng = Double(lng) else { return }
                     
                     let loca = CLLocation(latitude: dLat, longitude: dLng)
-//                    self?.clusterManager.clearItems()
                     self?.createMarker(loca: loca, data: data)
-//                    self?.clusterManager.cluster()
                 }
             })
             .disposed(by: self.disposeBag)
@@ -362,7 +382,6 @@ class MapVC: BaseVC {
             }
         }
         marker.map = self.gMap
-//        self.clusterManager.add(marker)
     }
 
 }
@@ -381,8 +400,6 @@ extension MapVC {
 extension MapVC: GMSMapViewDelegate {
     // 마커 클릭 시
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-//        mapView.selectedMarker = marker
-        print("마커 클릭 ")
         if let data = marker.userData as? FeedRawData {
             self.vm.input.selectData.accept(data)
             if let img = data.img1,
@@ -400,7 +417,6 @@ extension MapVC: GMSMapViewDelegate {
     
     // 지도 클릭 시
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        print("지도 클릭 ")
         self.selectTabV.isHidden = true
     }
     
